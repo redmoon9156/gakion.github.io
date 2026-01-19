@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shop — Work A</title>
+  <meta name="description" content="Shop page for Work A — Gakion Art" />
+
+  <!-- (선택) 폰트: 기존 페이지와 동일하게 쓰고 싶으면 유지 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#111111;
+      --muted:#666666;
+      --max:1060px;
+      --pad:18px;
+      --line:#dddddd; /* 임시 윤곽선 색 */
+      --gap:18px;
+      --radius:10px;
+      --font: "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family:var(--font);
+    }
+
+    a{ color:inherit; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:calc(var(--pad) * 2) var(--pad);
+    }
+
+    /* 레이아웃: 기본은 모바일(세로) */
+    .layout{
+      display:flex;
+      flex-direction:column;
+      gap:var(--gap);
+    }
+
+    /* PC: 가로 2단 */
+    @media (min-width: 860px){
+      .layout{
+        flex-direction:row;
+        align-items:flex-start;
+      }
+      .media, .info{
+        flex:1;
+      }
+    }
+
+    /* 임시 윤곽선 박스 */
+    .box{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:14px;
+      background:transparent;
+    }
+
+    /* 이미지 영역 */
+    .media{
+      padding:0;
+      overflow:hidden;
+    }
+    .media img{
+      display:block;
+      width:100%;
+      height:auto;
+      border-radius:calc(var(--radius) - 2px);
+    }
+
+    /* 텍스트 영역 */
+    .info{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .title{
+      font-size:18px;
+      font-weight:700;
+      letter-spacing:0.01em;
+      margin:0;
+    }
+    .desc{
+      margin:0;
+      line-height:1.6;
+      color:var(--fg);
+      white-space:pre-line; /* 엔터 줄바꿈 유지 */
+    }
+    .buy{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--fg);
+      font-weight:600;
+    }
+    .buy small{
+      color:var(--muted);
+      font-weight:500;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="layout">
+      <!-- 이미지 박스 -->
+      <div class="media box" aria-label="Work A image">
+        <!-- 이미지 경로는 프로젝트 폴더 구조에 맞게 수정하세요 -->
+        <img src="images/Work_A1.jpg" alt="Work A — image 1" />
+      </div>
+
+      <!-- 설명 박스 -->
+      <div class="info box" aria-label="Work A description">
+        <h1 class="title">Work A</h1>
+
+        <!-- 요청하신 텍스트: 엔터 포함 -->
+        <p class="desc">Work A
+Work A is fixture book.</p>
+
+        <!-- 구매 링크(영문) -->
+        <a class="buy" href="https://example.com" target="_blank" rel="noopener">
+          Purchase this work
+          <small>(External link)</small>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
