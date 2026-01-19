@@ -191,7 +191,7 @@
       padding: 26px 0 80px;
     }
 
-    /* Title (Contact에서의 큰 타이틀 느낌으로) */
+    /* Title */
     .page-title{
       font-family:"Space Grotesk", sans-serif;
       font-size: 28px;
@@ -201,14 +201,13 @@
       text-align: center;
     }
 
-    /* Grid: up to 4 per row */
+    /* ✅ Grid: Mobile = 1 column (vertical scroll) */
     .shop-grid{
       display:grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr;  /* mobile: 1개씩 아래로 */
       gap: 14px;
     }
 
-    /* Card */
     .shop-card{
       position: relative;
       display:block;
@@ -219,7 +218,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Keep consistent tile aspect */
     .thumb{
       width:100%;
       aspect-ratio: 3 / 4;
@@ -257,7 +255,7 @@
       text-align:center;
     }
 
-    /* Hover/Focus = blur + overlay show */
+    /* Hover/Focus (PC) */
     .shop-card:hover .thumb img,
     .shop-card:focus-visible .thumb img{
       filter: blur(2.2px) brightness(.92);
@@ -268,7 +266,7 @@
       opacity: 1;
     }
 
-    /* Touch support (tap to show overlay briefly) */
+    /* Touch: first tap shows overlay, second tap follows link */
     .shop-card.is-active .thumb img{
       filter: blur(2.2px) brightness(.92);
       transform: scale(1.01);
@@ -290,7 +288,7 @@
       letter-spacing: .2px;
     }
 
-    /* Desktop */
+    /* ✅ Desktop: max 3 per row */
     @media (min-width: 900px){
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
@@ -300,10 +298,9 @@
       .page-title{ font-size: 32px; margin: 18px 0 26px; }
 
       .shop-grid{
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr); /* PC: 1행 최대 3개 */
         gap: 16px;
       }
-
       .overlay span{ font-size: 19px; }
     }
 
@@ -354,7 +351,7 @@
       <div class="page-title">Abailable Books</div>
 
       <section class="shop-grid" aria-label="Available books">
-        <!-- 1) Work_A1 -->
+        <!-- Work_A -->
         <a class="shop-card" href="shop_work_A.html" aria-label="Open Work_A">
           <div class="thumb">
             <img src="images/works/Work_A1.jpg" alt="Work_A cover" loading="lazy">
@@ -362,7 +359,7 @@
           <div class="overlay"><span>Work_A</span></div>
         </a>
 
-        <!-- 2) Work_B1 -->
+        <!-- Work_B -->
         <a class="shop-card" href="shop_work_B.html" aria-label="Open Work_B">
           <div class="thumb">
             <img src="images/works/Work_B1.jpg" alt="Work_B cover 1" loading="lazy">
@@ -370,10 +367,15 @@
           <div class="overlay"><span>Work_B</span></div>
         </a>
 
-        <!-- 3) Work_C1 (✅ 수정: Work_C1로 연결) -->
+        <!-- Work_C -->
         <a class="shop-card" href="shop_work_C.html" aria-label="Open Work_C">
           <div class="thumb">
-            <img src="images/works/Work_C1.jpg" alt="Work_C cover" loading="lazy">
+            <img
+              src="images/works/Work_C1.jpg"
+              alt="Work_C cover"
+              loading="lazy"
+              onerror="this.onerror=null; this.src='images/works/Work_C1.JPG';"
+            >
           </div>
           <div class="overlay"><span>Work_C</span></div>
         </a>
@@ -423,7 +425,7 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ---------- Touch: first tap shows overlay, second tap follows link ---------- */
+      /* ---------- Touch behavior: first tap shows overlay ---------- */
       const cards = document.querySelectorAll(".shop-card");
       cards.forEach((card) => {
         card.addEventListener("click", (e) => {
