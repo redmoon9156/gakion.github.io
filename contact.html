@@ -49,7 +49,7 @@
       padding:0 var(--pad);
     }
 
-    /* Header (same family with your other pages) */
+    /* Header */
     header{
       background:#ffffff;
       position: sticky;
@@ -118,7 +118,7 @@
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* Drawer overlay + drawer */
+    /* Drawer */
     .drawer-overlay{
       position: fixed;
       inset: 0;
@@ -187,10 +187,10 @@
 
     /* Main */
     main{
-      padding: 30px 0 110px;
+      padding: 30px 0 90px;
     }
 
-    /* Contact layout (simple, centered, like Louisa-style contact block) */
+    /* Contact layout */
     .contact{
       max-width: 640px;
       margin: 0 auto;
@@ -204,12 +204,6 @@
       letter-spacing: .2px;
       margin: 10px 0 22px;
       text-align:center;
-    }
-
-    .contact-lead{
-      color: rgba(0,0,0,.72);
-      text-align:center;
-      margin: 0 0 26px;
     }
 
     .contact-card{
@@ -237,27 +231,31 @@
       min-width: 92px;
     }
 
+    /* ✅ (3) 오른쪽 끝 정렬을 안정적으로 맞추기 */
     .value{
       display:flex;
       align-items:center;
-      gap: 10px;
       justify-content:flex-end;
+      gap: 10px;
       flex-wrap: wrap;
       text-align:right;
+      margin-left: auto; /* label 폭이 달라도 오른쪽으로 밀림 */
     }
 
+    /* ✅ (2) 링크 윤곽선 제거 */
     .link{
       display:inline-flex;
       align-items:center;
       gap: 10px;
-      padding: 10px 12px;
+      padding: 10px 0;                 /* 좌우 패딩 제거(더 깔끔) */
       border-radius: 12px;
-      border: 1px solid rgba(0,0,0,.12);
-      transition: transform .12s ease, background .12s ease;
+      border: 0;                       /* 윤곽선 삭제 */
+      background: transparent;         /* 배경도 없음 */
+      transition: opacity .12s ease, transform .12s ease;
       -webkit-tap-highlight-color: transparent;
     }
     .link:hover{
-      background: rgba(0,0,0,.03);
+      opacity: .86;
       transform: translateY(-1px);
     }
     .link:active{
@@ -275,12 +273,23 @@
       display:block;
     }
 
+    /* Footer */
+    footer{
+      padding: 24px 0 34px;
+    }
+    .copyright{
+      text-align:center;
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
+
     /* Desktop breakpoint */
     @media (min-width: 900px){
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
-      main{ padding: 40px 0 140px; }
+      main{ padding: 40px 0 110px; }
       .contact-title{ font-size: 38px; }
       .contact-card{ padding: 22px; }
       .label{ min-width: 110px; }
@@ -332,9 +341,8 @@
     <div class="wrap">
       <section class="contact" aria-label="Contact">
         <div class="contact-title">Contact</div>
-        <p class="contact-lead">
-          For inquiries, please reach out via email or Instagram.
-        </p>
+
+        <!-- ✅ (1) 안내 문장 삭제 -->
 
         <div class="contact-card" role="group" aria-label="Contact links">
           <div class="row">
@@ -349,8 +357,7 @@
           <div class="row">
             <div class="label">Instagram</div>
             <div class="value">
-              <a class="link" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
-                <!-- Instagram glyph (icon only, no 'in') -->
+              <a class="link" href="https://www.instagram.com/gakion.kim/#" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
                 <svg class="ig-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M7.5 2.75h9A4.75 4.75 0 0 1 21.25 7.5v9A4.75 4.75 0 0 1 16.5 21.25h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z" stroke="currentColor" stroke-width="1.7"/>
                   <path d="M12 16.2A4.2 4.2 0 1 0 12 7.8a4.2 4.2 0 0 0 0 8.4Z" stroke="currentColor" stroke-width="1.7"/>
@@ -365,6 +372,13 @@
       </section>
     </div>
   </main>
+
+  <!-- ✅ (4) Footer 추가 -->
+  <footer>
+    <div class="wrap">
+      <div class="copyright">© Gakion Art. All rights reserved.</div>
+    </div>
+  </footer>
 
   <script>
     (function () {
