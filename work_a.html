@@ -201,6 +201,7 @@
       font-weight: 700;
       letter-spacing: .2px;
       margin: 14px 0 22px;
+      text-align: center; /* ✅ (1) 가운데 정렬 */
     }
 
     /* (1) Vertical list */
@@ -250,7 +251,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      padding: 18px;
+      padding: 10px; /* ✅ (2) 더 크게 보이도록 여백 줄임 */
       z-index: 2000;
     }
     .lightbox.open{ display:flex; }
@@ -264,8 +265,8 @@
 
     .lb-frame{
       position: relative;
-      width: min(96vw, 980px);
-      max-height: 92vh;
+      width: min(98vw, 1400px); /* ✅ (2) 프레임 더 크게 */
+      max-height: 96vh;         /* ✅ (2) 더 크게 */
       z-index: 1;
       display:flex;
       align-items:center;
@@ -274,47 +275,49 @@
 
     .lb-img{
       max-width: 100%;
-      max-height: 92vh;
-      border-radius: 12px;
+      max-height: 96vh;         /* ✅ (2) 더 크게 */
+      border-radius: 10px;
       box-shadow: var(--shadow);
       display:block;
     }
 
-    /* (2) arrows: subtle/blurred */
+    /* ✅ (2) arrows: 구글 이미지 검색 느낌(뾰족한 chevron) */
     .lb-arrow{
       position:absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 44px;
-      height: 44px;
+      width: 56px;
+      height: 56px;
       border: 0;
-      border-radius: 999px;
-      background: rgba(255,255,255,.22);
-      backdrop-filter: blur(8px);
-      color: rgba(255,255,255,.92);
+      border-radius: 0;         /* 동그라미 제거 */
+      background: transparent;  /* 배경 제거 */
+      backdrop-filter: none;    /* 블러 제거 */
+      color: rgba(255,255,255,.95);
       cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .18s ease, background .18s ease, opacity .18s ease;
-      opacity: .75;
+      transition: transform .12s ease, opacity .12s ease;
+      opacity: .9;
     }
     .lb-arrow:hover{
-      background: rgba(255,255,255,.28);
-      opacity: .95;
-      transform: translateY(-50%) scale(1.03);
+      opacity: 1;
+      transform: translateY(-50%) scale(1.06);
     }
     .lb-arrow:active{
-      transform: translateY(-50%) scale(0.98);
+      transform: translateY(-50%) scale(0.96);
     }
 
-    .lb-prev{ left: -6px; }
-    .lb-next{ right: -6px; }
+    .lb-prev{ left: 10px; }    /* 화면 안쪽 */
+    .lb-next{ right: 10px; }
 
-    .lb-arrow svg{ width: 18px; height: 18px; }
-
-    /* Close by clicking backdrop (no extra UI requested) */
+    .lb-arrow svg{ width: 34px; height: 34px; }
+    .lb-arrow svg path{
+      stroke-width: 3.2;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+    }
 
     /* Desktop breakpoint */
     @media (min-width: 900px){
@@ -389,7 +392,8 @@
     <div class="lb-frame" role="dialog" aria-label="Image viewer">
       <button class="lb-arrow lb-prev" id="lbPrev" type="button" aria-label="Previous image">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M14.5 5L8 12l6.5 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- ✅ 뾰족한 chevron -->
+          <path d="M15 4 L7 12 L15 20" stroke="currentColor" fill="none"/>
         </svg>
       </button>
 
@@ -397,7 +401,8 @@
 
       <button class="lb-arrow lb-next" id="lbNext" type="button" aria-label="Next image">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9.5 5L16 12l-6.5 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- ✅ 뾰족한 chevron -->
+          <path d="M9 4 L17 12 L9 20" stroke="currentColor" fill="none"/>
         </svg>
       </button>
     </div>
