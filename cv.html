@@ -39,7 +39,7 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
 
-      /* ✅ 추가: footer가 안 보이는 케이스(스크롤/높이 꼬임) 방지 */
+      /* ✅ footer가 안 보이는 케이스 방지 */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -200,8 +200,18 @@
     main{
       padding:40px 0 80px;
 
-      /* ✅ 추가: main이 남는 높이를 먹고 footer를 아래로 밀어줌 */
+      /* ✅ main이 남는 높이를 먹고 footer를 아래로 밀어줌 */
       flex: 1;
+    }
+
+    /* ✅ Contact와 동일한 타이틀 스타일 */
+    .page-title{
+      font-family:"Space Grotesk", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      margin: 14px 0 22px;
+      text-align: center;
     }
 
     .cv-grid{
@@ -242,6 +252,8 @@
       padding: 24px 0 34px;
     }
     .copyright{
+      display:block;
+      width:100%;
       text-align:center;
       color: rgba(0,0,0,.56);
       font-size: 12.5px;
@@ -252,6 +264,12 @@
     @media (min-width: 900px){
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
+
+      /* ✅ Contact처럼 데스크톱에서 타이틀도 살짝 커지게 */
+      .page-title{
+        font-size: 32px;
+        margin: 18px 0 26px;
+      }
 
       .cv-grid{
         grid-template-columns: 1fr 1.2fr;
@@ -311,6 +329,10 @@
 
   <main>
     <div class="wrap">
+
+      <!-- ✅ 추가: Contact와 동일한 위치/폰트/크기의 메뉴 타이틀 -->
+      <div class="page-title">CV</div>
+
       <section class="cv-grid">
 
         <!-- Left (PC) / Top (Mobile): Image -->
@@ -370,7 +392,7 @@
         if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
       });
 
-      /* ✅ 추가: 혹시 이전 상태가 꼬여 overflow:hidden 이 남아있으면 초기화 */
+      /* 초기화 */
       body.dataset.menuOpen = "false";
       body.style.overflow = "";
       setOverlayHidden(true);
