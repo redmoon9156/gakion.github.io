@@ -38,6 +38,11 @@
       letter-spacing:.15px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+
+      /* ✅ 추가: footer가 안 보이는 케이스(스크롤/높이 꼬임) 방지 */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -194,6 +199,9 @@
     /* CV layout */
     main{
       padding:40px 0 80px;
+
+      /* ✅ 추가: main이 남는 높이를 먹고 footer를 아래로 밀어줌 */
+      flex: 1;
     }
 
     .cv-grid{
@@ -229,7 +237,7 @@
       margin:0 0 12px;
     }
 
-    /* ✅ footer (추가) */
+    /* footer */
     footer{
       padding: 24px 0 34px;
     }
@@ -320,7 +328,6 @@
     </div>
   </main>
 
-  <!-- ✅ footer는 main 밖(그냥 body 끝)에 위치해야 정상 동작합니다 -->
   <footer>
     <div class="wrap">
       <div class="copyright">© Gakion Art. All rights reserved.</div>
@@ -363,7 +370,9 @@
         if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
       });
 
+      /* ✅ 추가: 혹시 이전 상태가 꼬여 overflow:hidden 이 남아있으면 초기화 */
       body.dataset.menuOpen = "false";
+      body.style.overflow = "";
       setOverlayHidden(true);
     })();
   </script>
