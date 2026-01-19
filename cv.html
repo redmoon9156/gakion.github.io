@@ -285,6 +285,15 @@
     @media (prefers-reduced-motion: reduce){
       *{ transition: none !important; scroll-behavior:auto !important; }
     }
+
+    /* ✅ (요청) 이미지 우클릭/드래그/롱프레스 억제 (완전 보안은 아님) */
+    img{
+      -webkit-user-drag: none;
+      user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
   </style>
 </head>
 
@@ -337,7 +346,7 @@
 
         <!-- Left (PC) / Top (Mobile): Image -->
         <div class="cv-image">
-          <img src="images/CV/CV_image.jpg" alt="Gakion portrait">
+          <img src="images/CV/CV_image.jpg" alt="Gakion portrait" draggable="false">
         </div>
 
         <!-- Right (PC) / Bottom (Mobile): Text -->
@@ -396,6 +405,31 @@
       body.dataset.menuOpen = "false";
       body.style.overflow = "";
       setOverlayHidden(true);
+    })();
+
+    /* ✅ (요청) CV 이미지 우클릭/드래그/롱프레스 방지 (완전 보안은 아님) */
+    (function () {
+      document.addEventListener("contextmenu", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") e.preventDefault();
+      });
+
+      document.addEventListener("dragstart", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") e.preventDefault();
+      }, { passive: false });
+
+      // 모바일 롱프레스(이미지 저장 메뉴) 완화용: 이미지에서만 기본 동작 억제
+      document.addEventListener("touchstart", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") {
+          // passive:false 없이 preventDefault는 막힐 수 있으므로, CSS(-webkit-touch-callout)와 병행하는 수준
+        }
+      }, { passive: true });
+
+      document.querySelectorAll("img").forEach((img) => {
+        img.setAttribute("draggable", "false");
+      });
     })();
   </script>
 
