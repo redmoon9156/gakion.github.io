@@ -198,6 +198,16 @@
       padding: 26px 0 80px;
     }
 
+    /* ✅ Contact/CV와 동일한 타이틀 */
+    .page-title{
+      font-family:"Space Grotesk", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      margin: 14px 0 22px;
+      text-align: center;
+    }
+
     .works-list{
       display:flex;
       flex-direction:column;
@@ -241,19 +251,18 @@
       color: rgba(0,0,0,.86);
     }
 
-    /* ✅ Footer style (추가된 부분: 이것만 추가) */
+    /* Footer */
     footer{
       padding: 24px 0 34px;
     }
-   .copyright{
-  display:block;
-  width:100%;
-  text-align:center;
-  color: rgba(0,0,0,.56);
-  font-size: 12.5px;
-  letter-spacing: .2px;
-}
-
+    .copyright{
+      display:block;
+      width:100%;
+      text-align:center;
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
 
     /* Desktop */
     @media (min-width: 900px){
@@ -263,6 +272,12 @@
 
       main{
         padding: 34px 0 90px;
+      }
+
+      /* ✅ 데스크톱 타이틀도 동일 규칙 */
+      .page-title{
+        font-size: 32px;
+        margin: 18px 0 26px;
       }
 
       .work-item{
@@ -320,6 +335,10 @@
 
   <main>
     <div class="wrap">
+
+      <!-- ✅ 추가: Works 타이틀 -->
+      <div class="page-title">Works</div>
+
       <section class="works-list" aria-label="Works list">
 
         <!-- Work A -->
