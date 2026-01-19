@@ -19,6 +19,7 @@
       --max:1060px;
       --pad:18px;
       --radius:14px;
+      --line: rgba(0,0,0,.14); /* 임시 윤곽선 */
     }
 
     *{ box-sizing:border-box; }
@@ -92,14 +93,25 @@
       align-items:start;
     }
 
+    /* 🔹 이미지 영역 임시 윤곽선 */
+    .cv-image{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 6px;
+    }
+
     .cv-image img{
       width:100%;
       height:auto;
       display:block;
-      border-radius:var(--radius);
+      border-radius: calc(var(--radius) - 2px);
     }
 
+    /* 🔹 텍스트 영역 임시 윤곽선 */
     .cv-text{
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
       font-size:15px;
     }
 
