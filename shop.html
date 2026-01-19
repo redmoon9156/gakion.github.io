@@ -201,11 +201,11 @@
       text-align: center;
     }
 
-    /* ✅ Grid: Mobile = 1 column (vertical scroll) */
+    /* ✅ Mobile: Works처럼 1개씩 “세로 리스트” 느낌 */
     .shop-grid{
       display:grid;
-      grid-template-columns: 1fr;  /* mobile: 1개씩 아래로 */
-      gap: 14px;
+      grid-template-columns: 1fr;
+      gap: 22px;                 /* Works처럼 간격 넉넉히 */
     }
 
     .shop-card{
@@ -241,17 +241,17 @@
       align-items:center;
       justify-content:center;
       padding: 14px;
-      background: rgba(0,0,0,.50); /* 50% */
+      background: rgba(0,0,0,.50);
       opacity: 0;
       transition: opacity .18s ease;
     }
 
     .overlay span{
       font-family:"Space Grotesk", sans-serif;
-      font-weight: 700;          /* bold */
+      font-weight: 700;
       font-size: 18px;
       letter-spacing: .4px;
-      color: rgba(255,255,255,1); /* fully opaque */
+      color: rgba(255,255,255,1);
       text-align:center;
     }
 
@@ -288,7 +288,7 @@
       letter-spacing: .2px;
     }
 
-    /* ✅ Desktop: max 3 per row */
+    /* ✅ Desktop: max 3 per row + 가운데 정렬 */
     @media (min-width: 900px){
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
@@ -298,9 +298,11 @@
       .page-title{ font-size: 32px; margin: 18px 0 26px; }
 
       .shop-grid{
-        grid-template-columns: repeat(3, 1fr); /* PC: 1행 최대 3개 */
+        grid-template-columns: repeat(3, minmax(0, 320px)); /* 카드 폭을 제한 */
+        justify-content: center;                             /* ✅ 그리드 자체를 중앙으로 */
         gap: 16px;
       }
+
       .overlay span{ font-size: 19px; }
     }
 
@@ -374,7 +376,6 @@
               src="images/works/Work_C1.jpg"
               alt="Work_C cover"
               loading="lazy"
-              onerror="this.onerror=null; this.src='images/works/Work_C1.JPG';"
             >
           </div>
           <div class="overlay"><span>Work_C</span></div>
@@ -425,7 +426,7 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ---------- Touch behavior: first tap shows overlay ---------- */
+      /* ---------- Touch: first tap shows overlay, second tap follows link ---------- */
       const cards = document.querySelectorAll(".shop-card");
       cards.forEach((card) => {
         card.addEventListener("click", (e) => {
