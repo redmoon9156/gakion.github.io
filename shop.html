@@ -355,7 +355,7 @@
 
       <section class="shop-grid" aria-label="Available books">
         <!-- 1) Work_A1 -->
-        <a class="shop-card" href="work_a_shop.html" aria-label="Open Work_A">
+        <a class="shop-card" href="shop_work_A.html" aria-label="Open Work_A">
           <div class="thumb">
             <img src="images/works/Work_A1.jpg" alt="Work_A cover" loading="lazy">
           </div>
@@ -363,17 +363,17 @@
         </a>
 
         <!-- 2) Work_B1 -->
-        <a class="shop-card" href="work_b_shop.html" aria-label="Open Work_B">
+        <a class="shop-card" href="shop_work_B.html" aria-label="Open Work_B">
           <div class="thumb">
             <img src="images/works/Work_B1.jpg" alt="Work_B cover 1" loading="lazy">
           </div>
           <div class="overlay"><span>Work_B</span></div>
         </a>
 
-        <!-- 3) Work_B3 -->
-        <a class="shop-card" href="work_c_shop.html" aria-label="Open Work_C">
+        <!-- 3) Work_C1 (✅ 수정: Work_C1로 연결) -->
+        <a class="shop-card" href="shop_work_C.html" aria-label="Open Work_C">
           <div class="thumb">
-            <img src="images/works/Work_B3.jpg" alt="Work_C cover" loading="lazy">
+            <img src="images/works/Work_C1.jpg" alt="Work_C cover" loading="lazy">
           </div>
           <div class="overlay"><span>Work_C</span></div>
         </a>
@@ -426,15 +426,7 @@
       /* ---------- Touch: first tap shows overlay, second tap follows link ---------- */
       const cards = document.querySelectorAll(".shop-card");
       cards.forEach((card) => {
-        let tapped = false;
-
-        card.addEventListener("touchstart", () => {
-          // just mark touched (no preventDefault here)
-          tapped = true;
-        }, { passive: true });
-
         card.addEventListener("click", (e) => {
-          // desktop hover already works; on touch, show overlay on first tap
           const isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
           if (!isTouch) return;
 
