@@ -6,6 +6,11 @@
   <title>Gakion Art</title>
   <meta name="description" content="Gakion Art — portfolio and works." />
 
+  <!-- ✅ Added: Space Grotesk (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --bg:#ffffff;
@@ -58,8 +63,9 @@
       padding: 16px 0;
     }
 
-    /* 2) Gakion Art font size +50% and bold */
+    /* ✅ Updated: Gakion Art uses Space Grotesk */
     .brand{
+      font-family: "Space Grotesk", sans-serif;
       font-size: 22.5px; /* 15px * 1.5 */
       font-weight: 700;
       letter-spacing: .35px;
@@ -76,7 +82,12 @@
       letter-spacing: .6px;
       white-space: nowrap;
     }
+
+    /* ✅ Updated: Menu (PC) uses Space Grotesk */
     nav.desktop a{
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 500;
+
       position:relative;
       padding: 8px 4px;
       color: rgba(0,0,0,.82);
@@ -163,7 +174,12 @@
       flex-direction:column;
       gap: 4px;
     }
+
+    /* ✅ Updated: Menu (mobile drawer) uses Space Grotesk */
     .drawer-nav a{
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 500;
+
       padding: 14px 12px;
       border-radius: 14px;
       border: 0; /* 4) remove outline */
@@ -240,7 +256,7 @@
 
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
-      
+
       main{ padding: 36px 0 80px; }
     }
 
@@ -347,4 +363,3 @@
   </script>
 </body>
 </html>
-
