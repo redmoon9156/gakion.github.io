@@ -197,13 +197,14 @@
       padding-top: 10px;
     }
 
-    .contact-title{
+    /* ✅ CV/Works와 동일한 타이틀 */
+    .page-title{
       font-family:"Space Grotesk", sans-serif;
-      font-size: 34px;
+      font-size: 28px;
       font-weight: 700;
       letter-spacing: .2px;
-      margin: 10px 0 22px;
-      text-align:center;
+      margin: 14px 0 22px;
+      text-align: center;
     }
 
     .contact-card{
@@ -231,7 +232,6 @@
       min-width: 92px;
     }
 
-    /* ✅ (3) 오른쪽 끝 정렬을 안정적으로 맞추기 */
     .value{
       display:flex;
       align-items:center;
@@ -239,18 +239,17 @@
       gap: 10px;
       flex-wrap: wrap;
       text-align:right;
-      margin-left: auto; /* label 폭이 달라도 오른쪽으로 밀림 */
+      margin-left: auto;
     }
 
-    /* ✅ (2) 링크 윤곽선 제거 */
     .link{
       display:inline-flex;
       align-items:center;
       gap: 10px;
-      padding: 10px 0;                 /* 좌우 패딩 제거(더 깔끔) */
+      padding: 10px 0;
       border-radius: 12px;
-      border: 0;                       /* 윤곽선 삭제 */
-      background: transparent;         /* 배경도 없음 */
+      border: 0;
+      background: transparent;
       transition: opacity .12s ease, transform .12s ease;
       -webkit-tap-highlight-color: transparent;
     }
@@ -266,7 +265,6 @@
       color: rgba(0,0,0,.64);
     }
 
-    /* Instagram icon only (no "in") */
     .ig-icon{
       width: 18px;
       height: 18px;
@@ -290,7 +288,13 @@
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
       main{ padding: 40px 0 110px; }
-      .contact-title{ font-size: 38px; }
+
+      /* ✅ CV/Works와 동일 (28→32, margin 동일) */
+      .page-title{
+        font-size: 32px;
+        margin: 18px 0 26px;
+      }
+
       .contact-card{ padding: 22px; }
       .label{ min-width: 110px; }
     }
@@ -340,9 +344,7 @@
   <main>
     <div class="wrap">
       <section class="contact" aria-label="Contact">
-        <div class="contact-title">Contact</div>
-
-        <!-- ✅ (1) 안내 문장 삭제 -->
+        <div class="page-title">Contact</div>
 
         <div class="contact-card" role="group" aria-label="Contact links">
           <div class="row">
@@ -355,7 +357,7 @@
           </div>
 
           <div class="row">
-            <div class="label">Instagram</div>
+            <div class="label">SNS</div>
             <div class="value">
               <a class="link" href="https://www.instagram.com/gakion.kim/#" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
                 <svg class="ig-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -373,7 +375,6 @@
     </div>
   </main>
 
-  <!-- ✅ (4) Footer 추가 -->
   <footer>
     <div class="wrap">
       <div class="copyright">© Gakion Art. All rights reserved.</div>
@@ -382,7 +383,6 @@
 
   <script>
     (function () {
-      /* ---------- Mobile drawer ---------- */
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
       const closeBtn = document.getElementById("menuCloseBtn");
@@ -390,6 +390,7 @@
       const overlay = document.getElementById("drawerOverlay");
 
       function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+
       function openMenu(){
         body.dataset.menuOpen = "true";
         openBtn.setAttribute("aria-expanded", "true");
@@ -397,6 +398,7 @@
         setOverlayHidden(false);
         body.style.overflow = "hidden";
       }
+
       function closeMenu(){
         body.dataset.menuOpen = "false";
         openBtn.setAttribute("aria-expanded", "false");
@@ -408,6 +410,7 @@
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (closeBtn) closeBtn.addEventListener("click", closeMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
+
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
       });
