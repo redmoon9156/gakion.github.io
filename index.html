@@ -240,9 +240,12 @@
       transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
     }
 
-    .image-btn:active img{
-      transform: scale(1.02);
-      filter: saturate(1.02);
+    /* ✅ (수정) button 제거 후에도 기존과 동일하게 img 스타일 적용 */
+    .image-card > img{
+      width:100%;
+      height:auto;
+      display:block;
+      object-fit:cover;
     }
 
     /* Footer */
@@ -328,7 +331,7 @@
   <main>
     <div class="wrap">
       <div class="image-card" aria-label="Home image">
-        <!-- ✅ (요청) 클릭 불가: button 제거 -->
+        <!-- ✅ 클릭 불가: button 제거 -->
         <img src="images/home/Home_image.jpg" alt="Home image" loading="eager" />
       </div>
     </div>
@@ -380,19 +383,16 @@
 
     /* ✅ (요청) 이미지 우클릭 저장/복사(컨텍스트 메뉴) & 드래그 방지 (완전 보안은 아님) */
     (function () {
-      // 이미지에서만 우클릭 메뉴 차단
       document.addEventListener("contextmenu", function (e) {
         const t = e.target;
         if (t && t.tagName === "IMG") e.preventDefault();
       });
 
-      // 이미지 드래그 시작 방지
       document.addEventListener("dragstart", function (e) {
         const t = e.target;
         if (t && t.tagName === "IMG") e.preventDefault();
       }, { passive: false });
 
-      // draggable 속성도 같이 꺼두기
       document.querySelectorAll("img").forEach((img) => {
         img.setAttribute("draggable", "false");
       });
@@ -400,4 +400,3 @@
   </script>
 </body>
 </html>
-
