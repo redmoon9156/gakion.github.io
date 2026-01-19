@@ -229,6 +229,17 @@
       margin:0 0 12px;
     }
 
+    /* ✅ footer (추가) */
+    footer{
+      padding: 24px 0 34px;
+    }
+    .copyright{
+      text-align:center;
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
+
     /* Desktop layout */
     @media (min-width: 900px){
       nav.desktop{ display:flex; }
@@ -305,15 +316,16 @@
           <p>Nice to meet you.</p>
         </div>
 
-<footer>
-  <div class="wrap">
-    <div class="copyright">© Gakion Art. All rights reserved.</div>
-  </div>
-</footer>
-        
       </section>
     </div>
   </main>
+
+  <!-- ✅ footer는 main 밖(그냥 body 끝)에 위치해야 정상 동작합니다 -->
+  <footer>
+    <div class="wrap">
+      <div class="copyright">© Gakion Art. All rights reserved.</div>
+    </div>
+  </footer>
 
   <script>
     (function () {
