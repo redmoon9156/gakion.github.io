@@ -319,6 +319,17 @@
       stroke-linejoin: miter;
     }
 
+    /* ✅ Footer style (추가된 부분: 이것만 추가) */
+    footer{
+      padding: 24px 0 34px;
+    }
+    .copyright{
+      text-align: center;
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
+
     /* Desktop breakpoint */
     @media (min-width: 900px){
       :root{ --pad:22px; }
@@ -390,7 +401,7 @@
       <div class="copyright">© Gakion Art. All rights reserved.</div>
     </div>
   </footer>
-  
+
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lb-backdrop" id="lbBackdrop" aria-hidden="true"></div>
@@ -398,7 +409,6 @@
     <div class="lb-frame" role="dialog" aria-label="Image viewer">
       <button class="lb-arrow lb-prev" id="lbPrev" type="button" aria-label="Previous image">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <!-- ✅ 뾰족한 chevron -->
           <path d="M15 4 L7 12 L15 20" stroke="currentColor" fill="none"/>
         </svg>
       </button>
@@ -407,7 +417,6 @@
 
       <button class="lb-arrow lb-next" id="lbNext" type="button" aria-label="Next image">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <!-- ✅ 뾰족한 chevron -->
           <path d="M9 4 L17 12 L9 20" stroke="currentColor" fill="none"/>
         </svg>
       </button>
@@ -455,9 +464,8 @@
       const ext = "jpg"; // change to "png" if needed
       const basePath = "images/works/";
 
-      // We'll probe sequential files: Work_A1, Work_A2, ... until one fails to load.
       const images = [];
-      const MAX_PROBE = 60; // safe cap; extendable without code change for practical use
+      const MAX_PROBE = 60;
 
       function probe(i){
         return new Promise((resolve) => {
@@ -511,7 +519,6 @@
       function setLbImage(idx){
         current = idx;
         lbImg.src = images[current];
-        // Hide arrows if only 1 image
         const showArrows = images.length > 1;
         lbPrev.style.display = showArrows ? "flex" : "none";
         lbNext.style.display = showArrows ? "flex" : "none";
@@ -529,7 +536,6 @@
       function closeLightbox(){
         lightbox.classList.remove("open");
         lightbox.setAttribute("aria-hidden", "true");
-        // restore scroll only if menu isn't open
         if (body.dataset.menuOpen !== "true") body.style.overflow = "";
       }
 
@@ -556,7 +562,6 @@
         if (e.key === "ArrowRight") next();
       });
 
-      // Build the list now
       buildStack();
     })();
   </script>
