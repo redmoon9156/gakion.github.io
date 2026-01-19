@@ -20,6 +20,7 @@
       --pad:18px;
       --radius:14px;
       --line: rgba(0,0,0,.14); /* 임시 윤곽선 */
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
     }
 
     *{ box-sizing:border-box; }
@@ -60,6 +61,7 @@
       align-items:center;
       justify-content:space-between;
       padding:16px 0;
+      gap:14px;
     }
 
     .brand{
@@ -74,11 +76,119 @@
       gap:18px;
       font-size:13px;
       letter-spacing:.6px;
+      white-space:nowrap;
     }
 
     nav.desktop a{
       font-family:"Space Grotesk", sans-serif;
       font-weight:500;
+    }
+
+    /* Mobile menu button */
+    .menu-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .menu-icon{
+      width: 18px; height: 12px;
+      position: relative;
+    }
+    .menu-icon span{
+      position:absolute;
+      left:0; right:0;
+      height:1px;
+      background: rgba(0,0,0,.82);
+    }
+    .menu-icon span:nth-child(1){ top:0; }
+    .menu-icon span:nth-child(2){ top:5.5px; }
+    .menu-icon span:nth-child(3){ top:11px; }
+
+    /* Drawer overlay */
+    .drawer-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+      z-index: 1000;
+    }
+
+    /* Drawer */
+    .drawer{
+      position: fixed;
+      top: 0; right: 0;
+      height: 100%;
+      width: 50vw;
+      max-width: 50vw;
+      background: rgba(250,248,244,.96);
+      backdrop-filter: blur(10px);
+      border-left: 0;
+      transform: translateX(102%);
+      transition: transform .26s cubic-bezier(.2,.8,.2,1);
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
+      z-index: 1001;
+    }
+
+    .drawer-head{
+      padding: 18px 18px 10px;
+      border-bottom: 0;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-end;
+      min-height: 54px;
+    }
+
+    .drawer-close{
+      border: 0;
+      background: transparent;
+      border-radius: 0;
+      width: 42px; height: 42px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      color: #000;
+      font-size: 20.8px; /* 16px * 1.3 */
+      line-height: 1;
+      font-weight: 400;
+      padding: 0;
+    }
+
+    .drawer-nav{
+      padding: 8px 12px 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+
+    .drawer-nav a{
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 500;
+      padding: 14px 12px;
+      border-radius: 14px;
+      border: 0;
+      color: rgba(0,0,0,.86);
+    }
+    .drawer-nav a:hover{
+      background: rgba(0,0,0,.03);
+    }
+
+    body[data-menu-open="true"] .drawer-overlay{
+      opacity: 1;
+      pointer-events: auto;
+    }
+    body[data-menu-open="true"] .drawer{
+      transform: translateX(0);
     }
 
     /* CV layout */
@@ -122,6 +232,7 @@
     /* Desktop layout */
     @media (min-width: 900px){
       nav.desktop{ display:flex; }
+      .menu-btn{ display:none; }
 
       .cv-grid{
         grid-template-columns: 1fr 1.2fr;
@@ -132,6 +243,10 @@
       .cv-text{
         font-size:16px;
       }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition: none !important; scroll-behavior:auto !important; }
     }
   </style>
 </head>
@@ -149,9 +264,31 @@
           <a href="contact.html">Contact</a>
           <a href="shop.html">Shop</a>
         </nav>
+
+        <!-- Mobile hamburger -->
+        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
+          <div class="menu-icon" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </button>
       </div>
     </div>
   </header>
+
+  <!-- Mobile drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" hidden></div>
+  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
+    <div class="drawer-head">
+      <button class="drawer-close" type="button" id="menuCloseBtn" aria-label="Close menu">×</button>
+    </div>
+
+    <nav class="drawer-nav" aria-label="Primary (mobile)">
+      <a href="cv.html">CV</a>
+      <a href="works.html">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="shop.html">Shop</a>
+    </nav>
+  </aside>
 
   <main>
     <div class="wrap">
@@ -171,6 +308,47 @@
       </section>
     </div>
   </main>
+
+  <script>
+    (function () {
+      const body = document.body;
+      const openBtn = document.getElementById("menuOpenBtn");
+      const closeBtn = document.getElementById("menuCloseBtn");
+      const drawer = document.getElementById("drawer");
+      const overlay = document.getElementById("drawerOverlay");
+
+      function setOverlayHidden(isHidden){
+        overlay.hidden = isHidden;
+      }
+
+      function openMenu(){
+        body.dataset.menuOpen = "true";
+        openBtn.setAttribute("aria-expanded", "true");
+        drawer.setAttribute("aria-hidden", "false");
+        setOverlayHidden(false);
+        body.style.overflow = "hidden";
+      }
+
+      function closeMenu(){
+        body.dataset.menuOpen = "false";
+        openBtn.setAttribute("aria-expanded", "false");
+        drawer.setAttribute("aria-hidden", "true");
+        body.style.overflow = "";
+        window.setTimeout(() => setOverlayHidden(true), 180);
+      }
+
+      openBtn.addEventListener("click", openMenu);
+      closeBtn.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeMenu);
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
+      });
+
+      body.dataset.menuOpen = "false";
+      setOverlayHidden(true);
+    })();
+  </script>
 
 </body>
 </html>
