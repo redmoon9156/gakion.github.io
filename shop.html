@@ -211,7 +211,6 @@
       gap: 22px;
     }
 
-    /* 윤곽선/라운드 제거 */
     .shop-card{
       position: relative;
       display:block;
@@ -221,6 +220,7 @@
       background: transparent;
       -webkit-tap-highlight-color: transparent;
       cursor: pointer;
+      touch-action: manipulation; /* ✅ iOS에서 빠른 탭 처리 안정 */
     }
 
     .thumb{
@@ -245,7 +245,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Overlay */
     .overlay{
       position:absolute;
       inset:0;
@@ -256,7 +255,7 @@
       background: rgba(0,0,0,.50);
       opacity: 0;
       transition: opacity .18s ease;
-      pointer-events: none; /* 오버레이가 클릭을 먹지 않게 */
+      pointer-events: none;
     }
 
     .overlay .ov-text{
@@ -278,7 +277,7 @@
       margin-top: 8px;
     }
 
-    /* Hover/Focus (PC) */
+    /* PC hover/focus */
     .shop-card:hover .thumb img,
     .shop-card:focus-visible .thumb img{
       filter: blur(2.2px) brightness(.92);
@@ -289,7 +288,7 @@
       opacity: 1;
     }
 
-    /* ✅ Touch: first tap shows overlay, second tap follows link */
+    /* ✅ 모바일 1탭 활성화 상태 */
     .shop-card.is-active .thumb img{
       filter: blur(2.2px) brightness(.92);
       transform: scale(1.01);
@@ -429,43 +428,44 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ✅ Touch: first tap shows overlay, second tap follows link */
-      const cards = document.querySelectorAll(".shop-card");
+      /* ---------- Mobile: 1st tap = show overlay, 2nd tap = navigate ---------- */
+      const cards = Array.from(document.querySelectorAll(".shop-card"));
       const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
 
-      cards.forEach((card) => {
-        card.addEventListener("click", (e) => {
-          if (!isTouch) return; // PC는 바로 이동
+      function deactivateAll(){
+        cards.forEach(c => c.classList.remove("is-active"));
+      }
 
-          // 1) 첫 탭: 오버레이만 표시(이동 막기)
-          if (!card.classList.contains("is-active")) {
+      if (isTouch){
+        cards.forEach((card) => {
+          // ✅ iOS Safari 대응: click보다 touchstart에서 막아야 확실
+          card.addEventListener("touchstart", (e) => {
+            if (card.classList.contains("is-active")) {
+              // 두 번째 탭: 이동 허용 (여기서 preventDefault 하지 않음)
+              return;
+            }
+
+            // 첫 번째 탭: 오버레이만 띄우고 이동 차단
             e.preventDefault();
-
-            // 다른 카드 active 해제
-            cards.forEach(c => c.classList.remove("is-active"));
+            deactivateAll();
             card.classList.add("is-active");
+          }, { passive: false });
 
-            // 일정 시간 후 자동 해제(원하면 시간 조절 가능)
-            window.setTimeout(() => {
-              card.classList.remove("is-active");
-            }, 1800);
+          // 클릭(혹시 일부 기기에서 touchstart가 안 잡힐 때) 백업
+          card.addEventListener("click", (e) => {
+            if (card.classList.contains("is-active")) return; // 두 번째 클릭은 이동
+            e.preventDefault();
+            deactivateAll();
+            card.classList.add("is-active");
+          }, { passive: false });
+        });
 
-            return;
-          }
-
-          // 2) 두 번째 탭: 기본 동작(링크 이동) 허용
-          // (is-active 상태면 preventDefault 안 함)
-        }, { passive: false });
-      });
-
-      // 화면의 다른 곳을 누르면 오버레이 해제
-      document.addEventListener("touchstart", (e) => {
-        if (!isTouch) return;
-        const tappedCard = e.target.closest?.(".shop-card");
-        if (!tappedCard) {
-          cards.forEach(c => c.classList.remove("is-active"));
-        }
-      }, { passive: true });
+        // 카드 밖을 터치하면 오버레이 해제
+        document.addEventListener("touchstart", (e) => {
+          const tappedCard = e.target.closest?.(".shop-card");
+          if (!tappedCard) deactivateAll();
+        }, { passive: true });
+      }
 
       /* ---------- Make image copy annoying (right click / drag / select) ---------- */
       document.addEventListener("contextmenu", function (e) {
