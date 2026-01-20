@@ -36,7 +36,7 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
 
-      /* ✅ footer를 항상 맨 아래로 밀기 (CV/Works와 동일 목적) */
+      /* footer를 항상 맨 아래로 밀기 */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -57,9 +57,9 @@
 
     /* Header */
     header{
-      background: #ffffff; /* global header background = pure white */
-      position: relative; /* ensure stacking context */
-      z-index: 5;         /* keep header above normal content but below drawer */
+      background: #ffffff;
+      position: relative;
+      z-index: 5;
     }
 
     .topbar{
@@ -70,7 +70,6 @@
       padding: 16px 0;
     }
 
-    /* Gakion (Space Grotesk) */
     .brand{
       font-family: "Space Grotesk", sans-serif;
       font-size: 22.5px;
@@ -92,7 +91,6 @@
     nav.desktop a{
       font-family: "Space Grotesk", sans-serif;
       font-weight: 500;
-
       position:relative;
       padding: 8px 4px;
       color: rgba(0,0,0,.82);
@@ -175,7 +173,6 @@
       width: 42px; height: 42px;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
-
       color: #000;
       font-size: 20.8px;
       line-height: 1;
@@ -213,9 +210,27 @@
     /* Main */
     main{
       padding: 28px 0 60px;
-
-      /* ✅ footer를 아래로 밀기 */
       flex: 1;
+
+      /* ✅ 추가: 헤더~푸터 사이에서 위치를 비율로 조정 */
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ✅ 이미지 블록을 3/5 지점쯤으로 내리기 위한 레이아웃 */
+    .hero{
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    /* 위쪽 60% / 아래쪽 40% → 콘텐츠가 대략 3/5 지점으로 내려옴 */
+    .hero::before{
+      content:"";
+      flex: 3;
+    }
+    .hero::after{
+      content:"";
+      flex: 2;
     }
 
     .image-card{
@@ -226,7 +241,6 @@
       transform: translateZ(0);
     }
 
-    /* ✅ button 제거 후에도 기존과 동일하게 img 스타일 적용 */
     .image-card > img{
       width:100%;
       height:auto;
@@ -313,9 +327,10 @@
   </aside>
 
   <main>
-    <div class="wrap">
+    <!-- ✅ hero 클래스 추가 -->
+    <div class="wrap hero">
       <div class="image-card" aria-label="Home image">
-        <!-- 클릭 불가: button 제거 -->
+        <!-- 필요하면 캐시 무력화: ?v=숫자 -->
         <img src="images/home/Home_image.jpg" alt="Home image" loading="eager" />
       </div>
     </div>
@@ -353,9 +368,9 @@
         window.setTimeout(() => setOverlayHidden(true), 180);
       }
 
-      openBtn.addEventListener("click", openMenu);
-      closeBtn.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", closeMenu);
+      if (openBtn) openBtn.addEventListener("click", openMenu);
+      if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
 
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
