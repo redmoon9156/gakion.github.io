@@ -211,24 +211,22 @@
     .works-list{
       display:flex;
       flex-direction:column;
-      gap: 0; /* spacing handled by caption margin-bottom as requested */
+      gap: 0;
     }
 
-    /* (3) Big spacing: "enter 5 times" 느낌 */
     .work-item{
-      margin-bottom: 88px; /* 충분히 크게: 제목 아래 큰 공백 */
+      margin-bottom: 88px;
     }
 
-    /* Card contains ONLY the image with outline */
     .work-card{
       display:block;
-      border: 1px solid var(--line); /* temporary faint outline */
+      border: 1px solid var(--line);
       border-radius: var(--radius);
       overflow:hidden;
       background:#fff;
     }
 
-    /* (1) iPhone-like soft zoom on tap/click (image only) */
+    /* (1) iPhone-like soft zoom */
     .work-thumb{
       display:block;
       width:100%;
@@ -236,17 +234,22 @@
       transform: translateZ(0);
       transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
       -webkit-tap-highlight-color: transparent;
+
+      /* ✅ 복사/드래그/롱프레스 귀찮게 */
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-user-drag:none;
+      -webkit-touch-callout:none;
     }
     .work-card:active .work-thumb{
       transform: scale(1.02);
       filter: saturate(1.02);
     }
 
-    /* (2) Caption moved OUTSIDE border, centered & larger */
     .work-caption{
       margin-top: 14px;
-      font-size: 16px;           /* bigger */
-      text-align: center;        /* centered */
+      font-size: 16px;
+      text-align: center;
       letter-spacing: .3px;
       color: rgba(0,0,0,.86);
     }
@@ -270,23 +273,15 @@
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
 
-      main{
-        padding: 34px 0 90px;
-      }
+      main{ padding: 34px 0 90px; }
 
-      /* ✅ 데스크톱 타이틀도 동일 규칙 */
       .page-title{
         font-size: 32px;
         margin: 18px 0 26px;
       }
 
-      .work-item{
-        margin-bottom: 96px; /* desktop에서도 넉넉하게 */
-      }
-
-      .work-caption{
-        font-size: 17px;
-      }
+      .work-item{ margin-bottom: 96px; }
+      .work-caption{ font-size: 17px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -335,32 +330,27 @@
 
   <main>
     <div class="wrap">
-
-      <!-- ✅ 추가: Works 타이틀 -->
       <div class="page-title">Works</div>
 
       <section class="works-list" aria-label="Works list">
 
-        <!-- Work A -->
         <div class="work-item">
           <a class="work-card" href="work_A.html" aria-label="Open Work_A">
-            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work_A thumbnail" loading="lazy">
+            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work_A thumbnail" loading="lazy" draggable="false">
           </a>
           <div class="work-caption">Work_A</div>
         </div>
 
-        <!-- Work B -->
         <div class="work-item">
           <a class="work-card" href="work_b.html" aria-label="Open Work_B">
-            <img class="work-thumb" src="images/works/Work_B1.jpg" alt="Work_B thumbnail" loading="lazy">
+            <img class="work-thumb" src="images/works/Work_B1.jpg" alt="Work_B thumbnail" loading="lazy" draggable="false">
           </a>
           <div class="work-caption">Work_B</div>
         </div>
 
-        <!-- Work C -->
         <div class="work-item">
           <a class="work-card" href="work_c.html" aria-label="Open Work_C">
-            <img class="work-thumb" src="images/works/Work_C1.jpg" alt="Work_C thumbnail" loading="lazy">
+            <img class="work-thumb" src="images/works/Work_C1.jpg" alt="Work_C thumbnail" loading="lazy" draggable="false">
           </a>
           <div class="work-caption">Work_C</div>
         </div>
@@ -377,15 +367,14 @@
 
   <script>
     (function () {
+      /* ---------- Mobile drawer ---------- */
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
       const closeBtn = document.getElementById("menuCloseBtn");
       const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
 
-      function setOverlayHidden(isHidden){
-        overlay.hidden = isHidden;
-      }
+      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
 
       function openMenu(){
         body.dataset.menuOpen = "true";
@@ -413,6 +402,37 @@
 
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
+
+      /* ---------- Make image copy annoying ---------- */
+      // 우클릭(컨텍스트 메뉴) 막기: 이미지/카드 영역만
+      document.addEventListener("contextmenu", function (e) {
+        const t = e.target;
+        if (!t) return;
+        if (t.classList?.contains("work-thumb") || t.closest?.(".work-card")) {
+          e.preventDefault();
+        }
+      });
+
+      // 드래그 시작 막기: 이미지
+      document.addEventListener("dragstart", function (e) {
+        const t = e.target;
+        if (t && (t.tagName === "IMG" || t.classList?.contains("work-thumb"))) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // 이미지 선택 시작 막기(드래그로 선택/복사 귀찮게)
+      document.addEventListener("selectstart", function (e) {
+        const t = e.target;
+        if (t && (t.tagName === "IMG" || t.classList?.contains("work-thumb"))) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      // 안전하게 draggable 끄기
+      document.querySelectorAll(".work-thumb").forEach((img) => {
+        img.setAttribute("draggable", "false");
+      });
     })();
   </script>
 </body>
