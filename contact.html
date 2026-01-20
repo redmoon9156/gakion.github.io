@@ -38,6 +38,11 @@
       letter-spacing:.15px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+
+      /* ✅ footer를 항상 하단으로 보내기 */
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -47,6 +52,7 @@
       max-width:var(--max);
       margin:0 auto;
       padding:0 var(--pad);
+      width:100%;
     }
 
     /* Header */
@@ -188,6 +194,9 @@
     /* Main */
     main{
       padding: 30px 0 90px;
+
+      /* ✅ footer 하단 고정을 위한 핵심 */
+      flex: 1;
     }
 
     /* Contact layout */
@@ -197,7 +206,7 @@
       padding-top: 10px;
     }
 
-    /* ✅ CV/Works와 동일한 타이틀 */
+    /* Title */
     .page-title{
       font-family:"Space Grotesk", sans-serif;
       font-size: 28px;
@@ -261,9 +270,7 @@
       transform: translateY(0);
     }
 
-    .muted{
-      color: rgba(0,0,0,.64);
-    }
+    .muted{ color: rgba(0,0,0,.64); }
 
     .ig-icon{
       width: 18px;
@@ -271,11 +278,13 @@
       display:block;
     }
 
-    /* Footer */
+    /* Footer (Work_A처럼) */
     footer{
       padding: 24px 0 34px;
     }
     .copyright{
+      display:block;
+      width:100%;
       text-align:center;
       color: rgba(0,0,0,.56);
       font-size: 12.5px;
@@ -289,7 +298,6 @@
       .menu-btn{ display:none; }
       main{ padding: 40px 0 110px; }
 
-      /* ✅ CV/Works와 동일 (28→32, margin 동일) */
       .page-title{
         font-size: 32px;
         margin: 18px 0 26px;
