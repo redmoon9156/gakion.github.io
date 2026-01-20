@@ -38,6 +38,11 @@
       letter-spacing:.15px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
+
+      /* ✅ footer를 항상 맨 아래로 (index.html과 동일) */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -47,6 +52,7 @@
       max-width:var(--max);
       margin:0 auto;
       padding:0 var(--pad);
+      width: 100%;
     }
 
     /* Header */
@@ -189,6 +195,9 @@
     /* Main */
     main{
       padding: 26px 0 80px;
+
+      /* ✅ footer 하단 고정 핵심 */
+      flex: 1;
     }
 
     /* Title */
@@ -201,7 +210,7 @@
       text-align: center;
     }
 
-    /* ✅ Mobile: Works처럼 1개씩 “세로 리스트” 느낌 */
+    /* Mobile: 1 column */
     .shop-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -295,7 +304,7 @@
       letter-spacing: .2px;
     }
 
-    /* ✅ Desktop: max 3 per row + 가운데 정렬 */
+    /* Desktop */
     @media (min-width: 900px){
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
@@ -360,7 +369,6 @@
       <div class="page-title">Available Books</div>
 
       <section class="shop-grid" aria-label="Available books">
-        <!-- Work_A -->
         <a class="shop-card" href="shop_work_A.html" aria-label="Open Work_A">
           <div class="thumb">
             <img src="images/works/Work_A1.jpg" alt="Work_A cover" loading="lazy" draggable="false">
@@ -368,7 +376,6 @@
           <div class="overlay"><span>Work_A</span></div>
         </a>
 
-        <!-- Work_B -->
         <a class="shop-card" href="shop_work_B.html" aria-label="Open Work_B">
           <div class="thumb">
             <img src="images/works/Work_B1.jpg" alt="Work_B cover 1" loading="lazy" draggable="false">
@@ -376,7 +383,6 @@
           <div class="overlay"><span>Work_B</span></div>
         </a>
 
-        <!-- Work_C -->
         <a class="shop-card" href="shop_work_C.html" aria-label="Open Work_C">
           <div class="thumb">
             <img src="images/works/Work_C1.jpg" alt="Work_C cover" loading="lazy" draggable="false">
