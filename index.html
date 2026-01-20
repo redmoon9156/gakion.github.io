@@ -6,7 +6,7 @@
   <title>Gakion</title>
   <meta name="description" content="Gakion — portfolio and works." />
 
-  <!-- Space Grotesk (Google Fonts) -->
+  <!-- Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,275 +16,234 @@
       --bg:#ffffff;
       --fg:#111111;
       --muted:#666666;
-      --max: 1060px;
-      --pad: 18px;
-      --radius: 14px;
-      --shadow: 0 18px 50px rgba(0,0,0,.12);
+      --max:1060px;
+      --pad:18px;
+      --radius:14px;
+      --shadow:0 18px 50px rgba(0,0,0,.12);
     }
 
     *{ box-sizing:border-box; }
     html, body{ height:100%; }
+
     body{
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      font-family: Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system, "Segoe UI",
-                   Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
-      font-size: 14px;
-      line-height: 1.55;
-      letter-spacing: .15px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
+                   "Segoe UI", Roboto, "Apple SD Gothic Neo",
+                   "Noto Sans KR", "Malgun Gothic", sans-serif;
+      font-size:14px;
+      line-height:1.55;
+      letter-spacing:.15px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
 
-      /* footer를 항상 맨 아래로 밀기 */
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
 
     a{ color:inherit; text-decoration:none; }
-    a:focus-visible, button:focus-visible{
-      outline: 2px solid rgba(0,0,0,.35);
-      outline-offset: 3px;
-      border-radius: 8px;
-    }
 
     .wrap{
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--pad);
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--pad);
     }
 
     /* Header */
     header{
-      background: #ffffff;
-      position: relative;
-      z-index: 5;
+      background:#fff;
+      position:relative;
+      z-index:5;
     }
 
     .topbar{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 14px;
-      padding: 16px 0;
+      gap:14px;
+      padding:16px 0;
     }
 
     .brand{
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 22.5px;
-      font-weight: 700;
-      letter-spacing: .35px;
-      min-width: 160px;
-      line-height: 1.1;
+      font-family:"Space Grotesk", sans-serif;
+      font-size:22.5px;
+      font-weight:700;
+      letter-spacing:.35px;
+      min-width:160px;
+      line-height:1.1;
     }
 
-    /* Desktop nav */
     nav.desktop{
       display:none;
-      gap: 18px;
+      gap:18px;
       align-items:center;
-      font-size: 13px;
-      letter-spacing: .6px;
-      white-space: nowrap;
+      font-size:13px;
+      letter-spacing:.6px;
+      white-space:nowrap;
     }
     nav.desktop a{
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 500;
-      position:relative;
-      padding: 8px 4px;
-      color: rgba(0,0,0,.82);
+      font-family:"Space Grotesk", sans-serif;
+      font-weight:500;
+      padding:8px 4px;
+      color:rgba(0,0,0,.82);
     }
-    nav.desktop a:hover{
-      color: rgba(0,0,0,1);
-    }
+    nav.desktop a:hover{ color:#000; }
 
-    /* Mobile menu button */
     .menu-btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
+      width:42px;
+      height:42px;
+      border:0;
+      border-radius:12px;
+      background:transparent;
       cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
-    .menu-icon{
-      width: 18px; height: 12px;
-      position: relative;
-    }
+
+    .menu-icon{ width:18px; height:12px; position:relative; }
     .menu-icon span{
-      position:absolute;
-      left:0; right:0;
+      position:absolute; left:0; right:0;
       height:1px;
-      background: rgba(0,0,0,.82);
+      background:rgba(0,0,0,.82);
     }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* Drawer overlay */
+    /* Drawer */
     .drawer-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.32);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .22s ease;
-      z-index: 1000;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.32);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease;
+      z-index:1000;
     }
 
-    /* Drawer */
     .drawer{
-      position: fixed;
-      top: 0; right: 0;
-      height: 100%;
-      width: 50vw;
-      max-width: 50vw;
-      background: rgba(250,248,244,.96);
-      backdrop-filter: blur(10px);
-      border-left: 0;
-      transform: translateX(102%);
-      transition: transform .26s cubic-bezier(.2,.8,.2,1);
-      box-shadow: var(--shadow);
+      position:fixed;
+      top:0; right:0;
+      height:100%;
+      width:50vw;
+      max-width:50vw;
+      background:rgba(250,248,244,.96);
+      backdrop-filter:blur(10px);
+      transform:translateX(102%);
+      transition:transform .26s cubic-bezier(.2,.8,.2,1);
+      box-shadow:var(--shadow);
       display:flex;
       flex-direction:column;
-      z-index: 1001;
+      z-index:1001;
     }
 
     .drawer-head{
-      padding: 18px 18px 10px;
-      border-bottom: 0;
+      padding:18px 18px 10px;
       display:flex;
-      align-items:flex-start;
       justify-content:flex-end;
-      gap: 12px;
-      min-height: 54px;
+      min-height:54px;
     }
 
     .drawer-close{
-      border: 0;
-      background: transparent;
-      border-radius: 0;
-      width: 42px; height: 42px;
+      border:0;
+      background:transparent;
+      width:42px;
+      height:42px;
+      font-size:20px;
       cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      color: #000;
-      font-size: 20.8px;
-      line-height: 1;
-      font-weight: 400;
-      padding: 0;
     }
 
     .drawer-nav{
-      padding: 8px 12px 18px;
+      padding:8px 12px 18px;
       display:flex;
       flex-direction:column;
-      gap: 4px;
+      gap:4px;
     }
 
     .drawer-nav a{
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 500;
-      padding: 14px 12px;
-      border-radius: 14px;
-      border: 0;
-      color: rgba(0,0,0,.86);
-    }
-    .drawer-nav a:hover{
-      background: rgba(0,0,0,.03);
+      font-family:"Space Grotesk", sans-serif;
+      font-weight:500;
+      padding:14px 12px;
+      border-radius:14px;
+      color:rgba(0,0,0,.86);
     }
 
     body[data-menu-open="true"] .drawer-overlay{
-      opacity: 1;
-      pointer-events: auto;
+      opacity:1;
+      pointer-events:auto;
     }
     body[data-menu-open="true"] .drawer{
-      transform: translateX(0);
+      transform:translateX(0);
     }
 
     /* Main */
     main{
-      padding: 28px 0 60px;
-      flex: 1;
-
-      /* ✅ 추가: 헤더~푸터 사이에서 위치를 비율로 조정 */
-      display: flex;
-      flex-direction: column;
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      padding:28px 0 60px;
     }
 
-    /* ✅ 이미지 블록을 3/5 지점쯤으로 내리기 위한 레이아웃 */
+    /* ✅ 4/5 지점 배치 */
     .hero{
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+      flex:1;
+      display:flex;
+      flex-direction:column;
     }
-    /* 위쪽 60% / 아래쪽 40% → 콘텐츠가 대략 3/5 지점으로 내려옴 */
     .hero::before{
       content:"";
-      flex: 3;
+      flex:4;   /* 위쪽 80% */
     }
     .hero::after{
       content:"";
-      flex: 2;
+      flex:1;   /* 아래쪽 20% */
     }
 
     .image-card{
-      border: 1px solid rgba(0,0,0,.14);
-      border-radius: var(--radius);
+      border:1px solid rgba(0,0,0,.14);
+      border-radius:var(--radius);
       overflow:hidden;
-      background: #fff;
-      transform: translateZ(0);
+      background:#fff;
     }
 
-    .image-card > img{
+    .image-card img{
       width:100%;
       height:auto;
       display:block;
       object-fit:cover;
     }
 
-    /* Footer */
     footer{
-      padding: 18px 0 28px;
-      border-top: 0;
-      color: var(--muted);
-      font-size: 12px;
-      text-align: center;
+      padding:18px 0 28px;
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
     }
 
-    /* Desktop breakpoint */
-    @media (min-width: 900px){
-      :root{ --pad: 22px; }
+    @media (min-width:900px){
+      :root{ --pad:22px; }
 
       header{
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        backdrop-filter: blur(10px);
+        position:sticky;
+        top:0;
+        z-index:50;
+        backdrop-filter:blur(10px);
       }
 
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
 
-      main{ padding: 36px 0 80px; }
+      main{ padding:36px 0 80px; }
     }
 
-    @media (prefers-reduced-motion: reduce){
-      *{ transition: none !important; scroll-behavior:auto !important; }
-    }
-
-    /* ✅ 이미지 우클릭/드래그/롱프레스 억제 (완전 보안은 아님) */
     img{
-      -webkit-user-drag: none;
-      user-drag: none;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
+      -webkit-user-drag:none;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
   </style>
 </head>
@@ -293,17 +252,17 @@
   <header>
     <div class="wrap">
       <div class="topbar">
-        <a class="brand" href="index.html" aria-label="Go to Index">Gakion</a>
+        <a class="brand" href="index.html">Gakion</a>
 
-        <nav class="desktop" aria-label="Primary">
+        <nav class="desktop">
           <a href="cv.html">CV</a>
           <a href="works.html">Works</a>
           <a href="contact.html">Contact</a>
           <a href="shop.html">Shop</a>
         </nav>
 
-        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <div class="menu-icon" aria-hidden="true">
+        <button class="menu-btn" id="menuOpenBtn">
+          <div class="menu-icon">
             <span></span><span></span><span></span>
           </div>
         </button>
@@ -311,14 +270,12 @@
     </div>
   </header>
 
-  <!-- Mobile drawer -->
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
+  <aside class="drawer" id="drawer">
     <div class="drawer-head">
-      <button class="drawer-close" type="button" id="menuCloseBtn" aria-label="Close menu">×</button>
+      <button class="drawer-close" id="menuCloseBtn">×</button>
     </div>
-
-    <nav class="drawer-nav" aria-label="Primary (mobile)">
+    <nav class="drawer-nav">
       <a href="cv.html">CV</a>
       <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
@@ -327,11 +284,9 @@
   </aside>
 
   <main>
-    <!-- ✅ hero 클래스 추가 -->
     <div class="wrap hero">
-      <div class="image-card" aria-label="Home image">
-        <!-- 필요하면 캐시 무력화: ?v=숫자 -->
-        <img src="images/home/Home_image.jpg" alt="Home image" loading="eager" />
+      <div class="image-card">
+        <img src="images/home/Home_image.jpg" alt="Home image" />
       </div>
     </div>
   </main>
@@ -341,60 +296,27 @@
   </footer>
 
   <script>
-    (function () {
+    (function(){
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
       const closeBtn = document.getElementById("menuCloseBtn");
       const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
 
-      function setOverlayHidden(isHidden){
-        overlay.hidden = isHidden;
-      }
-
       function openMenu(){
         body.dataset.menuOpen = "true";
-        openBtn.setAttribute("aria-expanded", "true");
-        drawer.setAttribute("aria-hidden", "false");
-        setOverlayHidden(false);
+        overlay.hidden = false;
         body.style.overflow = "hidden";
       }
-
       function closeMenu(){
         body.dataset.menuOpen = "false";
-        openBtn.setAttribute("aria-expanded", "false");
-        drawer.setAttribute("aria-hidden", "true");
         body.style.overflow = "";
-        window.setTimeout(() => setOverlayHidden(true), 180);
+        setTimeout(()=>overlay.hidden=true,180);
       }
 
-      if (openBtn) openBtn.addEventListener("click", openMenu);
-      if (closeBtn) closeBtn.addEventListener("click", closeMenu);
-      if (overlay) overlay.addEventListener("click", closeMenu);
-
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
-      });
-
-      body.dataset.menuOpen = "false";
-      setOverlayHidden(true);
-    })();
-
-    /* 이미지 우클릭 저장/복사(컨텍스트 메뉴) & 드래그 방지 (완전 보안은 아님) */
-    (function () {
-      document.addEventListener("contextmenu", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      });
-
-      document.addEventListener("dragstart", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      }, { passive: false });
-
-      document.querySelectorAll("img").forEach((img) => {
-        img.setAttribute("draggable", "false");
-      });
+      openBtn.onclick = openMenu;
+      closeBtn.onclick = closeMenu;
+      overlay.onclick = closeMenu;
     })();
   </script>
 </body>
