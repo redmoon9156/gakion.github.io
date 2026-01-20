@@ -204,7 +204,7 @@
       text-align: center;
     }
 
-    /* ✅ 작품 1개: 가운데 정렬 */
+    /* 작품 1개: 가운데 정렬 */
     .shop-grid{
       display:grid;
       grid-template-columns: min(420px, 100%);
@@ -212,22 +212,23 @@
       gap: 22px;
     }
 
-    /* ✅ 윤곽선/라운드 제거 */
+    /* 윤곽선/라운드 제거 */
     .shop-card{
       position: relative;
       display:block;
-      border: 0;            /* outline 제거 */
-      border-radius: 0;     /* 라운드 제거 */
-      overflow: visible;    /* 라운드 잘림 방지 */
+      border: 0;
+      border-radius: 0;
+      overflow: visible;
       background: transparent;
       -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
     }
 
     .thumb{
       width:100%;
       aspect-ratio: 3 / 4;
-      overflow:hidden;      /* 이미지 프레임 */
-      border-radius: 0;     /* 라운드 제거 */
+      overflow:hidden;
+      border-radius: 0;
       background:#f5f5f5;
     }
 
@@ -245,7 +246,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Overlay */
+    /* Overlay (PC hover/focus에서만 표시) */
     .overlay{
       position:absolute;
       inset:0;
@@ -256,9 +257,9 @@
       background: rgba(0,0,0,.50);
       opacity: 0;
       transition: opacity .18s ease;
+      pointer-events: none; /* ✅ 오버레이가 클릭을 먹지 않게 */
     }
 
-    /* ✅ 3줄/가운데 정렬 */
     .overlay .ov-text{
       font-family:"Space Grotesk", sans-serif;
       text-align:center;
@@ -286,15 +287,6 @@
     }
     .shop-card:hover .overlay,
     .shop-card:focus-visible .overlay{
-      opacity: 1;
-    }
-
-    /* Touch: first tap shows overlay, second tap follows link */
-    .shop-card.is-active .thumb img{
-      filter: blur(2.2px) brightness(.92);
-      transform: scale(1.01);
-    }
-    .shop-card.is-active .overlay{
       opacity: 1;
     }
 
@@ -370,10 +362,9 @@
       <div class="page-title">Available Books</div>
 
       <section class="shop-grid" aria-label="Available books">
-        <!-- ✅ 작품 1개만 -->
         <a class="shop-card" href="shop_work_A.html" aria-label="Open Fox Dream">
           <div class="thumb">
-            <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="lazy" draggable="false">
+            <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="lazy" decoding="async" draggable="false">
           </div>
 
           <div class="overlay" aria-hidden="true">
@@ -429,25 +420,6 @@
 
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
-
-      /* ---------- Touch: first tap shows overlay, second tap follows link ---------- */
-      const cards = document.querySelectorAll(".shop-card");
-      cards.forEach((card) => {
-        card.addEventListener("click", (e) => {
-          const isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
-          if (!isTouch) return;
-
-          if (!card.classList.contains("is-active")) {
-            e.preventDefault();
-            cards.forEach(c => c.classList.remove("is-active"));
-            card.classList.add("is-active");
-
-            window.setTimeout(() => {
-              card.classList.remove("is-active");
-            }, 1400);
-          }
-        });
-      });
 
       /* ---------- Make image copy annoying (right click / drag / select) ---------- */
       document.addEventListener("contextmenu", function (e) {
