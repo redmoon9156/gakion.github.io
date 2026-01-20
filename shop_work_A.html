@@ -241,10 +241,11 @@
        Shop Work A (page-only)
        ========================= */
 
+    /* ✅ 임시윤곽선/라운드 제거: (클래스는 남겨도 무해하지만, 효과는 0으로) */
     .temp-outline{
-      border: 1px solid rgba(0,0,0,.22);
-      border-radius: var(--radius);
-      background: #fff;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
     }
 
     .shop-grid{
@@ -264,16 +265,19 @@
     .shop-media{
       overflow: hidden;
       padding: 0;
+      border-radius: 0;
     }
     .shop-media img{
       display:block;
       width: 100%;
       height: auto;
       object-fit: cover;
+      border-radius: 0;
     }
 
     .shop-info{
       padding: 16px;
+      border-radius: 0;
     }
 
     .shop-title{
@@ -356,18 +360,20 @@
   <main>
     <div class="wrap">
       <section class="shop-grid" aria-label="Shop Work A layout">
-        <div class="shop-media temp-outline" aria-label="Work A image">
-          <img src="images/works/Work_A1.jpg" alt="Work A — image 1" loading="eager" draggable="false" />
+        <div class="shop-media temp-outline" aria-label="Fox Dream image">
+          <!-- ✅ shop.html과 동일한 경로/파일명으로 변경 -->
+          <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="eager" draggable="false" />
         </div>
 
-        <div class="shop-info temp-outline" aria-label="Work A description">
-          <h1 class="shop-title">Work A</h1>
+        <div class="shop-info temp-outline" aria-label="Fox Dream description">
+          <h1 class="shop-title">Fox Dream</h1>
 
-          <p class="shop-desc">Work A
-Work A is fixture book.</p>
+          <p class="shop-desc">Fox Dream
+Fox Dream is picture book about a fox in the snow.</p>
 
+          <!-- ✅ 링크는 그대로 유지, 문구만 변경 -->
           <a class="shop-buy" href="https://example.com" target="_blank" rel="noopener">
-            Purchase to this work
+            Purchase to this link
           </a>
         </div>
       </section>
