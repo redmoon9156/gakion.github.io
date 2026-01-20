@@ -201,7 +201,7 @@
       font-weight: 700;
       letter-spacing: .2px;
       margin: 14px 0 22px;
-      text-align: center; /* ✅ (1) 가운데 정렬 */
+      text-align: center;
     }
 
     /* (1) Vertical list */
@@ -251,7 +251,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      padding: 10px; /* ✅ (2) 더 크게 보이도록 여백 줄임 */
+      padding: 10px;
       z-index: 2000;
     }
     .lightbox.open{ display:flex; }
@@ -265,23 +265,28 @@
 
     .lb-frame{
       position: relative;
-      width: min(98vw, 1400px); /* ✅ (2) 프레임 더 크게 */
-      max-height: 96vh;         /* ✅ (2) 더 크게 */
+      width: min(98vw, 1400px);
+      max-height: 96vh;
       z-index: 1;
       display:flex;
       align-items:center;
       justify-content:center;
+
+      /* ✅ arrows 영역 확보 (이미지 밖) */
+      padding: 0 72px;
     }
 
     .lb-img{
       max-width: 100%;
-      max-height: 96vh;         /* ✅ (2) 더 크게 */
+      max-height: 96vh;
       border-radius: 10px;
       box-shadow: var(--shadow);
       display:block;
+      user-select:none;
+      -webkit-user-drag:none;
     }
 
-    /* ✅ (2) arrows: 구글 이미지 검색 느낌(뾰족한 chevron) */
+    /* ✅ arrows: 이미지 밖 + 회색 + 가시성 */
     .lb-arrow{
       position:absolute;
       top: 50%;
@@ -289,17 +294,17 @@
       width: 56px;
       height: 56px;
       border: 0;
-      border-radius: 0;         /* 동그라미 제거 */
-      background: transparent;  /* 배경 제거 */
-      backdrop-filter: none;    /* 블러 제거 */
-      color: rgba(255,255,255,.95);
+      border-radius: 0;
+      background: transparent;
+      color: rgba(210,210,210,.95);
       cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
       -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, opacity .12s ease;
-      opacity: .9;
+      opacity: .95;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.55));
     }
     .lb-arrow:hover{
       opacity: 1;
@@ -309,8 +314,8 @@
       transform: translateY(-50%) scale(0.96);
     }
 
-    .lb-prev{ left: 10px; }    /* 화면 안쪽 */
-    .lb-next{ right: 10px; }
+    .lb-prev{ left: 12px; }
+    .lb-next{ right: 12px; }
 
     .lb-arrow svg{ width: 34px; height: 34px; }
     .lb-arrow svg path{
@@ -319,18 +324,23 @@
       stroke-linejoin: miter;
     }
 
-    /* ✅ Footer style (추가된 부분: 이것만 추가) */
+    /* ✅ 모바일에서 프레임 폭이 좁을 때도 화살표가 화면 밖으로 밀리지 않게 */
+    @media (max-width: 480px){
+      .lb-frame{ padding: 0 58px; }
+    }
+
+    /* ✅ Footer style */
     footer{
       padding: 24px 0 34px;
     }
-.copyright{
-  display:block;
-  width:100%;
-  text-align:center;
-  color: rgba(0,0,0,.56);
-  font-size: 12.5px;
-  letter-spacing: .2px;
-}
+    .copyright{
+      display:block;
+      width:100%;
+      text-align:center;
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
 
     /* Desktop breakpoint */
     @media (min-width: 900px){
@@ -360,7 +370,7 @@
           <a href="shop.html">Shop</a>
         </nav>
 
-        <!-- Mobile hamburger (4) -->
+        <!-- Mobile hamburger -->
         <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
           <div class="menu-icon" aria-hidden="true">
             <span></span><span></span><span></span>
@@ -386,15 +396,11 @@
 
   <main>
     <div class="wrap">
-
-      <!-- (3) Title -->
       <div class="work-title">Work_A</div>
 
-      <!-- (1) Image stack (auto-extends) -->
       <section class="img-stack" id="imgStack" data-prefix="Work_A" aria-label="Work_A images">
         <!-- JS will populate -->
       </section>
-
     </div>
   </main>
 
@@ -515,6 +521,7 @@
       const lbBackdrop = document.getElementById("lbBackdrop");
       const lbPrev = document.getElementById("lbPrev");
       const lbNext = document.getElementById("lbNext");
+      const lbFrame = document.querySelector(".lb-frame");
 
       let current = 0;
 
@@ -563,6 +570,64 @@
         if (e.key === "ArrowLeft") prev();
         if (e.key === "ArrowRight") next();
       });
+
+      /* ✅ (모바일) 양쪽 끝 탭으로 이전/다음 */
+      function edgeTapNavigate(e){
+        if (!lightbox.classList.contains("open")) return;
+        if (e.target === lbBackdrop) return;
+
+        // 화살표 버튼 클릭은 기존 핸들러가 처리
+        const t = e.target;
+        if (t === lbPrev || t === lbNext || t.closest?.(".lb-arrow")) return;
+
+        // 이미지 또는 프레임만 처리
+        if (!(t === lbImg || t === lbFrame)) return;
+
+        const rect = lbFrame.getBoundingClientRect();
+        const x = (e.clientX ?? (e.touches && e.touches[0]?.clientX)) - rect.left;
+        const ratio = x / rect.width;
+
+        // 좌측 25% / 우측 25%
+        if (ratio <= 0.25) prev();
+        else if (ratio >= 0.75) next();
+      }
+      if (lbFrame) lbFrame.addEventListener("click", edgeTapNavigate);
+
+      /* ✅ (모바일) 스와이프 이동 */
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchActive = false;
+
+      const SWIPE_MIN_X = 40;
+      const SWIPE_MAX_Y = 60;
+
+      function onTouchStart(e){
+        if (!lightbox.classList.contains("open")) return;
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchActive = true;
+      }
+
+      function onTouchEnd(e){
+        if (!touchActive) return;
+        touchActive = false;
+
+        const t = e.changedTouches[0];
+        const dx = t.clientX - touchStartX;
+        const dy = t.clientY - touchStartY;
+
+        if (Math.abs(dx) >= SWIPE_MIN_X && Math.abs(dy) <= SWIPE_MAX_Y){
+          if (dx < 0) next();  // 왼쪽으로 밀면 다음
+          else prev();         // 오른쪽으로 밀면 이전
+        }
+      }
+
+      // 이미지 위에서 스와이프 하는 것이 가장 자연스러움
+      if (lbImg){
+        lbImg.addEventListener("touchstart", onTouchStart, { passive: true });
+        lbImg.addEventListener("touchend", onTouchEnd, { passive: true });
+      }
 
       buildStack();
     })();
