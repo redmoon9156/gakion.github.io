@@ -234,12 +234,6 @@
       transform: translateZ(0);
       transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
       -webkit-tap-highlight-color: transparent;
-
-      /* ✅ 복사/드래그/롱프레스 귀찮게 */
-      user-select:none;
-      -webkit-user-select:none;
-      -webkit-user-drag:none;
-      -webkit-touch-callout:none;
     }
     .work-card:active .work-thumb{
       transform: scale(1.02);
@@ -286,6 +280,15 @@
 
     @media (prefers-reduced-motion: reduce){
       *{ transition:none !important; scroll-behavior:auto !important; }
+    }
+
+    /* ✅ index.html과 동일: 이미지 우클릭/드래그/롱프레스 억제 (완전 보안은 아님) */
+    img{
+      -webkit-user-drag: none;
+      user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
     }
   </style>
 </head>
@@ -374,7 +377,9 @@
       const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
 
-      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+      function setOverlayHidden(isHidden){
+        overlay.hidden = isHidden;
+      }
 
       function openMenu(){
         body.dataset.menuOpen = "true";
@@ -402,35 +407,21 @@
 
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
+    })();
 
-      /* ---------- Make image copy annoying ---------- */
-      // 우클릭(컨텍스트 메뉴) 막기: 이미지/카드 영역만
+    /* ✅ index.html과 동일하게: 이미지 우클릭/드래그 방지 (완전 보안은 아님) */
+    (function () {
       document.addEventListener("contextmenu", function (e) {
         const t = e.target;
-        if (!t) return;
-        if (t.classList?.contains("work-thumb") || t.closest?.(".work-card")) {
-          e.preventDefault();
-        }
+        if (t && t.tagName === "IMG") e.preventDefault();
       });
 
-      // 드래그 시작 막기: 이미지
       document.addEventListener("dragstart", function (e) {
         const t = e.target;
-        if (t && (t.tagName === "IMG" || t.classList?.contains("work-thumb"))) {
-          e.preventDefault();
-        }
+        if (t && t.tagName === "IMG") e.preventDefault();
       }, { passive: false });
 
-      // 이미지 선택 시작 막기(드래그로 선택/복사 귀찮게)
-      document.addEventListener("selectstart", function (e) {
-        const t = e.target;
-        if (t && (t.tagName === "IMG" || t.classList?.contains("work-thumb"))) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      // 안전하게 draggable 끄기
-      document.querySelectorAll(".work-thumb").forEach((img) => {
+      document.querySelectorAll("img").forEach((img) => {
         img.setAttribute("draggable", "false");
       });
     })();
