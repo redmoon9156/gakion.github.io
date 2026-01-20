@@ -37,7 +37,6 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
 
-      /* footer 항상 맨 아래 */
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -192,7 +191,7 @@
     /* Main */
     main{
       padding: 26px 0 80px;
-      flex: 1; /* footer 하단 유지 */
+      flex: 1;
     }
 
     .page-title{
@@ -246,7 +245,7 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Overlay (PC hover/focus에서만 표시) */
+    /* Overlay */
     .overlay{
       position:absolute;
       inset:0;
@@ -257,7 +256,7 @@
       background: rgba(0,0,0,.50);
       opacity: 0;
       transition: opacity .18s ease;
-      pointer-events: none; /* ✅ 오버레이가 클릭을 먹지 않게 */
+      pointer-events: none; /* 오버레이가 클릭을 먹지 않게 */
     }
 
     .overlay .ov-text{
@@ -287,6 +286,15 @@
     }
     .shop-card:hover .overlay,
     .shop-card:focus-visible .overlay{
+      opacity: 1;
+    }
+
+    /* ✅ Touch: first tap shows overlay, second tap follows link */
+    .shop-card.is-active .thumb img{
+      filter: blur(2.2px) brightness(.92);
+      transform: scale(1.01);
+    }
+    .shop-card.is-active .overlay{
       opacity: 1;
     }
 
@@ -420,6 +428,44 @@
 
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
+
+      /* ✅ Touch: first tap shows overlay, second tap follows link */
+      const cards = document.querySelectorAll(".shop-card");
+      const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
+
+      cards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (!isTouch) return; // PC는 바로 이동
+
+          // 1) 첫 탭: 오버레이만 표시(이동 막기)
+          if (!card.classList.contains("is-active")) {
+            e.preventDefault();
+
+            // 다른 카드 active 해제
+            cards.forEach(c => c.classList.remove("is-active"));
+            card.classList.add("is-active");
+
+            // 일정 시간 후 자동 해제(원하면 시간 조절 가능)
+            window.setTimeout(() => {
+              card.classList.remove("is-active");
+            }, 1800);
+
+            return;
+          }
+
+          // 2) 두 번째 탭: 기본 동작(링크 이동) 허용
+          // (is-active 상태면 preventDefault 안 함)
+        }, { passive: false });
+      });
+
+      // 화면의 다른 곳을 누르면 오버레이 해제
+      document.addEventListener("touchstart", (e) => {
+        if (!isTouch) return;
+        const tappedCard = e.target.closest?.(".shop-card");
+        if (!tappedCard) {
+          cards.forEach(c => c.classList.remove("is-active"));
+        }
+      }, { passive: true });
 
       /* ---------- Make image copy annoying (right click / drag / select) ---------- */
       document.addEventListener("contextmenu", function (e) {
