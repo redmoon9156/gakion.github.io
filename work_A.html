@@ -20,7 +20,7 @@
       --pad:18px;
       --radius:14px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-      --line: rgba(0,0,0,.14); /* optional faint outline for images (kept subtle) */
+      --line: rgba(0,0,0,.14);
     }
 
     *{ box-sizing:border-box; }
@@ -49,7 +49,7 @@
       padding:0 var(--pad);
     }
 
-    /* Header (match index style, with mobile hamburger) */
+    /* Header */
     header{
       background:#ffffff;
       position: sticky;
@@ -104,13 +104,9 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
     }
-    .menu-icon{
-      width: 18px; height: 12px;
-      position: relative;
-    }
+    .menu-icon{ width: 18px; height: 12px; position: relative; }
     .menu-icon span{
-      position:absolute;
-      left:0; right:0;
+      position:absolute; left:0; right:0;
       height:1px;
       background: rgba(0,0,0,.82);
     }
@@ -118,7 +114,7 @@
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* Drawer overlay + drawer (same as fixed mobile behavior) */
+    /* Drawer */
     .drawer-overlay{
       position: fixed;
       inset: 0;
@@ -146,7 +142,6 @@
     }
     .drawer-head{
       padding: 18px 18px 10px;
-      border-bottom: 0;
       display:flex;
       align-items:flex-start;
       justify-content:flex-end;
@@ -160,7 +155,7 @@
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       color: #000;
-      font-size: 20.8px; /* 16px * 1.3 */
+      font-size: 20.8px;
       line-height: 1;
       font-weight: 400;
       padding: 0;
@@ -176,7 +171,6 @@
       font-weight:500;
       padding: 14px 12px;
       border-radius: 14px;
-      border: 0;
       color: rgba(0,0,0,.86);
     }
     .drawer-nav a:hover{ background: rgba(0,0,0,.03); }
@@ -189,12 +183,9 @@
       transform: translateX(0);
     }
 
-    /* Main content */
-    main{
-      padding: 24px 0 90px;
-    }
+    /* Main */
+    main{ padding: 24px 0 90px; }
 
-    /* (3) Title */
     .work-title{
       font-family:"Space Grotesk", sans-serif;
       font-size: 28px;
@@ -204,7 +195,6 @@
       text-align: center;
     }
 
-    /* (1) Vertical list */
     .img-stack{
       display:flex;
       flex-direction:column;
@@ -238,7 +228,6 @@
       transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
     }
 
-    /* iOS-like press */
     .img-btn:active img{
       transform: scale(1.02);
       filter: saturate(1.02);
@@ -272,7 +261,7 @@
       align-items:center;
       justify-content:center;
 
-      /* ✅ arrows 영역 확보 (이미지 밖) */
+      /* PC에서 화살표 공간(이미지 밖) */
       padding: 0 72px;
     }
 
@@ -282,11 +271,16 @@
       border-radius: 10px;
       box-shadow: var(--shadow);
       display:block;
+
+      /* 복사/드래그/롱프레스 귀찮게 */
       user-select:none;
+      -webkit-user-select:none;
       -webkit-user-drag:none;
+      -webkit-touch-callout: none;
+      pointer-events: auto;
     }
 
-    /* ✅ arrows: 이미지 밖 + 회색 + 가시성 */
+    /* PC 화살표(이미지 밖 + 회색) */
     .lb-arrow{
       position:absolute;
       top: 50%;
@@ -313,10 +307,8 @@
     .lb-arrow:active{
       transform: translateY(-50%) scale(0.96);
     }
-
     .lb-prev{ left: 12px; }
     .lb-next{ right: 12px; }
-
     .lb-arrow svg{ width: 34px; height: 34px; }
     .lb-arrow svg path{
       stroke-width: 3.2;
@@ -324,15 +316,14 @@
       stroke-linejoin: miter;
     }
 
-    /* ✅ 모바일에서 프레임 폭이 좁을 때도 화살표가 화면 밖으로 밀리지 않게 */
-    @media (max-width: 480px){
-      .lb-frame{ padding: 0 58px; }
+    /* ✅ 모바일: 화살표 완전 제거 + 프레임 패딩 제거 (요청사항) */
+    @media (max-width: 899px){
+      .lb-arrow{ display:none !important; }
+      .lb-frame{ padding: 0; } /* 화살표 영역 불필요 */
     }
 
-    /* ✅ Footer style */
-    footer{
-      padding: 24px 0 34px;
-    }
+    /* Footer */
+    footer{ padding: 24px 0 34px; }
     .copyright{
       display:block;
       width:100%;
@@ -354,6 +345,15 @@
     @media (prefers-reduced-motion: reduce){
       *{ transition:none !important; }
     }
+
+    /* ✅ (추가) 썸네일도 복사 귀찮게 */
+    img{
+      -webkit-user-drag: none;
+      user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
   </style>
 </head>
 
@@ -370,7 +370,6 @@
           <a href="shop.html">Shop</a>
         </nav>
 
-        <!-- Mobile hamburger -->
         <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
           <div class="menu-icon" aria-hidden="true">
             <span></span><span></span><span></span>
@@ -414,7 +413,8 @@
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lb-backdrop" id="lbBackdrop" aria-hidden="true"></div>
 
-    <div class="lb-frame" role="dialog" aria-label="Image viewer">
+    <div class="lb-frame" id="lbFrame" role="dialog" aria-label="Image viewer">
+      <!-- PC에서만 보이게(모바일은 CSS로 숨김) -->
       <button class="lb-arrow lb-prev" id="lbPrev" type="button" aria-label="Previous image">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M15 4 L7 12 L15 20" stroke="currentColor" fill="none"/>
@@ -433,8 +433,9 @@
 
   <script>
     (function () {
-      /* ---------- Mobile drawer ---------- */
       const body = document.body;
+
+      /* ---------- Mobile drawer ---------- */
       const openBtn = document.getElementById("menuOpenBtn");
       const closeBtn = document.getElementById("menuCloseBtn");
       const drawer = document.getElementById("drawer");
@@ -469,7 +470,7 @@
       /* ---------- Work_A image auto population ---------- */
       const stack = document.getElementById("imgStack");
       const prefix = stack?.dataset.prefix || "Work_A";
-      const ext = "jpg"; // change to "png" if needed
+      const ext = "jpg";
       const basePath = "images/works/";
 
       const images = [];
@@ -489,9 +490,8 @@
         if (!stack) return;
         for (let i = 1; i <= MAX_PROBE; i++){
           const res = await probe(i);
-          if (!res.ok){
-            break;
-          }
+          if (!res.ok) break;
+
           images.push(res.url);
 
           const card = document.createElement("div");
@@ -506,6 +506,7 @@
           im.src = res.url;
           im.alt = `${prefix} image ${i}`;
           im.loading = "lazy";
+          im.draggable = false;
 
           btn.appendChild(im);
           card.appendChild(btn);
@@ -521,14 +522,20 @@
       const lbBackdrop = document.getElementById("lbBackdrop");
       const lbPrev = document.getElementById("lbPrev");
       const lbNext = document.getElementById("lbNext");
-      const lbFrame = document.querySelector(".lb-frame");
+      const lbFrame = document.getElementById("lbFrame");
 
       let current = 0;
+
+      function isMobile(){
+        return window.matchMedia("(max-width: 899px)").matches;
+      }
 
       function setLbImage(idx){
         current = idx;
         lbImg.src = images[current];
-        const showArrows = images.length > 1;
+
+        // PC: 화살표 표시 / Mobile: CSS에서 숨김이지만, 안전하게 여기서도 off 처리
+        const showArrows = images.length > 1 && !isMobile();
         lbPrev.style.display = showArrows ? "flex" : "none";
         lbNext.style.display = showArrows ? "flex" : "none";
       }
@@ -536,7 +543,6 @@
       function openLightbox(idx){
         if (!images.length) return;
         setLbImage(idx);
-
         lightbox.classList.add("open");
         lightbox.setAttribute("aria-hidden", "false");
         body.style.overflow = "hidden";
@@ -550,14 +556,12 @@
 
       function prev(){
         if (images.length < 2) return;
-        const nextIdx = (current - 1 + images.length) % images.length;
-        setLbImage(nextIdx);
+        setLbImage((current - 1 + images.length) % images.length);
       }
 
       function next(){
         if (images.length < 2) return;
-        const nextIdx = (current + 1) % images.length;
-        setLbImage(nextIdx);
+        setLbImage((current + 1) % images.length);
       }
 
       if (lbBackdrop) lbBackdrop.addEventListener("click", closeLightbox);
@@ -571,20 +575,20 @@
         if (e.key === "ArrowRight") next();
       });
 
-      /* ✅ (모바일) 양쪽 끝 탭으로 이전/다음 */
+      /* ✅ (모바일 포함) 좌/우측 영역 탭으로 이전/다음 */
       function edgeTapNavigate(e){
         if (!lightbox.classList.contains("open")) return;
         if (e.target === lbBackdrop) return;
 
-        // 화살표 버튼 클릭은 기존 핸들러가 처리
+        // PC 화살표는 기존 핸들러가 처리
         const t = e.target;
         if (t === lbPrev || t === lbNext || t.closest?.(".lb-arrow")) return;
 
-        // 이미지 또는 프레임만 처리
+        // 프레임/이미지에서만 동작
         if (!(t === lbImg || t === lbFrame)) return;
 
         const rect = lbFrame.getBoundingClientRect();
-        const x = (e.clientX ?? (e.touches && e.touches[0]?.clientX)) - rect.left;
+        const x = e.clientX - rect.left;
         const ratio = x / rect.width;
 
         // 좌측 25% / 우측 25%
@@ -593,7 +597,7 @@
       }
       if (lbFrame) lbFrame.addEventListener("click", edgeTapNavigate);
 
-      /* ✅ (모바일) 스와이프 이동 */
+      /* ✅ (모바일) 스와이프(밀기)로 이전/다음 */
       let touchStartX = 0;
       let touchStartY = 0;
       let touchActive = false;
@@ -617,17 +621,43 @@
         const dx = t.clientX - touchStartX;
         const dy = t.clientY - touchStartY;
 
+        // 수평 스와이프만 인정(세로 스크롤 방해 최소화)
         if (Math.abs(dx) >= SWIPE_MIN_X && Math.abs(dy) <= SWIPE_MAX_Y){
           if (dx < 0) next();  // 왼쪽으로 밀면 다음
           else prev();         // 오른쪽으로 밀면 이전
         }
       }
 
-      // 이미지 위에서 스와이프 하는 것이 가장 자연스러움
+      // lbImg 위에서 스와이프가 가장 자연스럽지만,
+      // 어떤 기기에서 이미지가 이벤트를 먹지 않는 경우를 대비해 프레임에도 함께 걸어둠
       if (lbImg){
         lbImg.addEventListener("touchstart", onTouchStart, { passive: true });
         lbImg.addEventListener("touchend", onTouchEnd, { passive: true });
       }
+      if (lbFrame){
+        lbFrame.addEventListener("touchstart", onTouchStart, { passive: true });
+        lbFrame.addEventListener("touchend", onTouchEnd, { passive: true });
+      }
+
+      /* ✅ 복사/저장 “귀찮게” 만들기: 우클릭/드래그 막기 (완전 방지 아님) */
+      document.addEventListener("contextmenu", function (e) {
+        const t = e.target;
+        if (!t) return;
+        if (t.tagName === "IMG" || t.closest?.(".img-card") || t === lbImg) {
+          e.preventDefault();
+        }
+      });
+
+      document.addEventListener("dragstart", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") e.preventDefault();
+      }, { passive: false });
+
+      // 이미지 선택 복사도 귀찮게
+      document.addEventListener("selectstart", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") e.preventDefault();
+      }, { passive: false });
 
       buildStack();
     })();
