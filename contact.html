@@ -194,8 +194,6 @@
     /* Main */
     main{
       padding: 30px 0 90px;
-
-      /* ✅ footer 하단 고정을 위한 핵심 */
       flex: 1;
     }
 
@@ -216,9 +214,10 @@
       text-align: center;
     }
 
+    /* ✅ 윤곽선 유지 + 라운드 제거 */
     .contact-card{
       border: 1px solid rgba(0,0,0,.12);
-      border-radius: 16px;
+      border-radius: 0;   /* 라운드 제거 */
       padding: 18px;
       background: #fff;
     }
@@ -256,7 +255,7 @@
       align-items:center;
       gap: 10px;
       padding: 10px 0;
-      border-radius: 12px;
+      border-radius: 0;     /* 라운드 제거 */
       border: 0;
       background: transparent;
       transition: opacity .12s ease, transform .12s ease;
@@ -278,7 +277,7 @@
       display:block;
     }
 
-    /* Footer (Work_A처럼) */
+    /* Footer */
     footer{
       padding: 24px 0 34px;
     }
