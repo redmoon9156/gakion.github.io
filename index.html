@@ -125,7 +125,7 @@
       z-index:1000;
     }
 
-    /* Drawer (원상복구: 너비/배경/블러/그림자/세로 메뉴) */
+    /* Drawer */
     .drawer{
       position:fixed;
       top:0; right:0;
@@ -244,6 +244,7 @@
       main{ padding:36px 0 80px; }
     }
 
+    /* ✅ 기본 드래그/롱프레스 억제 */
     img{
       -webkit-user-drag:none;
       user-select:none;
@@ -293,7 +294,7 @@
   <main>
     <div class="wrap hero">
       <div class="image-card" aria-label="Home image">
-        <img src="images/home/Home_image.jpg" alt="Home image" loading="eager" />
+        <img src="images/home/Home_image.jpg" alt="Home image" loading="eager" draggable="false" />
       </div>
     </div>
   </main>
@@ -319,7 +320,7 @@
         openBtn.setAttribute("aria-expanded", "true");
         drawer.setAttribute("aria-hidden", "false");
         setOverlayHidden(false);
-        body.style.overflow = "hidden"; /* ✅ 원상복구: 메뉴 열릴 때 스크롤 잠금 */
+        body.style.overflow = "hidden";
       }
 
       function closeMenu(){
@@ -340,6 +341,35 @@
 
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
+    })();
+
+    /* ✅ 이미지 우클릭/드래그/선택 “귀찮게” 만들기 (완전 방지 아님) */
+    (function () {
+      // 우클릭 메뉴 차단
+      document.addEventListener("contextmenu", function (e) {
+        const t = e.target;
+        if (!t) return;
+        if (t.tagName === "IMG" || t.closest?.(".image-card")) {
+          e.preventDefault();
+        }
+      });
+
+      // 드래그 방지
+      document.addEventListener("dragstart", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") e.preventDefault();
+      }, { passive: false });
+
+      // 선택(드래그 하이라이트) 방지
+      document.addEventListener("selectstart", function (e) {
+        const t = e.target;
+        if (t && t.tagName === "IMG") e.preventDefault();
+      }, { passive: false });
+
+      // 혹시 모를 브라우저 대비
+      document.querySelectorAll("img").forEach((img) => {
+        img.setAttribute("draggable", "false");
+      });
     })();
   </script>
 </body>
