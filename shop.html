@@ -205,7 +205,7 @@
     .shop-grid{
       display:grid;
       grid-template-columns: 1fr;
-      gap: 22px;                 /* Works처럼 간격 넉넉히 */
+      gap: 22px;
     }
 
     .shop-card{
@@ -231,6 +231,13 @@
       object-fit: cover;
       display:block;
       transition: filter .18s ease, transform .18s ease;
+
+      /* ✅ 복사/드래그/롱프레스 귀찮게 */
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-user-drag:none;
+      -webkit-touch-callout:none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     /* Overlay */
@@ -298,8 +305,8 @@
       .page-title{ font-size: 32px; margin: 18px 0 26px; }
 
       .shop-grid{
-        grid-template-columns: repeat(3, minmax(0, 320px)); /* 카드 폭을 제한 */
-        justify-content: center;                             /* ✅ 그리드 자체를 중앙으로 */
+        grid-template-columns: repeat(3, minmax(0, 320px));
+        justify-content: center;
         gap: 16px;
       }
 
@@ -322,7 +329,7 @@
           <a href="cv.html">CV</a>
           <a href="works.html">Works</a>
           <a href="contact.html">Contact</a>
-          <a href="shop.html">Shop</a>
+          <a href="shop.html" aria-current="page">Shop</a>
         </nav>
 
         <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
@@ -344,7 +351,7 @@
       <a href="cv.html">CV</a>
       <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
-      <a href="shop.html">Shop</a>
+      <a href="shop.html" aria-current="page">Shop</a>
     </nav>
   </aside>
 
@@ -356,7 +363,7 @@
         <!-- Work_A -->
         <a class="shop-card" href="shop_work_A.html" aria-label="Open Work_A">
           <div class="thumb">
-            <img src="images/works/Work_A1.jpg" alt="Work_A cover" loading="lazy">
+            <img src="images/works/Work_A1.jpg" alt="Work_A cover" loading="lazy" draggable="false">
           </div>
           <div class="overlay"><span>Work_A</span></div>
         </a>
@@ -364,7 +371,7 @@
         <!-- Work_B -->
         <a class="shop-card" href="shop_work_B.html" aria-label="Open Work_B">
           <div class="thumb">
-            <img src="images/works/Work_B1.jpg" alt="Work_B cover 1" loading="lazy">
+            <img src="images/works/Work_B1.jpg" alt="Work_B cover 1" loading="lazy" draggable="false">
           </div>
           <div class="overlay"><span>Work_B</span></div>
         </a>
@@ -372,11 +379,7 @@
         <!-- Work_C -->
         <a class="shop-card" href="shop_work_C.html" aria-label="Open Work_C">
           <div class="thumb">
-            <img
-              src="images/works/Work_C1.jpg"
-              alt="Work_C cover"
-              loading="lazy"
-            >
+            <img src="images/works/Work_C1.jpg" alt="Work_C cover" loading="lazy" draggable="false">
           </div>
           <div class="overlay"><span>Work_C</span></div>
         </a>
@@ -435,7 +438,6 @@
 
           if (!card.classList.contains("is-active")) {
             e.preventDefault();
-
             cards.forEach(c => c.classList.remove("is-active"));
             card.classList.add("is-active");
 
@@ -444,6 +446,33 @@
             }, 1400);
           }
         });
+      });
+
+      /* ---------- Make image copy annoying (right click / drag / select) ---------- */
+      document.addEventListener("contextmenu", function (e) {
+        const t = e.target;
+        if (!t) return;
+        if (t.tagName === "IMG" || t.closest?.(".shop-card") || t.closest?.(".thumb")) {
+          e.preventDefault();
+        }
+      });
+
+      document.addEventListener("dragstart", function (e) {
+        const t = e.target;
+        if (t && (t.tagName === "IMG" || t.closest?.(".shop-card"))) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      document.addEventListener("selectstart", function (e) {
+        const t = e.target;
+        if (t && (t.tagName === "IMG" || t.closest?.(".shop-card"))) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      document.querySelectorAll(".thumb img").forEach((img) => {
+        img.setAttribute("draggable", "false");
       });
     })();
   </script>
