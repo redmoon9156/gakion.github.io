@@ -18,6 +18,7 @@
       --muted:#666666;
       --max:1060px;
       --pad:18px;
+      --shadow: 0 18px 50px rgba(0,0,0,.12);
     }
 
     *{ box-sizing:border-box; }
@@ -40,6 +41,7 @@
     }
 
     a{ color:inherit; text-decoration:none; }
+    button{ font: inherit; }
 
     .wrap{
       max-width:var(--max);
@@ -77,6 +79,7 @@
       align-items:center;
       font-size:13px;
       letter-spacing:.6px;
+      white-space:nowrap;
     }
     nav.desktop a{
       font-family:"Space Grotesk", sans-serif;
@@ -84,13 +87,21 @@
       padding:8px 4px;
       color:rgba(0,0,0,.82);
     }
+    nav.desktop a:hover{ color:rgba(0,0,0,1); }
 
+    /* Mobile menu button */
     .menu-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
       width:42px;
       height:42px;
       border:0;
+      border-radius:12px;
       background:transparent;
       cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .menu-icon{ width:18px; height:12px; position:relative; }
@@ -103,7 +114,7 @@
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* Drawer */
+    /* Drawer overlay */
     .drawer-overlay{
       position:fixed;
       inset:0;
@@ -114,16 +125,61 @@
       z-index:1000;
     }
 
+    /* Drawer (원상복구: 너비/배경/블러/그림자/세로 메뉴) */
     .drawer{
       position:fixed;
       top:0; right:0;
       height:100%;
       width:50vw;
-      background:rgba(250,248,244,.96);
-      transform:translateX(102%);
-      transition:transform .26s cubic-bezier(.2,.8,.2,1);
+      max-width:50vw;
+      background: rgba(250,248,244,.96);
+      backdrop-filter: blur(10px);
+      transform: translateX(102%);
+      transition: transform .26s cubic-bezier(.2,.8,.2,1);
+      box-shadow: var(--shadow);
+      display:flex;
+      flex-direction:column;
       z-index:1001;
     }
+
+    .drawer-head{
+      padding:18px 18px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-end;
+      min-height:54px;
+    }
+
+    .drawer-close{
+      border:0;
+      background:transparent;
+      border-radius:0;
+      width:42px;
+      height:42px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      color:#000;
+      font-size:20.8px;
+      line-height:1;
+      font-weight:400;
+      padding:0;
+    }
+
+    .drawer-nav{
+      padding:8px 12px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .drawer-nav a{
+      font-family:"Space Grotesk", sans-serif;
+      font-weight:500;
+      padding:14px 12px;
+      border-radius:14px;
+      color:rgba(0,0,0,.86);
+    }
+    .drawer-nav a:hover{ background: rgba(0,0,0,.03); }
 
     body[data-menu-open="true"] .drawer-overlay{
       opacity:1;
@@ -141,24 +197,18 @@
       padding:28px 0 60px;
     }
 
-    /* ✅ 이미지 위치: 2/5 지점 */
+    /* 이미지 위치: 2/5 지점 */
     .hero{
       flex:1;
       display:flex;
       flex-direction:column;
     }
-    .hero::before{
-      content:"";
-      flex:2;   /* 위쪽 40% */
-    }
-    .hero::after{
-      content:"";
-      flex:3;   /* 아래쪽 60% */
-    }
+    .hero::before{ content:""; flex:2; } /* 위 40% */
+    .hero::after{ content:""; flex:3; }  /* 아래 60% */
 
-    /* ✅ 윤곽선 제거 + 원본 유지 */
+    /* 윤곽선/라운드 제거 + 원본 유지 */
     .image-card{
-      border:0;              /* 윤곽선 제거 */
+      border:0;
       border-radius:0;
       overflow:visible;
       background:transparent;
@@ -185,6 +235,7 @@
         position:sticky;
         top:0;
         z-index:50;
+        backdrop-filter: blur(10px);
       }
 
       nav.desktop{ display:flex; }
@@ -206,17 +257,17 @@
   <header>
     <div class="wrap">
       <div class="topbar">
-        <a class="brand" href="index.html">Gakion</a>
+        <a class="brand" href="index.html" aria-label="Go to Index">Gakion</a>
 
-        <nav class="desktop">
+        <nav class="desktop" aria-label="Primary">
           <a href="cv.html">CV</a>
           <a href="works.html">Works</a>
           <a href="contact.html">Contact</a>
           <a href="shop.html">Shop</a>
         </nav>
 
-        <button class="menu-btn" id="menuOpenBtn">
-          <div class="menu-icon">
+        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
+          <div class="menu-icon" aria-hidden="true">
             <span></span><span></span><span></span>
           </div>
         </button>
@@ -224,9 +275,14 @@
     </div>
   </header>
 
+  <!-- Mobile drawer -->
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer">
-    <nav class="drawer-nav">
+  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
+    <div class="drawer-head">
+      <button class="drawer-close" type="button" id="menuCloseBtn" aria-label="Close menu">×</button>
+    </div>
+
+    <nav class="drawer-nav" aria-label="Primary (mobile)">
       <a href="cv.html">CV</a>
       <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
@@ -236,8 +292,8 @@
 
   <main>
     <div class="wrap hero">
-      <div class="image-card">
-        <img src="images/home/Home_image.jpg" alt="Home image" />
+      <div class="image-card" aria-label="Home image">
+        <img src="images/home/Home_image.jpg" alt="Home image" loading="eager" />
       </div>
     </div>
   </main>
@@ -247,22 +303,43 @@
   </footer>
 
   <script>
-    (function(){
+    (function () {
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
+      const closeBtn = document.getElementById("menuCloseBtn");
+      const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
+
+      function setOverlayHidden(isHidden){
+        overlay.hidden = isHidden;
+      }
 
       function openMenu(){
         body.dataset.menuOpen = "true";
-        overlay.hidden = false;
-      }
-      function closeMenu(){
-        body.dataset.menuOpen = "false";
-        setTimeout(()=>overlay.hidden=true,180);
+        openBtn.setAttribute("aria-expanded", "true");
+        drawer.setAttribute("aria-hidden", "false");
+        setOverlayHidden(false);
+        body.style.overflow = "hidden"; /* ✅ 원상복구: 메뉴 열릴 때 스크롤 잠금 */
       }
 
-      openBtn.onclick = openMenu;
-      overlay.onclick = closeMenu;
+      function closeMenu(){
+        body.dataset.menuOpen = "false";
+        openBtn.setAttribute("aria-expanded", "false");
+        drawer.setAttribute("aria-hidden", "true");
+        body.style.overflow = "";
+        window.setTimeout(() => setOverlayHidden(true), 180);
+      }
+
+      if (openBtn) openBtn.addEventListener("click", openMenu);
+      if (closeBtn) closeBtn.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
+
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
+      });
+
+      body.dataset.menuOpen = "false";
+      setOverlayHidden(true);
     })();
   </script>
 </body>
