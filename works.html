@@ -20,9 +20,9 @@
       --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
 
-      /* ✅ iPhone-like feel tuning */
-      --slide-dur: 980ms; /* 이동 애니메이션 시간(길수록 부드럽게) */
-      --slide-ease: cubic-bezier(.22, 1, .36, 1); /* iOS 느낌의 easeOut */
+      /* ✅ Classic fade tuning */
+      --fade-dur: 1200ms; /* 페이드 시간(길수록 클래식) */
+      --fade-ease: cubic-bezier(.22, 1, .36, 1);
     }
 
     *{ box-sizing:border-box; }
@@ -190,39 +190,47 @@
       display:block;
     }
 
-    /* ---------- Slider (iPhone-like inertial slide) ---------- */
+    /* ---------- Slider (Classic fade) ---------- */
     .work-slider{
       position:relative;
       overflow:hidden;
       width:100%;
-
-      /* 약간의 "유리감" */
       transform: translateZ(0);
     }
 
+    /* ratio box: JS가 padding-top 설정해서 높이 확보 (레이아웃 점프 방지) */
     .work-track{
-      display:flex;
-      transform:translate3d(0,0,0);
-      will-change:transform;
-
-      transition:
-        transform var(--slide-dur) var(--slide-ease);
-    }
-
-    .work-track.no-transition{
-      transition:none !important;
-    }
-
-    .work-thumb{
-      flex:0 0 100%;
+      position:relative;
       width:100%;
-      height:auto;
+    }
+
+    .ratio-box{
+      width:100%;
+      /* padding-top은 JS가 이미지 비율에 맞춰 주입 */
+    }
+
+    /* 이미지들을 겹쳐 올리고 opacity로 페이드 */
+    .work-thumb{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+
+      opacity:0;
+      transition: opacity var(--fade-dur) var(--fade-ease);
+      will-change: opacity;
+
       user-select:none;
       -webkit-user-drag:none;
       -webkit-touch-callout:none;
-      display:block;
       backface-visibility:hidden;
       transform: translateZ(0);
+    }
+
+    .work-thumb.is-active{
+      opacity:1;
     }
 
     .work-caption{
@@ -299,9 +307,11 @@
 
     <div class="work-item">
       <a class="work-card" href="work_A.html" aria-label="Open Work_A">
-        <!-- ✅ 속도는 여기서 조절: data-interval(다음으로 넘어가기까지 '대기' 시간) -->
-        <div class="work-slider" data-interval="3200">
+        <!-- ✅ data-interval: 다음 이미지로 넘어가기 전 '대기' 시간 -->
+        <div class="work-slider" data-interval="3600">
           <div class="work-track">
+            <div class="ratio-box" aria-hidden="true"></div>
+
             <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work A image 1">
             <img class="work-thumb" src="images/works/Work_A2.jpg" alt="Work A image 2">
             <img class="work-thumb" src="images/works/Work_A3.jpg" alt="Work A image 3">
@@ -351,7 +361,7 @@
   body.dataset.menuOpen="false";
 })();
 
-/* ---------- Work slider: iPhone-like, less "whip" ---------- */
+/* ---------- Work slider: Classic fade ---------- */
 (function(){
   const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(prefersReduced) return;
@@ -363,63 +373,56 @@
     const track = slider.querySelector(".work-track");
     if(!track) return;
 
-    // 원본들
-    const originals = Array.from(track.querySelectorAll(".work-thumb"));
-    const n = originals.length;
+    const imgs = Array.from(track.querySelectorAll(".work-thumb"));
+    const n = imgs.length;
     if(n <= 1) return;
 
-    // ✅ seamless loop: 앞/뒤 클론
-    const firstClone = originals[0].cloneNode(true);
-    const lastClone  = originals[n - 1].cloneNode(true);
-    track.insertBefore(lastClone, originals[0]);
-    track.appendChild(firstClone);
+    // ✅ 레이아웃 점프 방지: 첫 이미지 비율로 ratio-box 높이 확보
+    const ratioBox = track.querySelector(".ratio-box");
+    const first = imgs[0];
 
-    const slides = Array.from(track.querySelectorAll(".work-thumb")); // n+2
-
-    // ✅ "부드럽게"는 사실상 2가지 요소:
-    // 1) transition duration(느릴수록 덜 휙휙): CSS --slide-dur
-    // 2) interval(다음 이동까지 머무는 시간): data-interval
-    const interval = +slider.dataset.interval || 3200;
-
-    let index = 1;          // 실제 첫 장
-    let timer = null;
-    let isAnimating = false;
-
-    // 초기 위치
-    track.classList.add("no-transition");
-    track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-    track.getBoundingClientRect();
-    track.classList.remove("no-transition");
-
-    function go(toIndex){
-      if(isAnimating) return;
-      isAnimating = true;
-      index = toIndex;
-      track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-    }
-    function next(){ go(index + 1); }
-
-    // ✅ transition 끝에서 클론이면 "진짜 위치"로 무음 점프
-    track.addEventListener("transitionend", () => {
-      isAnimating = false;
-
-      if(index === slides.length - 1){
-        track.classList.add("no-transition");
-        index = 1;
-        track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-        track.getBoundingClientRect();
-        track.classList.remove("no-transition");
-      } else if(index === 0){
-        track.classList.add("no-transition");
-        index = slides.length - 2;
-        track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
-        track.getBoundingClientRect();
-        track.classList.remove("no-transition");
+    function setRatioFrom(img){
+      const w = img.naturalWidth || 0;
+      const h = img.naturalHeight || 0;
+      if(w && h && ratioBox){
+        ratioBox.style.paddingTop = ((h / w) * 100) + "%";
       }
-    });
+    }
+    if(first.complete) setRatioFrom(first);
+    else first.addEventListener("load", () => setRatioFrom(first), { once:true });
 
-    // ✅ "휙휙" 방지: setInterval 대신 setTimeout 체인
-    // (애니메이션 중첩/지연 누적이 훨씬 적어서 느낌이 안정적임)
+    // ✅ 초기 활성화
+    let index = 0;
+    imgs.forEach((im,i)=> im.classList.toggle("is-active", i===index));
+
+    const interval = +slider.dataset.interval || 3600;
+    let timer = null;
+    let locked = false;
+
+    function show(nextIndex){
+      if(locked) return;
+      locked = true;
+
+      const prev = index;
+      index = (nextIndex + n) % n;
+
+      if(prev === index){
+        locked = false;
+        return;
+      }
+
+      imgs[prev].classList.remove("is-active");
+      imgs[index].classList.add("is-active");
+
+      // fade duration 끝날 때까지 중복 실행 방지
+      const cssDur = getComputedStyle(document.documentElement).getPropertyValue("--fade-dur").trim();
+      const dur = cssDur.endsWith("ms") ? parseFloat(cssDur) : (parseFloat(cssDur) * 1000);
+      window.setTimeout(()=>{ locked = false; }, Math.max(200, dur + 100));
+    }
+
+    function next(){ show(index + 1); }
+
+    // ✅ setTimeout 체인: 느낌 안정적
     function schedule(){
       clearTimeout(timer);
       timer = setTimeout(() => {
@@ -427,10 +430,12 @@
         schedule();
       }, interval);
     }
+
     function start(){
       if(timer) return;
       schedule();
     }
+
     function stop(){
       clearTimeout(timer);
       timer = null;
@@ -446,6 +451,7 @@
       start();
     }
 
+    // 탭 전환시 멈춤/재개
     document.addEventListener("visibilitychange", ()=>{
       if(document.hidden) stop();
       else if(!canHover) start();
