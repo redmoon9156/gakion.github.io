@@ -19,6 +19,10 @@
       --max:1060px;
       --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
+
+      /* ✅ iPhone-like feel tuning */
+      --slide-dur: 980ms; /* 이동 애니메이션 시간(길수록 부드럽게) */
+      --slide-ease: cubic-bezier(.22, 1, .36, 1); /* iOS 느낌의 easeOut */
     }
 
     *{ box-sizing:border-box; }
@@ -186,18 +190,23 @@
       display:block;
     }
 
-    /* ---------- Slider (seamless loop using clones) ---------- */
+    /* ---------- Slider (iPhone-like inertial slide) ---------- */
     .work-slider{
       position:relative;
       overflow:hidden;
       width:100%;
+
+      /* 약간의 "유리감" */
+      transform: translateZ(0);
     }
 
     .work-track{
       display:flex;
-      transform:translateX(0%);
+      transform:translate3d(0,0,0);
       will-change:transform;
-      transition:transform .62s cubic-bezier(.2,.8,.2,1);
+
+      transition:
+        transform var(--slide-dur) var(--slide-ease);
     }
 
     .work-track.no-transition{
@@ -212,6 +221,8 @@
       -webkit-user-drag:none;
       -webkit-touch-callout:none;
       display:block;
+      backface-visibility:hidden;
+      transform: translateZ(0);
     }
 
     .work-caption{
@@ -288,9 +299,9 @@
 
     <div class="work-item">
       <a class="work-card" href="work_A.html" aria-label="Open Work_A">
-        <div class="work-slider" data-interval="2400">
+        <!-- ✅ 속도는 여기서 조절: data-interval(다음으로 넘어가기까지 '대기' 시간) -->
+        <div class="work-slider" data-interval="3200">
           <div class="work-track">
-            <!-- ✅ 원본 이미지들 -->
             <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work A image 1">
             <img class="work-thumb" src="images/works/Work_A2.jpg" alt="Work A image 2">
             <img class="work-thumb" src="images/works/Work_A3.jpg" alt="Work A image 3">
@@ -340,7 +351,7 @@
   body.dataset.menuOpen="false";
 })();
 
-/* ---------- Work slider: seamless loop ---------- */
+/* ---------- Work slider: iPhone-like, less "whip" ---------- */
 (function(){
   const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(prefersReduced) return;
@@ -352,31 +363,31 @@
     const track = slider.querySelector(".work-track");
     if(!track) return;
 
+    // 원본들
     const originals = Array.from(track.querySelectorAll(".work-thumb"));
     const n = originals.length;
     if(n <= 1) return;
 
-    // ✅ 앞/뒤에 클론을 붙여서 "마지막→첫번째"도 같은 속도로 슬라이드되게 만들기
+    // ✅ seamless loop: 앞/뒤 클론
     const firstClone = originals[0].cloneNode(true);
     const lastClone  = originals[n - 1].cloneNode(true);
-
-    firstClone.setAttribute("data-clone","true");
-    lastClone.setAttribute("data-clone","true");
-
     track.insertBefore(lastClone, originals[0]);
     track.appendChild(firstClone);
 
-    const slides = Array.from(track.querySelectorAll(".work-thumb")); // n + 2
-    const interval = +slider.dataset.interval || 2400;
+    const slides = Array.from(track.querySelectorAll(".work-thumb")); // n+2
 
-    let index = 1; // ✅ 실제 첫 장(클론 lastClone 다음)
+    // ✅ "부드럽게"는 사실상 2가지 요소:
+    // 1) transition duration(느릴수록 덜 휙휙): CSS --slide-dur
+    // 2) interval(다음 이동까지 머무는 시간): data-interval
+    const interval = +slider.dataset.interval || 3200;
+
+    let index = 1;          // 실제 첫 장
     let timer = null;
     let isAnimating = false;
 
-    // 초기 위치를 "첫 장"으로 맞추기 (transition 없이)
+    // 초기 위치
     track.classList.add("no-transition");
-    track.style.transform = `translateX(-${index * 100}%)`;
-    // reflow
+    track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
     track.getBoundingClientRect();
     track.classList.remove("no-transition");
 
@@ -384,40 +395,44 @@
       if(isAnimating) return;
       isAnimating = true;
       index = toIndex;
-      track.style.transform = `translateX(-${index * 100}%)`;
+      track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
     }
+    function next(){ go(index + 1); }
 
-    function next(){
-      go(index + 1);
-    }
-
-    // ✅ transition 끝에서 클론 구간이면 transition 없이 "진짜" 위치로 순간 이동
+    // ✅ transition 끝에서 클론이면 "진짜 위치"로 무음 점프
     track.addEventListener("transitionend", () => {
       isAnimating = false;
 
       if(index === slides.length - 1){
-        // firstClone에 도달했으면 -> 진짜 첫 장으로 점프(transition 없이)
         track.classList.add("no-transition");
         index = 1;
-        track.style.transform = `translateX(-${index * 100}%)`;
+        track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
         track.getBoundingClientRect();
         track.classList.remove("no-transition");
       } else if(index === 0){
-        // lastClone에 도달했으면 -> 진짜 마지막 장으로 점프
         track.classList.add("no-transition");
         index = slides.length - 2;
-        track.style.transform = `translateX(-${index * 100}%)`;
+        track.style.transform = `translate3d(-${index * 100}%, 0, 0)`;
         track.getBoundingClientRect();
         track.classList.remove("no-transition");
       }
     });
 
+    // ✅ "휙휙" 방지: setInterval 대신 setTimeout 체인
+    // (애니메이션 중첩/지연 누적이 훨씬 적어서 느낌이 안정적임)
+    function schedule(){
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        next();
+        schedule();
+      }, interval);
+    }
     function start(){
       if(timer) return;
-      timer = setInterval(next, interval);
+      schedule();
     }
     function stop(){
-      clearInterval(timer);
+      clearTimeout(timer);
       timer = null;
     }
 
