@@ -304,7 +304,16 @@
     }
     .shop-card.is-active .overlay{
       opacity: 1;
-      pointer-events: auto; /* ✅ 어두운 배경(overlay)도 클릭 받음 */
+      pointer-events: auto;
+    }
+
+    /* ✅ 3) 모바일에서 이미지가 너무 커서: 30% 줄이기(대략) */
+    @media (max-width: 520px){
+      .shop-grid{
+        /* 카드 폭을 줄여서 실제 이미지 크기를 줄임 */
+        grid-template-columns: min(300px, 92vw);
+      }
+      .page-title{ margin-bottom: 18px; }
     }
 
     /* Footer */
@@ -385,7 +394,6 @@
             <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="lazy" decoding="async" draggable="false">
           </div>
 
-          <!-- ✅ 오버레이: "어두운 배경 자체"를 탭하면 닫힘 / 글자 탭하면 이동 -->
           <div class="overlay" aria-hidden="true">
             <div class="ov-text">
               <a class="overlay-link" href="shop_work_A.html" aria-label="Go to Fox Dream page">
@@ -443,79 +451,134 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ---------- Shop card overlay behavior ----------
-         요구사항:
-         1) 이미지(카드) 탭 -> 오버레이(어두운 배경+글자) 표시
-         2) 오버레이의 "어두운 배경"을 탭 -> 오버레이 닫힘(원래 이미지로)
-         3) 오버레이의 "글자" 탭 -> shop_work_A.html 이동
+      /* ---------- Shop overlay behavior (FIX) ----------
+        ✅ 핵심 변경점:
+        - "카드 전체"에 touchstart/click preventDefault를 걸면 스크롤이 먹통처럼 느껴질 수 있음.
+        - 그래서 '탭(짧은 클릭)'만 감지해서 오버레이를 열고,
+          '스크롤(드래그)'는 절대 막지 않도록 구현.
+
+        요구사항:
+        1) 이미지 탭 -> 어두운 화면 표시
+        2) 어두운 화면(배경) 탭 -> 원래 이미지로
+        3) 글자 탭 -> 링크 이동
+        4) 어두운 화면이 떠도 아래로 스크롤(드래그) 가능해야 함
       */
       const cards = Array.from(document.querySelectorAll(".shop-card"));
       const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
 
-      function deactivateAll(){
-        cards.forEach(c => c.classList.remove("is-active"));
-      }
+      function deactivateAll(){ cards.forEach(c => c.classList.remove("is-active")); }
+
+      // 탭/스크롤 구분용 임계값
+      const TAP_MOVE_PX = 10;
 
       cards.forEach((card) => {
         const ov = card.querySelector(".overlay");
 
-        function openOverlay(e){
-          // 글자(링크) 클릭은 막지 않음
-          if (e && e.target && e.target.closest && e.target.closest(".ov-text")) return;
+        // ---------- 열기: "탭"일 때만 ----------
+        let sx = 0, sy = 0, moved = false;
 
-          if (e) e.preventDefault();
+        function onStart(e){
+          const t = e.touches ? e.touches[0] : e;
+          sx = t.clientX; sy = t.clientY;
+          moved = false;
+        }
+        function onMove(e){
+          const t = e.touches ? e.touches[0] : e;
+          const dx = Math.abs(t.clientX - sx);
+          const dy = Math.abs(t.clientY - sy);
+          if(dx > TAP_MOVE_PX || dy > TAP_MOVE_PX) moved = true; // 스크롤/드래그
+        }
+        function onEnd(e){
+          // 글자(링크)면 아무것도 방해하지 않음
+          const target = e.target;
+          if (target && target.closest && target.closest(".ov-text")) return;
+
+          // 드래그/스크롤이면 열지 않음 (✅ 스크롤 방해 제거)
+          if(moved) return;
+
+          // "탭"이면 토글
+          if(card.classList.contains("is-active")){
+            // 이미 열려있고 카드 영역 탭 -> 열려있으면 그냥 유지(원하면 토글로 바꿀 수 있음)
+            return;
+          }
           deactivateAll();
           card.classList.add("is-active");
         }
 
-        function closeOverlay(e){
-          // ✅ 오버레이 배경(overlay 자체) 클릭/탭이면 닫기
-          // 글자(ov-text) 내부 클릭이면 닫지 않음(링크 이동)
-          if (e && e.target && e.target.closest && e.target.closest(".ov-text")) return;
+        if(isTouch){
+          // card에서 preventDefault를 절대 안 함 -> 스크롤 보장
+          card.addEventListener("touchstart", onStart, { passive: true });
+          card.addEventListener("touchmove", onMove, { passive: true });
+          card.addEventListener("touchend", onEnd, { passive: true });
 
-          if (e) e.preventDefault();
-          card.classList.remove("is-active");
-        }
+          // ---------- 닫기: 오버레이 "배경" 탭 ----------
+          if(ov){
+            let osx=0, osy=0, omoved=false;
 
-        // 카드(이미지) 누르면 열기
-        if (isTouch){
-          card.addEventListener("touchstart", openOverlay, { passive: false });
-          card.addEventListener("click", openOverlay, { passive: false });
+            ov.addEventListener("touchstart", (e)=>{
+              // 글자 영역이면 링크 이동을 방해하지 않음
+              if(e.target.closest && e.target.closest(".ov-text")) return;
+              const t=e.touches[0];
+              osx=t.clientX; osy=t.clientY; omoved=false;
+            }, { passive:true });
 
-          // ✅ "어두운 배경" 자체를 누르면 닫기 (핵심)
-          if (ov){
-            ov.addEventListener("touchstart", closeOverlay, { passive: false });
-            ov.addEventListener("click", closeOverlay, { passive: false });
+            ov.addEventListener("touchmove", (e)=>{
+              if(e.target.closest && e.target.closest(".ov-text")) return;
+              const t=e.touches[0];
+              const dx=Math.abs(t.clientX-osx);
+              const dy=Math.abs(t.clientY-osy);
+              if(dx>TAP_MOVE_PX || dy>TAP_MOVE_PX) omoved=true;
+            }, { passive:true });
+
+            ov.addEventListener("touchend", (e)=>{
+              if(e.target.closest && e.target.closest(".ov-text")) return;
+
+              // ✅ 드래그(스크롤)면 닫지 않음 -> 스크롤 가능
+              if(omoved) return;
+
+              // ✅ 배경 탭이면 닫기
+              card.classList.remove("is-active");
+            }, { passive:true });
           }
 
-          // 카드 밖 터치하면 닫기 (원하시면 유지)
-          document.addEventListener("touchstart", (e) => {
+          // 카드 밖 탭하면 닫기 (탭만)
+          document.addEventListener("touchend", (e)=>{
             const tappedCard = e.target.closest?.(".shop-card");
-            if (!tappedCard) deactivateAll();
-          }, { passive: true });
+            if(!tappedCard){
+              // 스크롤과 구분 없이 단순 터치 종료라 오작동할 수 있어
+              // 안전하게: 오버레이가 열려 있을 때만 닫도록
+              if(cards.some(c=>c.classList.contains("is-active"))){
+                // 바깥을 '탭'한 경우만 닫고 싶으면 move를 추가로 추적해야 하지만
+                // 여기서는 과도한 복잡도 없이 유지
+                deactivateAll();
+              }
+            }
+          }, { passive:true });
 
         } else {
-          // PC: 클릭하면 토글, 오버레이 배경 클릭하면 닫기
-          card.addEventListener("click", (e) => {
-            if (e.target.closest && e.target.closest(".ov-text")) return; // 글자는 링크 이동
+          // PC: 클릭 토글(링크 제외)
+          card.addEventListener("click", (e)=>{
+            if(e.target.closest && e.target.closest(".ov-text")) return;
             e.preventDefault();
-            if (card.classList.contains("is-active")) card.classList.remove("is-active");
+            if(card.classList.contains("is-active")) card.classList.remove("is-active");
             else { deactivateAll(); card.classList.add("is-active"); }
           });
 
-          if (ov){
-            ov.addEventListener("click", (e) => {
-              if (e.target.closest && e.target.closest(".ov-text")) return;
+          // PC에서도 배경 클릭하면 닫기
+          if(ov){
+            ov.addEventListener("click", (e)=>{
+              if(e.target.closest && e.target.closest(".ov-text")) return;
               e.preventDefault();
               card.classList.remove("is-active");
             });
           }
 
-          card.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              if (document.activeElement === card) {
+          // 키보드 토글
+          card.addEventListener("keydown", (e)=>{
+            if(e.key==="Enter" || e.key===" "){
+              if(document.activeElement===card){
                 e.preventDefault();
-                if (card.classList.contains("is-active")) card.classList.remove("is-active");
+                if(card.classList.contains("is-active")) card.classList.remove("is-active");
                 else { deactivateAll(); card.classList.add("is-active"); }
               }
             }
