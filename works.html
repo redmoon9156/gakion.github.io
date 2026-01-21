@@ -186,7 +186,7 @@
       display:block;
     }
 
-    /* ---------- Slider ---------- */
+    /* ---------- Slider (seamless loop using clones) ---------- */
     .work-slider{
       position:relative;
       overflow:hidden;
@@ -196,8 +196,12 @@
     .work-track{
       display:flex;
       transform:translateX(0%);
-      transition:transform .62s cubic-bezier(.2,.8,.2,1);
       will-change:transform;
+      transition:transform .62s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .work-track.no-transition{
+      transition:none !important;
     }
 
     .work-thumb{
@@ -207,6 +211,7 @@
       user-select:none;
       -webkit-user-drag:none;
       -webkit-touch-callout:none;
+      display:block;
     }
 
     .work-caption{
@@ -255,8 +260,8 @@
         <a href="shop.html">Shop</a>
       </nav>
 
-      <button class="menu-btn" id="menuOpenBtn">
-        <div class="menu-icon">
+      <button class="menu-btn" id="menuOpenBtn" aria-label="Open menu">
+        <div class="menu-icon" aria-hidden="true">
           <span></span><span></span><span></span>
         </div>
       </button>
@@ -264,12 +269,12 @@
   </div>
 </header>
 
-<div class="drawer-overlay" id="drawerOverlay"></div>
-<aside class="drawer" id="drawer">
+<div class="drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+<aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
   <div class="drawer-head">
-    <button class="drawer-close" id="menuCloseBtn">×</button>
+    <button class="drawer-close" id="menuCloseBtn" aria-label="Close menu">×</button>
   </div>
-  <nav class="drawer-nav">
+  <nav class="drawer-nav" aria-label="Primary (mobile)">
     <a href="cv.html">CV</a>
     <a href="works.html">Works</a>
     <a href="contact.html">Contact</a>
@@ -282,13 +287,15 @@
     <div class="page-title">Works</div>
 
     <div class="work-item">
-      <a class="work-card" href="work_A.html">
+      <a class="work-card" href="work_A.html" aria-label="Open Work_A">
         <div class="work-slider" data-interval="2400">
           <div class="work-track">
-            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="">
-            <img class="work-thumb" src="images/works/Work_A2.jpg" alt="">
-            <img class="work-thumb" src="images/works/Work_A3.jpg" alt="">
-            <img class="work-thumb" src="images/works/Work_A4.jpg" alt="">
+            <!-- ✅ 원본 이미지들 -->
+            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work A image 1">
+            <img class="work-thumb" src="images/works/Work_A2.jpg" alt="Work A image 2">
+            <img class="work-thumb" src="images/works/Work_A3.jpg" alt="Work A image 3">
+            <img class="work-thumb" src="images/works/Work_A4.jpg" alt="Work A image 4">
+            <img class="work-thumb" src="images/works/Work_A5.jpg" alt="Work A image 5">
           </div>
         </div>
       </a>
@@ -316,18 +323,24 @@
   function openMenu(){
     body.dataset.menuOpen="true";
     body.style.overflow="hidden";
+    drawer.setAttribute("aria-hidden","false");
+    overlay.setAttribute("aria-hidden","false");
   }
   function closeMenu(){
     body.dataset.menuOpen="false";
     body.style.overflow="";
+    drawer.setAttribute("aria-hidden","true");
+    overlay.setAttribute("aria-hidden","true");
   }
 
-  openBtn.onclick=openMenu;
-  closeBtn.onclick=closeMenu;
-  overlay.onclick=closeMenu;
+  if(openBtn) openBtn.addEventListener("click", openMenu);
+  if(closeBtn) closeBtn.addEventListener("click", closeMenu);
+  if(overlay) overlay.addEventListener("click", closeMenu);
+
+  body.dataset.menuOpen="false";
 })();
 
-/* ---------- Work slider ---------- */
+/* ---------- Work slider: seamless loop ---------- */
 (function(){
   const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if(prefersReduced) return;
@@ -336,39 +349,91 @@
   const sliders = document.querySelectorAll(".work-slider");
 
   sliders.forEach(slider=>{
-    const track=slider.querySelector(".work-track");
-    const slides=track.children;
-    if(slides.length<=1) return;
+    const track = slider.querySelector(".work-track");
+    if(!track) return;
 
-    const interval=+slider.dataset.interval||2400;
-    let i=0, timer=null;
+    const originals = Array.from(track.querySelectorAll(".work-thumb"));
+    const n = originals.length;
+    if(n <= 1) return;
 
-    function go(n){
-      i=(n+slides.length)%slides.length;
-      track.style.transform=`translateX(-${i*100}%)`;
+    // ✅ 앞/뒤에 클론을 붙여서 "마지막→첫번째"도 같은 속도로 슬라이드되게 만들기
+    const firstClone = originals[0].cloneNode(true);
+    const lastClone  = originals[n - 1].cloneNode(true);
+
+    firstClone.setAttribute("data-clone","true");
+    lastClone.setAttribute("data-clone","true");
+
+    track.insertBefore(lastClone, originals[0]);
+    track.appendChild(firstClone);
+
+    const slides = Array.from(track.querySelectorAll(".work-thumb")); // n + 2
+    const interval = +slider.dataset.interval || 2400;
+
+    let index = 1; // ✅ 실제 첫 장(클론 lastClone 다음)
+    let timer = null;
+    let isAnimating = false;
+
+    // 초기 위치를 "첫 장"으로 맞추기 (transition 없이)
+    track.classList.add("no-transition");
+    track.style.transform = `translateX(-${index * 100}%)`;
+    // reflow
+    track.getBoundingClientRect();
+    track.classList.remove("no-transition");
+
+    function go(toIndex){
+      if(isAnimating) return;
+      isAnimating = true;
+      index = toIndex;
+      track.style.transform = `translateX(-${index * 100}%)`;
     }
-    function next(){ go(i+1); }
+
+    function next(){
+      go(index + 1);
+    }
+
+    // ✅ transition 끝에서 클론 구간이면 transition 없이 "진짜" 위치로 순간 이동
+    track.addEventListener("transitionend", () => {
+      isAnimating = false;
+
+      if(index === slides.length - 1){
+        // firstClone에 도달했으면 -> 진짜 첫 장으로 점프(transition 없이)
+        track.classList.add("no-transition");
+        index = 1;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        track.getBoundingClientRect();
+        track.classList.remove("no-transition");
+      } else if(index === 0){
+        // lastClone에 도달했으면 -> 진짜 마지막 장으로 점프
+        track.classList.add("no-transition");
+        index = slides.length - 2;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        track.getBoundingClientRect();
+        track.classList.remove("no-transition");
+      }
+    });
 
     function start(){
       if(timer) return;
-      timer=setInterval(next,interval);
+      timer = setInterval(next, interval);
     }
     function stop(){
       clearInterval(timer);
-      timer=null;
+      timer = null;
     }
 
+    // PC: hover 동안만 / Mobile: 자동
     if(canHover){
-      slider.addEventListener("mouseenter",start);
-      slider.addEventListener("mouseleave",stop);
-      slider.addEventListener("focusin",start);
-      slider.addEventListener("focusout",stop);
-    }else{
+      slider.addEventListener("mouseenter", start);
+      slider.addEventListener("mouseleave", stop);
+      slider.addEventListener("focusin", start);
+      slider.addEventListener("focusout", stop);
+    } else {
       start();
     }
 
-    document.addEventListener("visibilitychange",()=>{
-      document.hidden ? stop() : (!canHover && start());
+    document.addEventListener("visibilitychange", ()=>{
+      if(document.hidden) stop();
+      else if(!canHover) start();
     });
   });
 })();
