@@ -6,7 +6,7 @@
   <title>Works — Gakion</title>
   <meta name="description" content="Works — Gakion" />
 
-  <!-- Space Grotesk (for title/menu, same as index/cv) -->
+  <!-- Space Grotesk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -18,8 +18,6 @@
       --muted:#666666;
       --max:1060px;
       --pad:18px;
-      --radius:14px; /* (남겨둬도 무방) */
-      --line: rgba(0,0,0,.14); /* (남겨둬도 무방) */
       --shadow: 0 18px 50px rgba(0,0,0,.12);
     }
 
@@ -48,9 +46,9 @@
       padding:0 var(--pad);
     }
 
-    /* Header (same as cv.html) */
+    /* ---------- Header ---------- */
     header{
-      background:#ffffff;
+      background:#fff;
       position:sticky;
       top:0;
       z-index:50;
@@ -61,7 +59,6 @@
       align-items:center;
       justify-content:space-between;
       padding:16px 0;
-      gap:14px;
     }
 
     .brand{
@@ -69,8 +66,6 @@
       font-size:22.5px;
       font-weight:700;
       letter-spacing:.35px;
-      line-height:1.1;
-      min-width:160px;
     }
 
     nav.desktop{
@@ -78,7 +73,6 @@
       gap:18px;
       font-size:13px;
       letter-spacing:.6px;
-      white-space:nowrap;
     }
 
     nav.desktop a{
@@ -86,331 +80,298 @@
       font-weight:500;
     }
 
-    /* Mobile menu button */
     .menu-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
+      width:42px;
+      height:42px;
+      background:transparent;
+      border:0;
       cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
+
     .menu-icon{
-      width: 18px; height: 12px;
-      position: relative;
+      width:18px;
+      height:12px;
+      position:relative;
     }
+
     .menu-icon span{
       position:absolute;
       left:0; right:0;
       height:1px;
-      background: rgba(0,0,0,.82);
+      background:#000;
     }
+
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* Drawer overlay */
+    /* ---------- Drawer ---------- */
     .drawer-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.32);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .22s ease;
-      z-index: 1000;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.32);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease;
+      z-index:1000;
     }
 
-    /* Drawer */
     .drawer{
-      position: fixed;
-      top: 0; right: 0;
-      height: 100%;
-      width: 50vw;
-      max-width: 50vw;
-      background: rgba(250,248,244,.96);
-      backdrop-filter: blur(10px);
-      border-left: 0;
-      transform: translateX(102%);
-      transition: transform .26s cubic-bezier(.2,.8,.2,1);
-      box-shadow: var(--shadow);
+      position:fixed;
+      top:0; right:0;
+      width:50vw;
+      height:100%;
+      background:rgba(250,248,244,.96);
+      backdrop-filter:blur(10px);
+      transform:translateX(102%);
+      transition:transform .26s cubic-bezier(.2,.8,.2,1);
+      box-shadow:var(--shadow);
+      z-index:1001;
       display:flex;
       flex-direction:column;
-      z-index: 1001;
     }
 
     .drawer-head{
-      padding: 18px 18px 10px;
-      border-bottom: 0;
+      padding:18px;
       display:flex;
-      align-items:flex-start;
       justify-content:flex-end;
-      min-height: 54px;
     }
 
     .drawer-close{
-      border: 0;
-      background: transparent;
-      border-radius: 0;
-      width: 42px; height: 42px;
+      background:transparent;
+      border:0;
+      font-size:21px;
       cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      color: #000;
-      font-size: 20.8px;
-      line-height: 1;
-      font-weight: 400;
-      padding: 0;
     }
 
     .drawer-nav{
-      padding: 8px 12px 18px;
       display:flex;
       flex-direction:column;
-      gap: 4px;
+      padding:12px;
     }
 
     .drawer-nav a{
-      font-family: "Space Grotesk", sans-serif;
-      font-weight: 500;
-      padding: 14px 12px;
-      border-radius: 14px;
-      border: 0;
-      color: rgba(0,0,0,.86);
+      font-family:"Space Grotesk", sans-serif;
+      padding:14px 12px;
+      border-radius:14px;
     }
-    .drawer-nav a:hover{
-      background: rgba(0,0,0,.03);
+
+    body[data-menu-open="true"] .drawer{
+      transform:translateX(0);
     }
 
     body[data-menu-open="true"] .drawer-overlay{
-      opacity: 1;
-      pointer-events: auto;
-    }
-    body[data-menu-open="true"] .drawer{
-      transform: translateX(0);
+      opacity:1;
+      pointer-events:auto;
     }
 
-    /* Main */
+    /* ---------- Main ---------- */
     main{
-      padding: 26px 0 80px;
+      padding:26px 0 80px;
     }
 
     .page-title{
       font-family:"Space Grotesk", sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      margin: 14px 0 22px;
-      text-align: center;
-    }
-
-    .works-list{
-      display:flex;
-      flex-direction:column;
-      gap: 0;
+      font-size:28px;
+      font-weight:700;
+      text-align:center;
+      margin:14px 0 22px;
     }
 
     .work-item{
-      margin-bottom: 88px;
+      margin-bottom:88px;
     }
 
-    /* ✅ 임시 윤곽선 + 라운드 제거 */
     .work-card{
       display:block;
-      border: 0;            /* outline 제거 */
-      border-radius: 0;     /* 라운드 제거 */
-      overflow: visible;    /* 모서리 잘림 방지 */
-      background: transparent;
+    }
+
+    /* ---------- Slider ---------- */
+    .work-slider{
+      position:relative;
+      overflow:hidden;
+      width:100%;
+    }
+
+    .work-track{
+      display:flex;
+      transform:translateX(0%);
+      transition:transform .62s cubic-bezier(.2,.8,.2,1);
+      will-change:transform;
     }
 
     .work-thumb{
-      display:block;
+      flex:0 0 100%;
       width:100%;
       height:auto;
-      border-radius: 0;     /* 혹시 남아있을 라운드 방지 */
-      transform: translateZ(0);
-      transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .work-card:active .work-thumb{
-      transform: scale(1.02);
-      filter: saturate(1.02);
+      user-select:none;
+      -webkit-user-drag:none;
+      -webkit-touch-callout:none;
     }
 
     .work-caption{
-      margin-top: 14px;
-      font-size: 16px;
-      text-align: center;
-      letter-spacing: .3px;
-      color: rgba(0,0,0,.86);
-    }
-
-    /* Footer */
-    footer{
-      padding: 24px 0 34px;
-    }
-    .copyright{
-      display:block;
-      width:100%;
+      margin-top:14px;
       text-align:center;
-      color: rgba(0,0,0,.56);
-      font-size: 12.5px;
-      letter-spacing: .2px;
+      font-size:16px;
+      letter-spacing:.3px;
     }
 
-    /* Desktop */
-    @media (min-width: 900px){
-      :root{ --pad:22px; }
+    /* ---------- Footer ---------- */
+    footer{
+      padding:24px 0 34px;
+    }
+
+    .copyright{
+      text-align:center;
+      font-size:12.5px;
+      color:rgba(0,0,0,.56);
+    }
+
+    /* ---------- Desktop ---------- */
+    @media (min-width:900px){
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
 
-      main{ padding: 34px 0 90px; }
-
-      .page-title{
-        font-size: 32px;
-        margin: 18px 0 26px;
-      }
-
-      .work-item{ margin-bottom: 96px; }
-      .work-caption{ font-size: 17px; }
+      .page-title{ font-size:32px; }
+      .work-caption{ font-size:17px; }
     }
 
     @media (prefers-reduced-motion: reduce){
-      *{ transition:none !important; scroll-behavior:auto !important; }
-    }
-
-    /* 이미지 우클릭/드래그/롱프레스 억제 (완전 보안은 아님) */
-    img{
-      -webkit-user-drag: none;
-      user-drag: none;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
+      *{ transition:none !important; }
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="wrap">
-      <div class="topbar">
-        <a class="brand" href="index.html">Gakion</a>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="index.html">Gakion</a>
 
-        <nav class="desktop" aria-label="Primary">
-          <a href="cv.html">CV</a>
-          <a href="works.html">Works</a>
-          <a href="contact.html">Contact</a>
-          <a href="shop.html">Shop</a>
-        </nav>
+      <nav class="desktop">
+        <a href="cv.html">CV</a>
+        <a href="works.html">Works</a>
+        <a href="contact.html">Contact</a>
+        <a href="shop.html">Shop</a>
+      </nav>
 
-        <!-- Mobile hamburger -->
-        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <div class="menu-icon" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Mobile drawer -->
-  <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
-    <div class="drawer-head">
-      <button class="drawer-close" type="button" id="menuCloseBtn" aria-label="Close menu">×</button>
-    </div>
-
-    <nav class="drawer-nav" aria-label="Primary (mobile)">
-      <a href="cv.html">CV</a>
-      <a href="works.html">Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="shop.html">Shop</a>
-    </nav>
-  </aside>
-
-  <main>
-    <div class="wrap">
-      <div class="page-title">Works</div>
-
-      <section class="works-list" aria-label="Works list">
-
-        <div class="work-item">
-          <a class="work-card" href="work_A.html" aria-label="Open Work_A">
-            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work_A thumbnail" loading="lazy" draggable="false">
-          </a>
-          <div class="work-caption">Fox Dream</div>
+      <button class="menu-btn" id="menuOpenBtn">
+        <div class="menu-icon">
+          <span></span><span></span><span></span>
         </div>
-
-      </section>
+      </button>
     </div>
-  </main>
+  </div>
+</header>
 
-  <footer>
-    <div class="wrap">
-      <div class="copyright">© Gakion. All rights reserved.</div>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <button class="drawer-close" id="menuCloseBtn">×</button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="cv.html">CV</a>
+    <a href="works.html">Works</a>
+    <a href="contact.html">Contact</a>
+    <a href="shop.html">Shop</a>
+  </nav>
+</aside>
+
+<main>
+  <div class="wrap">
+    <div class="page-title">Works</div>
+
+    <div class="work-item">
+      <a class="work-card" href="work_A.html">
+        <div class="work-slider" data-interval="2400">
+          <div class="work-track">
+            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A2.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A3.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A4.jpg" alt="">
+          </div>
+        </div>
+      </a>
+      <div class="work-caption">Fox Dream</div>
     </div>
-  </footer>
 
-  <script>
-    (function () {
-      /* ---------- Mobile drawer ---------- */
-      const body = document.body;
-      const openBtn = document.getElementById("menuOpenBtn");
-      const closeBtn = document.getElementById("menuCloseBtn");
-      const drawer = document.getElementById("drawer");
-      const overlay = document.getElementById("drawerOverlay");
+  </div>
+</main>
 
-      function setOverlayHidden(isHidden){
-        overlay.hidden = isHidden;
-      }
+<footer>
+  <div class="wrap">
+    <div class="copyright">© Gakion. All rights reserved.</div>
+  </div>
+</footer>
 
-      function openMenu(){
-        body.dataset.menuOpen = "true";
-        openBtn.setAttribute("aria-expanded", "true");
-        drawer.setAttribute("aria-hidden", "false");
-        setOverlayHidden(false);
-        body.style.overflow = "hidden";
-      }
+<script>
+/* ---------- Mobile drawer ---------- */
+(function(){
+  const body=document.body;
+  const openBtn=document.getElementById("menuOpenBtn");
+  const closeBtn=document.getElementById("menuCloseBtn");
+  const drawer=document.getElementById("drawer");
+  const overlay=document.getElementById("drawerOverlay");
 
-      function closeMenu(){
-        body.dataset.menuOpen = "false";
-        openBtn.setAttribute("aria-expanded", "false");
-        drawer.setAttribute("aria-hidden", "true");
-        body.style.overflow = "";
-        window.setTimeout(() => setOverlayHidden(true), 180);
-      }
+  function openMenu(){
+    body.dataset.menuOpen="true";
+    body.style.overflow="hidden";
+  }
+  function closeMenu(){
+    body.dataset.menuOpen="false";
+    body.style.overflow="";
+  }
 
-      openBtn.addEventListener("click", openMenu);
-      closeBtn.addEventListener("click", closeMenu);
-      overlay.addEventListener("click", closeMenu);
+  openBtn.onclick=openMenu;
+  closeBtn.onclick=closeMenu;
+  overlay.onclick=closeMenu;
+})();
 
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
-      });
+/* ---------- Work slider ---------- */
+(function(){
+  const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(prefersReduced) return;
 
-      body.dataset.menuOpen = "false";
-      setOverlayHidden(true);
-    })();
+  const canHover = matchMedia("(hover:hover) and (pointer:fine)").matches;
+  const sliders = document.querySelectorAll(".work-slider");
 
-    /* 이미지 우클릭/드래그 방지 (완전 보안은 아님) */
-    (function () {
-      document.addEventListener("contextmenu", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      });
+  sliders.forEach(slider=>{
+    const track=slider.querySelector(".work-track");
+    const slides=track.children;
+    if(slides.length<=1) return;
 
-      document.addEventListener("dragstart", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      }, { passive: false });
+    const interval=+slider.dataset.interval||2400;
+    let i=0, timer=null;
 
-      document.querySelectorAll("img").forEach((img) => {
-        img.setAttribute("draggable", "false");
-      });
-    })();
-  </script>
+    function go(n){
+      i=(n+slides.length)%slides.length;
+      track.style.transform=`translateX(-${i*100}%)`;
+    }
+    function next(){ go(i+1); }
+
+    function start(){
+      if(timer) return;
+      timer=setInterval(next,interval);
+    }
+    function stop(){
+      clearInterval(timer);
+      timer=null;
+    }
+
+    if(canHover){
+      slider.addEventListener("mouseenter",start);
+      slider.addEventListener("mouseleave",stop);
+      slider.addEventListener("focusin",start);
+      slider.addEventListener("focusout",stop);
+    }else{
+      start();
+    }
+
+    document.addEventListener("visibilitychange",()=>{
+      document.hidden ? stop() : (!canHover && start());
+    });
+  });
+})();
+</script>
 </body>
 </html>
