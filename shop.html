@@ -6,10 +6,14 @@
   <title>Shop — Gakion</title>
   <meta name="description" content="Shop — Gakion" />
 
-  <!-- Space Grotesk (title/menu) -->
+  <!-- Montserrat (brand + menu) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Pretendard (everything else) -->
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 
   <style>
     :root{
@@ -19,6 +23,11 @@
       --max:1060px;
       --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
+
+      /* ✅ mobile dropdown menu */
+      --menu-bg: rgba(245,245,245,.98); /* 밝은 회색빛 흰 배경 */
+      --menu-dur: 360ms;
+      --menu-ease: cubic-bezier(.22, 1, .36, 1);
     }
 
     *{ box-sizing:border-box; }
@@ -28,9 +37,12 @@
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      font-family: Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
+
+      /* ✅ Pretendard: 본문/푸터 포함 전부 */
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
                    "Segoe UI", Roboto, "Apple SD Gothic Neo",
                    "Noto Sans KR", "Malgun Gothic", sans-serif;
+
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
@@ -68,8 +80,9 @@
       padding:16px 0;
     }
 
+    /* ✅ Brand: Montserrat */
     .brand{
-      font-family:"Space Grotesk", sans-serif;
+      font-family:"Montserrat", sans-serif;
       font-size:22.5px;
       font-weight:700;
       letter-spacing:.35px;
@@ -85,9 +98,11 @@
       letter-spacing:.6px;
       white-space:nowrap;
     }
+
+    /* ✅ Desktop menu: Montserrat */
     nav.desktop a{
-      font-family:"Space Grotesk", sans-serif;
-      font-weight:500;
+      font-family:"Montserrat", sans-serif;
+      font-weight:600;
       padding: 8px 4px;
       color: rgba(0,0,0,.82);
     }
@@ -121,7 +136,7 @@
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* Drawer overlay + drawer */
+    /* ✅ Overlay (click to close) */
     .drawer-overlay{
       position: fixed;
       inset: 0;
@@ -131,61 +146,58 @@
       transition: opacity .22s ease;
       z-index: 1000;
     }
+
+    /* ✅ Mobile dropdown panel (top -> down, 50vh) */
     .drawer{
       position: fixed;
-      top: 0; right: 0;
-      height: 100%;
-      width: 50vw;
-      max-width: 50vw;
-      background: rgba(250,248,244,.96);
+      left: 0; right: 0;
+      top: 0;
+      height: 50vh;
+      background: var(--menu-bg);
       backdrop-filter: blur(10px);
-      transform: translateX(102%);
-      transition: transform .26s cubic-bezier(.2,.8,.2,1);
       box-shadow: var(--shadow);
-      display:flex;
-      flex-direction:column;
+      transform: translateY(-105%);
+      transition: transform var(--menu-dur) var(--menu-ease);
       z-index: 1001;
-    }
-    .drawer-head{
-      padding: 18px 18px 10px;
+
       display:flex;
-      align-items:flex-start;
-      justify-content:flex-end;
-      min-height: 54px;
+      align-items:center;
+      justify-content:center;
+      padding: 18px var(--pad);
     }
-    .drawer-close{
-      border: 0;
-      background: transparent;
-      width: 42px; height: 42px;
-      cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      color: #000;
-      font-size: 20.8px;
-      line-height: 1;
-      font-weight: 400;
-      padding: 0;
-    }
+
+    /* ✅ Centered menu */
     .drawer-nav{
-      padding: 8px 12px 18px;
+      width:100%;
+      max-width:520px;
       display:flex;
       flex-direction:column;
-      gap: 4px;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-align:center;
     }
+
+    /* ✅ Mobile menu: Montserrat */
     .drawer-nav a{
-      font-family:"Space Grotesk", sans-serif;
-      font-weight:500;
-      padding: 14px 12px;
-      border-radius: 14px;
+      font-family:"Montserrat", sans-serif;
+      font-weight:600;
+      font-size:16px;
+      letter-spacing:.6px;
+      padding:12px 12px;
+      border-radius:14px;
       color: rgba(0,0,0,.86);
+      width:100%;
+      max-width:320px;
     }
-    .drawer-nav a:hover{ background: rgba(0,0,0,.03); }
+    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
 
     body[data-menu-open="true"] .drawer-overlay{
       opacity: 1;
       pointer-events: auto;
     }
     body[data-menu-open="true"] .drawer{
-      transform: translateX(0);
+      transform: translateY(0);
     }
 
     /* Main */
@@ -194,8 +206,8 @@
       flex: 1;
     }
 
+    /* ✅ Title: Pretendard (brand/menu만 Montserrat) */
     .page-title{
-      font-family:"Space Grotesk", sans-serif;
       font-size: 28px;
       font-weight: 700;
       letter-spacing: .2px;
@@ -258,8 +270,8 @@
       pointer-events: none;
     }
 
+    /* ✅ 오버레이 텍스트도 Pretendard (메뉴/브랜드 아님) */
     .overlay .ov-text{
-      font-family:"Space Grotesk", sans-serif;
       text-align:center;
       color:#fff;
       letter-spacing:.4px;
@@ -310,7 +322,6 @@
     /* ✅ 3) 모바일에서 이미지가 너무 커서: 30% 줄이기(대략) */
     @media (max-width: 520px){
       .shop-grid{
-        /* 카드 폭을 줄여서 실제 이미지 크기를 줄임 */
         grid-template-columns: min(300px, 92vw);
       }
       .page-title{ margin-bottom: 18px; }
@@ -332,6 +343,9 @@
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
+
+      /* desktop에서는 모바일 드롭다운 사용 안 함 */
+      .drawer, .drawer-overlay{ display:none; }
 
       main{ padding: 34px 0 90px; }
       .page-title{ font-size: 32px; margin: 18px 0 26px; }
@@ -369,12 +383,9 @@
     </div>
   </header>
 
-  <!-- Mobile drawer -->
+  <!-- Mobile dropdown menu -->
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
   <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
-    <div class="drawer-head">
-      <button class="drawer-close" type="button" id="menuCloseBtn" aria-label="Close menu">×</button>
-    </div>
     <nav class="drawer-nav" aria-label="Primary (mobile)">
       <a href="cv.html">CV</a>
       <a href="works.html">Works</a>
@@ -417,14 +428,14 @@
 
   <script>
     (function () {
-      /* ---------- Mobile drawer ---------- */
+      /* ---------- Mobile dropdown menu ---------- */
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
-      const closeBtn = document.getElementById("menuCloseBtn");
       const drawer = document.getElementById("drawer");
-      const drawerOverlay = document.getElementById("drawerOverlay");
+      const overlay = document.getElementById("drawerOverlay");
 
-      function setOverlayHidden(isHidden){ drawerOverlay.hidden = isHidden; }
+      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+
       function openMenu(){
         body.dataset.menuOpen = "true";
         openBtn.setAttribute("aria-expanded", "true");
@@ -432,6 +443,7 @@
         setOverlayHidden(false);
         body.style.overflow = "hidden";
       }
+
       function closeMenu(){
         body.dataset.menuOpen = "false";
         openBtn.setAttribute("aria-expanded", "false");
@@ -441,8 +453,7 @@
       }
 
       if (openBtn) openBtn.addEventListener("click", openMenu);
-      if (closeBtn) closeBtn.addEventListener("click", closeMenu);
-      if (drawerOverlay) drawerOverlay.addEventListener("click", closeMenu);
+      if (overlay) overlay.addEventListener("click", closeMenu);
 
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
@@ -451,30 +462,17 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ---------- Shop overlay behavior (FIX) ----------
-        ✅ 핵심 변경점:
-        - "카드 전체"에 touchstart/click preventDefault를 걸면 스크롤이 먹통처럼 느껴질 수 있음.
-        - 그래서 '탭(짧은 클릭)'만 감지해서 오버레이를 열고,
-          '스크롤(드래그)'는 절대 막지 않도록 구현.
-
-        요구사항:
-        1) 이미지 탭 -> 어두운 화면 표시
-        2) 어두운 화면(배경) 탭 -> 원래 이미지로
-        3) 글자 탭 -> 링크 이동
-        4) 어두운 화면이 떠도 아래로 스크롤(드래그) 가능해야 함
-      */
+      /* ---------- Shop overlay behavior (원본 로직 유지) ---------- */
       const cards = Array.from(document.querySelectorAll(".shop-card"));
       const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
 
       function deactivateAll(){ cards.forEach(c => c.classList.remove("is-active")); }
 
-      // 탭/스크롤 구분용 임계값
       const TAP_MOVE_PX = 10;
 
       cards.forEach((card) => {
         const ov = card.querySelector(".overlay");
 
-        // ---------- 열기: "탭"일 때만 ----------
         let sx = 0, sy = 0, moved = false;
 
         function onStart(e){
@@ -486,19 +484,14 @@
           const t = e.touches ? e.touches[0] : e;
           const dx = Math.abs(t.clientX - sx);
           const dy = Math.abs(t.clientY - sy);
-          if(dx > TAP_MOVE_PX || dy > TAP_MOVE_PX) moved = true; // 스크롤/드래그
+          if(dx > TAP_MOVE_PX || dy > TAP_MOVE_PX) moved = true;
         }
         function onEnd(e){
-          // 글자(링크)면 아무것도 방해하지 않음
           const target = e.target;
           if (target && target.closest && target.closest(".ov-text")) return;
-
-          // 드래그/스크롤이면 열지 않음 (✅ 스크롤 방해 제거)
           if(moved) return;
 
-          // "탭"이면 토글
           if(card.classList.contains("is-active")){
-            // 이미 열려있고 카드 영역 탭 -> 열려있으면 그냥 유지(원하면 토글로 바꿀 수 있음)
             return;
           }
           deactivateAll();
@@ -506,17 +499,14 @@
         }
 
         if(isTouch){
-          // card에서 preventDefault를 절대 안 함 -> 스크롤 보장
           card.addEventListener("touchstart", onStart, { passive: true });
           card.addEventListener("touchmove", onMove, { passive: true });
           card.addEventListener("touchend", onEnd, { passive: true });
 
-          // ---------- 닫기: 오버레이 "배경" 탭 ----------
           if(ov){
             let osx=0, osy=0, omoved=false;
 
             ov.addEventListener("touchstart", (e)=>{
-              // 글자 영역이면 링크 이동을 방해하지 않음
               if(e.target.closest && e.target.closest(".ov-text")) return;
               const t=e.touches[0];
               osx=t.clientX; osy=t.clientY; omoved=false;
@@ -532,31 +522,21 @@
 
             ov.addEventListener("touchend", (e)=>{
               if(e.target.closest && e.target.closest(".ov-text")) return;
-
-              // ✅ 드래그(스크롤)면 닫지 않음 -> 스크롤 가능
               if(omoved) return;
-
-              // ✅ 배경 탭이면 닫기
               card.classList.remove("is-active");
             }, { passive:true });
           }
 
-          // 카드 밖 탭하면 닫기 (탭만)
           document.addEventListener("touchend", (e)=>{
             const tappedCard = e.target.closest?.(".shop-card");
             if(!tappedCard){
-              // 스크롤과 구분 없이 단순 터치 종료라 오작동할 수 있어
-              // 안전하게: 오버레이가 열려 있을 때만 닫도록
               if(cards.some(c=>c.classList.contains("is-active"))){
-                // 바깥을 '탭'한 경우만 닫고 싶으면 move를 추가로 추적해야 하지만
-                // 여기서는 과도한 복잡도 없이 유지
                 deactivateAll();
               }
             }
           }, { passive:true });
 
         } else {
-          // PC: 클릭 토글(링크 제외)
           card.addEventListener("click", (e)=>{
             if(e.target.closest && e.target.closest(".ov-text")) return;
             e.preventDefault();
@@ -564,7 +544,6 @@
             else { deactivateAll(); card.classList.add("is-active"); }
           });
 
-          // PC에서도 배경 클릭하면 닫기
           if(ov){
             ov.addEventListener("click", (e)=>{
               if(e.target.closest && e.target.closest(".ov-text")) return;
@@ -573,7 +552,6 @@
             });
           }
 
-          // 키보드 토글
           card.addEventListener("keydown", (e)=>{
             if(e.key==="Enter" || e.key===" "){
               if(document.activeElement===card){
