@@ -6,10 +6,14 @@
   <title>Works — Gakion</title>
   <meta name="description" content="Works — Gakion" />
 
-  <!-- Space Grotesk -->
+  <!-- Montserrat (brand + menu) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Pretendard (everything else) -->
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 
   <style>
     :root{
@@ -23,6 +27,11 @@
       /* Classic fade */
       --fade-dur: 1200ms;
       --fade-ease: cubic-bezier(.22, 1, .36, 1);
+
+      /* ✅ mobile dropdown menu */
+      --menu-bg: rgba(245,245,245,.98); /* 밝은 회색빛 흰 배경 */
+      --menu-dur: 360ms;
+      --menu-ease: cubic-bezier(.22, 1, .36, 1);
     }
 
     *{ box-sizing:border-box; }
@@ -32,9 +41,12 @@
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      font-family: Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
+
+      /* ✅ Pretendard: 본문/푸터 포함 전부 */
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
                    "Segoe UI", Roboto, "Apple SD Gothic Neo",
                    "Noto Sans KR", "Malgun Gothic", sans-serif;
+
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
@@ -63,22 +75,33 @@
       padding:16px 0;
     }
 
+    /* ✅ brand: Montserrat */
     .brand{
-      font-family:"Space Grotesk", sans-serif;
+      font-family:"Montserrat", sans-serif;
       font-size:22.5px;
       font-weight:700;
+      letter-spacing:.35px;
+      line-height:1.1;
+      min-width:160px;
     }
 
     nav.desktop{
       display:none;
       gap:18px;
       font-size:13px;
+      letter-spacing:.6px;
+      white-space:nowrap;
+      align-items:center;
     }
 
+    /* ✅ desktop menu: Montserrat */
     nav.desktop a{
-      font-family:"Space Grotesk", sans-serif;
-      font-weight:500;
+      font-family:"Montserrat", sans-serif;
+      font-weight:600;
+      padding:8px 4px;
+      color: rgba(0,0,0,.82);
     }
+    nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
     .menu-btn{
       width:42px;
@@ -86,12 +109,15 @@
       background:transparent;
       border:0;
       cursor:pointer;
+      border-radius:12px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .menu-icon{
       width:18px;
       height:12px;
       position:relative;
+      margin:0 auto;
     }
 
     .menu-icon span{
@@ -99,13 +125,14 @@
       left:0; right:0;
       height:1px;
       background:#000;
+      opacity:.82;
     }
 
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* ---------- Drawer ---------- */
+    /* ---------- Mobile dropdown menu (top -> down) ---------- */
     .drawer-overlay{
       position:fixed;
       inset:0;
@@ -118,19 +145,24 @@
 
     .drawer{
       position:fixed;
-      top:0; right:0;
-      width:50vw;
-      height:100%;
-      background:rgba(250,248,244,.96);
+      left:0; right:0;
+      top:0;
+      height:50vh;
+      background:var(--menu-bg);
       backdrop-filter:blur(10px);
-      transform:translateX(102%);
-      transition:transform .26s cubic-bezier(.2,.8,.2,1);
+      transform:translateY(-105%);
+      transition:transform var(--menu-dur) var(--menu-ease);
       box-shadow:var(--shadow);
       z-index:1001;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:18px var(--pad);
     }
 
     body[data-menu-open="true"] .drawer{
-      transform:translateX(0);
+      transform:translateY(0);
     }
 
     body[data-menu-open="true"] .drawer-overlay{
@@ -141,13 +173,27 @@
     .drawer-nav{
       display:flex;
       flex-direction:column;
-      padding:18px;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      max-width:520px;
+      text-align:center;
     }
 
+    /* ✅ mobile menu: Montserrat */
     .drawer-nav a{
-      font-family:"Space Grotesk", sans-serif;
-      padding:14px 12px;
+      font-family:"Montserrat", sans-serif;
+      font-weight:600;
+      font-size:16px;
+      letter-spacing:.6px;
+      padding:12px 12px;
+      width:100%;
+      max-width:320px;
+      border-radius:14px;
+      color:rgba(0,0,0,.86);
     }
+    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
 
     /* ---------- Main ---------- */
     main{
@@ -155,11 +201,12 @@
     }
 
     .page-title{
-      font-family:"Space Grotesk", sans-serif;
+      /* ✅ 본문 영역: Pretendard 유지 */
       font-size:28px;
       font-weight:700;
       text-align:center;
       margin:14px 0 22px;
+      letter-spacing:.2px;
     }
 
     .work-item{
@@ -194,6 +241,10 @@
       object-fit:cover;
       opacity:0;
       transition:opacity var(--fade-dur) var(--fade-ease);
+      -webkit-user-drag:none;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
 
     .work-thumb.is-active{
@@ -218,13 +269,22 @@
       text-align:center;
       font-size:12.5px;
       color:rgba(0,0,0,.56);
+      letter-spacing:.2px;
     }
 
     @media (min-width:900px){
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
+
+      /* desktop에서는 모바일 드롭다운 사용 안 함 */
+      .drawer, .drawer-overlay{ display:none; }
+
       .page-title{ font-size:32px; }
       .work-caption{ font-size:17px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; }
     }
   </style>
 </head>
@@ -235,15 +295,15 @@
     <div class="topbar">
       <a class="brand" href="index.html">Gakion</a>
 
-      <nav class="desktop">
+      <nav class="desktop" aria-label="Primary">
         <a href="cv.html">CV</a>
         <a href="works.html">Works</a>
         <a href="contact.html">Contact</a>
         <a href="shop.html">Shop</a>
       </nav>
 
-      <button class="menu-btn" id="menuOpenBtn">
-        <div class="menu-icon">
+      <button class="menu-btn" id="menuOpenBtn" type="button" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
+        <div class="menu-icon" aria-hidden="true">
           <span></span><span></span><span></span>
         </div>
       </button>
@@ -251,9 +311,9 @@
   </div>
 </header>
 
-<div class="drawer-overlay" id="drawerOverlay"></div>
-<aside class="drawer" id="drawer">
-  <nav class="drawer-nav">
+<div class="drawer-overlay" id="drawerOverlay" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
+  <nav class="drawer-nav" aria-label="Primary (mobile)">
     <a href="cv.html">CV</a>
     <a href="works.html">Works</a>
     <a href="contact.html">Contact</a>
@@ -271,11 +331,11 @@
           <div class="work-track">
             <div class="ratio-box"></div>
 
-            <img class="work-thumb" src="images/works/Work_A1.jpg">
-            <img class="work-thumb" src="images/works/Work_A2.jpg">
-            <img class="work-thumb" src="images/works/Work_A3.jpg">
-            <img class="work-thumb" src="images/works/Work_A4.jpg">
-            <img class="work-thumb" src="images/works/Work_A5.jpg">
+            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work A image 1">
+            <img class="work-thumb" src="images/works/Work_A2.jpg" alt="Work A image 2">
+            <img class="work-thumb" src="images/works/Work_A3.jpg" alt="Work A image 3">
+            <img class="work-thumb" src="images/works/Work_A4.jpg" alt="Work A image 4">
+            <img class="work-thumb" src="images/works/Work_A5.jpg" alt="Work A image 5">
           </div>
         </div>
       </a>
@@ -293,38 +353,71 @@
 </footer>
 
 <script>
-/* Mobile drawer */
+/* Mobile dropdown menu */
 (function(){
-  const body=document.body;
-  const openBtn=document.getElementById("menuOpenBtn");
-  const drawer=document.getElementById("drawer");
-  const overlay=document.getElementById("drawerOverlay");
+  const body = document.body;
+  const openBtn = document.getElementById("menuOpenBtn");
+  const drawer = document.getElementById("drawer");
+  const overlay = document.getElementById("drawerOverlay");
 
-  openBtn.onclick=()=>{ body.dataset.menuOpen="true"; };
-  overlay.onclick=()=>{ body.dataset.menuOpen="false"; };
+  function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+
+  function openMenu(){
+    body.dataset.menuOpen = "true";
+    openBtn.setAttribute("aria-expanded", "true");
+    drawer.setAttribute("aria-hidden", "false");
+    setOverlayHidden(false);
+    body.style.overflow = "hidden";
+  }
+
+  function closeMenu(){
+    body.dataset.menuOpen = "false";
+    openBtn.setAttribute("aria-expanded", "false");
+    drawer.setAttribute("aria-hidden", "true");
+    body.style.overflow = "";
+    window.setTimeout(() => setOverlayHidden(true), 180);
+  }
+
+  if (openBtn) openBtn.addEventListener("click", openMenu);
+  if (overlay) overlay.addEventListener("click", closeMenu);
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
+  });
+
+  body.dataset.menuOpen = "false";
+  setOverlayHidden(true);
 })();
 
 /* Fade slider */
 (function(){
-  const sliders=document.querySelectorAll(".work-slider");
+  const sliders = document.querySelectorAll(".work-slider");
 
   sliders.forEach(slider=>{
-    const imgs=[...slider.querySelectorAll(".work-thumb")];
-    const box=slider.querySelector(".ratio-box");
-    if(imgs.length<=1) return;
+    const imgs = Array.from(slider.querySelectorAll(".work-thumb"));
+    const box = slider.querySelector(".ratio-box");
+    if (imgs.length <= 1) return;
 
-    let i=0;
+    let i = 0;
     imgs[i].classList.add("is-active");
 
-    imgs[0].onload=()=>{
-      box.style.paddingTop=(imgs[0].naturalHeight/imgs[0].naturalWidth*100)+"%";
-    };
+    imgs[0].addEventListener("load", ()=>{
+      if (!imgs[0].naturalWidth) return;
+      box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
+    }, { once:true });
+
+    // 캐시로 load가 이미 끝난 경우 대비
+    if (imgs[0].complete && imgs[0].naturalWidth){
+      box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
+    }
+
+    const interval = Number(slider.dataset.interval) || 3600;
 
     setInterval(()=>{
       imgs[i].classList.remove("is-active");
-      i=(i+1)%imgs.length;
+      i = (i + 1) % imgs.length;
       imgs[i].classList.add("is-active");
-    }, slider.dataset.interval||3600);
+    }, interval);
   });
 })();
 </script>
