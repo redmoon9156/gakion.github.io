@@ -211,7 +211,6 @@
       gap: 22px;
     }
 
-    /* ✅ 카드 전체는 더 이상 링크가 아님(모바일 UX를 위해) */
     .shop-card{
       position: relative;
       display:block;
@@ -256,7 +255,7 @@
       background: rgba(0,0,0,.50);
       opacity: 0;
       transition: opacity .18s ease;
-      pointer-events: none; /* 기본은 클릭 안 받음 */
+      pointer-events: none;
     }
 
     .overlay .ov-text{
@@ -265,7 +264,7 @@
       color:#fff;
       letter-spacing:.4px;
       line-height:1.25;
-      pointer-events: auto; /* ✅ 글자 영역만 클릭 받게 */
+      pointer-events: auto;
     }
     .overlay .ov-text .t1{
       font-weight:700;
@@ -279,7 +278,6 @@
       margin-top: 8px;
     }
 
-    /* ✅ 글자 클릭용 링크 */
     .overlay-link{
       display:inline-block;
       color:#fff;
@@ -296,7 +294,7 @@
     .shop-card:hover .overlay,
     .shop-card:focus-visible .overlay{
       opacity: 1;
-      pointer-events: auto; /* PC에서도 오버레이 클릭 가능 */
+      pointer-events: auto;
     }
 
     /* ✅ 모바일 active 상태 */
@@ -306,7 +304,7 @@
     }
     .shop-card.is-active .overlay{
       opacity: 1;
-      pointer-events: auto; /* ✅ 오버레이 배경을 탭하면 닫을 수 있게 */
+      pointer-events: auto; /* ✅ 어두운 배경(overlay)도 클릭 받음 */
     }
 
     /* Footer */
@@ -382,13 +380,12 @@
 
       <section class="shop-grid" aria-label="Available books">
 
-        <!-- ✅ 링크를 카드 전체에 걸지 않고, 글자(overlay)만 링크로 이동 -->
         <div class="shop-card" role="button" tabindex="0" aria-label="Open Fox Dream details overlay">
           <div class="thumb">
             <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="lazy" decoding="async" draggable="false">
           </div>
 
-          <!-- 오버레이: 배경 탭하면 닫힘 / 글자 탭하면 이동 -->
+          <!-- ✅ 오버레이: "어두운 배경 자체"를 탭하면 닫힘 / 글자 탭하면 이동 -->
           <div class="overlay" aria-hidden="true">
             <div class="ov-text">
               <a class="overlay-link" href="shop_work_A.html" aria-label="Go to Fox Dream page">
@@ -417,9 +414,9 @@
       const openBtn = document.getElementById("menuOpenBtn");
       const closeBtn = document.getElementById("menuCloseBtn");
       const drawer = document.getElementById("drawer");
-      const overlay = document.getElementById("drawerOverlay");
+      const drawerOverlay = document.getElementById("drawerOverlay");
 
-      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+      function setOverlayHidden(isHidden){ drawerOverlay.hidden = isHidden; }
       function openMenu(){
         body.dataset.menuOpen = "true";
         openBtn.setAttribute("aria-expanded", "true");
@@ -437,7 +434,7 @@
 
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (closeBtn) closeBtn.addEventListener("click", closeMenu);
-      if (overlay) overlay.addEventListener("click", closeMenu);
+      if (drawerOverlay) drawerOverlay.addEventListener("click", closeMenu);
 
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
@@ -446,10 +443,11 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ---------- Mobile behavior ----------
-         - 카드/이미지 탭: 오버레이 열기
-         - 오버레이의 "배경" 탭: 오버레이 닫기
-         - 오버레이의 "글자(링크)" 탭: shop_work_A.html 이동
+      /* ---------- Shop card overlay behavior ----------
+         요구사항:
+         1) 이미지(카드) 탭 -> 오버레이(어두운 배경+글자) 표시
+         2) 오버레이의 "어두운 배경"을 탭 -> 오버레이 닫힘(원래 이미지로)
+         3) 오버레이의 "글자" 탭 -> shop_work_A.html 이동
       */
       const cards = Array.from(document.querySelectorAll(".shop-card"));
       const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
@@ -460,62 +458,58 @@
 
       cards.forEach((card) => {
         const ov = card.querySelector(".overlay");
-        const ovText = card.querySelector(".ov-text");
 
-        // 카드(이미지 영역) 탭하면 오버레이 열기
-        function activateCard(e){
-          // 오버레이 글자(링크) 탭은 여기서 막지 않음
+        function openOverlay(e){
+          // 글자(링크) 클릭은 막지 않음
           if (e && e.target && e.target.closest && e.target.closest(".ov-text")) return;
 
-          // 오버레이가 떠있고 배경을 탭하면 닫기
-          if (card.classList.contains("is-active") && e && e.target && e.target.classList && e.target.classList.contains("overlay")){
-            e.preventDefault();
-            card.classList.remove("is-active");
-            return;
-          }
-
-          // 기본: 오버레이 열기
           if (e) e.preventDefault();
           deactivateAll();
           card.classList.add("is-active");
         }
 
+        function closeOverlay(e){
+          // ✅ 오버레이 배경(overlay 자체) 클릭/탭이면 닫기
+          // 글자(ov-text) 내부 클릭이면 닫지 않음(링크 이동)
+          if (e && e.target && e.target.closest && e.target.closest(".ov-text")) return;
+
+          if (e) e.preventDefault();
+          card.classList.remove("is-active");
+        }
+
+        // 카드(이미지) 누르면 열기
         if (isTouch){
-          // iOS는 touchstart에서 제어가 가장 확실
-          card.addEventListener("touchstart", activateCard, { passive: false });
-          // 백업
-          card.addEventListener("click", activateCard, { passive: false });
+          card.addEventListener("touchstart", openOverlay, { passive: false });
+          card.addEventListener("click", openOverlay, { passive: false });
 
-          // 오버레이 배경만 탭했을 때 닫기 (명시적으로 처리)
+          // ✅ "어두운 배경" 자체를 누르면 닫기 (핵심)
           if (ov){
-            ov.addEventListener("touchstart", (e) => {
-              // 글자 영역이면 링크 이동을 막지 않음
-              if (e.target.closest && e.target.closest(".ov-text")) return;
-              // 배경 탭이면 닫기
-              e.preventDefault();
-              card.classList.remove("is-active");
-            }, { passive: false });
-
-            ov.addEventListener("click", (e) => {
-              if (e.target.closest && e.target.closest(".ov-text")) return;
-              e.preventDefault();
-              card.classList.remove("is-active");
-            }, { passive: false });
+            ov.addEventListener("touchstart", closeOverlay, { passive: false });
+            ov.addEventListener("click", closeOverlay, { passive: false });
           }
 
-          // 카드 밖 터치하면 닫기
+          // 카드 밖 터치하면 닫기 (원하시면 유지)
           document.addEventListener("touchstart", (e) => {
             const tappedCard = e.target.closest?.(".shop-card");
             if (!tappedCard) deactivateAll();
           }, { passive: true });
+
         } else {
-          // PC: 클릭하면 이동이 아니라(카드가 링크가 아님) 그냥 오버레이 토글 느낌
+          // PC: 클릭하면 토글, 오버레이 배경 클릭하면 닫기
           card.addEventListener("click", (e) => {
-            if (e.target.closest && e.target.closest(".ov-text")) return; // 텍스트 링크는 이동
+            if (e.target.closest && e.target.closest(".ov-text")) return; // 글자는 링크 이동
             e.preventDefault();
             if (card.classList.contains("is-active")) card.classList.remove("is-active");
             else { deactivateAll(); card.classList.add("is-active"); }
           });
+
+          if (ov){
+            ov.addEventListener("click", (e) => {
+              if (e.target.closest && e.target.closest(".ov-text")) return;
+              e.preventDefault();
+              card.classList.remove("is-active");
+            });
+          }
 
           card.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
