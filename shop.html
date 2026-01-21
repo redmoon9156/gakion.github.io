@@ -211,6 +211,7 @@
       gap: 22px;
     }
 
+    /* ✅ 카드 전체는 더 이상 링크가 아님(모바일 UX를 위해) */
     .shop-card{
       position: relative;
       display:block;
@@ -220,7 +221,7 @@
       background: transparent;
       -webkit-tap-highlight-color: transparent;
       cursor: pointer;
-      touch-action: manipulation; /* ✅ iOS에서 빠른 탭 처리 안정 */
+      touch-action: manipulation;
     }
 
     .thumb{
@@ -255,7 +256,7 @@
       background: rgba(0,0,0,.50);
       opacity: 0;
       transition: opacity .18s ease;
-      pointer-events: none;
+      pointer-events: none; /* 기본은 클릭 안 받음 */
     }
 
     .overlay .ov-text{
@@ -264,6 +265,7 @@
       color:#fff;
       letter-spacing:.4px;
       line-height:1.25;
+      pointer-events: auto; /* ✅ 글자 영역만 클릭 받게 */
     }
     .overlay .ov-text .t1{
       font-weight:700;
@@ -277,6 +279,14 @@
       margin-top: 8px;
     }
 
+    /* ✅ 글자 클릭용 링크 */
+    .overlay-link{
+      display:inline-block;
+      color:#fff;
+      text-decoration:none;
+    }
+    .overlay-link:active{ opacity:.92; }
+
     /* PC hover/focus */
     .shop-card:hover .thumb img,
     .shop-card:focus-visible .thumb img{
@@ -286,15 +296,17 @@
     .shop-card:hover .overlay,
     .shop-card:focus-visible .overlay{
       opacity: 1;
+      pointer-events: auto; /* PC에서도 오버레이 클릭 가능 */
     }
 
-    /* ✅ 모바일 1탭 활성화 상태 */
+    /* ✅ 모바일 active 상태 */
     .shop-card.is-active .thumb img{
       filter: blur(2.2px) brightness(.92);
       transform: scale(1.01);
     }
     .shop-card.is-active .overlay{
       opacity: 1;
+      pointer-events: auto; /* ✅ 오버레이 배경을 탭하면 닫을 수 있게 */
     }
 
     /* Footer */
@@ -369,19 +381,25 @@
       <div class="page-title">Available Books</div>
 
       <section class="shop-grid" aria-label="Available books">
-        <a class="shop-card" href="shop_work_A.html" aria-label="Open Fox Dream">
+
+        <!-- ✅ 링크를 카드 전체에 걸지 않고, 글자(overlay)만 링크로 이동 -->
+        <div class="shop-card" role="button" tabindex="0" aria-label="Open Fox Dream details overlay">
           <div class="thumb">
             <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="lazy" decoding="async" draggable="false">
           </div>
 
+          <!-- 오버레이: 배경 탭하면 닫힘 / 글자 탭하면 이동 -->
           <div class="overlay" aria-hidden="true">
             <div class="ov-text">
-              <div class="t1">Fox Dream</div>
-              <div class="t2">Somebooks</div>
-              <div class="t3">2026</div>
+              <a class="overlay-link" href="shop_work_A.html" aria-label="Go to Fox Dream page">
+                <div class="t1">Fox Dream</div>
+                <div class="t2">Somebooks</div>
+                <div class="t3">2026</div>
+              </a>
             </div>
           </div>
-        </a>
+        </div>
+
       </section>
     </div>
   </main>
@@ -428,7 +446,11 @@
       body.dataset.menuOpen = "false";
       setOverlayHidden(true);
 
-      /* ---------- Mobile: 1st tap = show overlay, 2nd tap = navigate ---------- */
+      /* ---------- Mobile behavior ----------
+         - 카드/이미지 탭: 오버레이 열기
+         - 오버레이의 "배경" 탭: 오버레이 닫기
+         - 오버레이의 "글자(링크)" 탭: shop_work_A.html 이동
+      */
       const cards = Array.from(document.querySelectorAll(".shop-card"));
       const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
 
@@ -436,36 +458,76 @@
         cards.forEach(c => c.classList.remove("is-active"));
       }
 
-      if (isTouch){
-        cards.forEach((card) => {
-          // ✅ iOS Safari 대응: click보다 touchstart에서 막아야 확실
-          card.addEventListener("touchstart", (e) => {
-            if (card.classList.contains("is-active")) {
-              // 두 번째 탭: 이동 허용 (여기서 preventDefault 하지 않음)
-              return;
-            }
+      cards.forEach((card) => {
+        const ov = card.querySelector(".overlay");
+        const ovText = card.querySelector(".ov-text");
 
-            // 첫 번째 탭: 오버레이만 띄우고 이동 차단
+        // 카드(이미지 영역) 탭하면 오버레이 열기
+        function activateCard(e){
+          // 오버레이 글자(링크) 탭은 여기서 막지 않음
+          if (e && e.target && e.target.closest && e.target.closest(".ov-text")) return;
+
+          // 오버레이가 떠있고 배경을 탭하면 닫기
+          if (card.classList.contains("is-active") && e && e.target && e.target.classList && e.target.classList.contains("overlay")){
             e.preventDefault();
-            deactivateAll();
-            card.classList.add("is-active");
-          }, { passive: false });
+            card.classList.remove("is-active");
+            return;
+          }
 
-          // 클릭(혹시 일부 기기에서 touchstart가 안 잡힐 때) 백업
+          // 기본: 오버레이 열기
+          if (e) e.preventDefault();
+          deactivateAll();
+          card.classList.add("is-active");
+        }
+
+        if (isTouch){
+          // iOS는 touchstart에서 제어가 가장 확실
+          card.addEventListener("touchstart", activateCard, { passive: false });
+          // 백업
+          card.addEventListener("click", activateCard, { passive: false });
+
+          // 오버레이 배경만 탭했을 때 닫기 (명시적으로 처리)
+          if (ov){
+            ov.addEventListener("touchstart", (e) => {
+              // 글자 영역이면 링크 이동을 막지 않음
+              if (e.target.closest && e.target.closest(".ov-text")) return;
+              // 배경 탭이면 닫기
+              e.preventDefault();
+              card.classList.remove("is-active");
+            }, { passive: false });
+
+            ov.addEventListener("click", (e) => {
+              if (e.target.closest && e.target.closest(".ov-text")) return;
+              e.preventDefault();
+              card.classList.remove("is-active");
+            }, { passive: false });
+          }
+
+          // 카드 밖 터치하면 닫기
+          document.addEventListener("touchstart", (e) => {
+            const tappedCard = e.target.closest?.(".shop-card");
+            if (!tappedCard) deactivateAll();
+          }, { passive: true });
+        } else {
+          // PC: 클릭하면 이동이 아니라(카드가 링크가 아님) 그냥 오버레이 토글 느낌
           card.addEventListener("click", (e) => {
-            if (card.classList.contains("is-active")) return; // 두 번째 클릭은 이동
+            if (e.target.closest && e.target.closest(".ov-text")) return; // 텍스트 링크는 이동
             e.preventDefault();
-            deactivateAll();
-            card.classList.add("is-active");
-          }, { passive: false });
-        });
+            if (card.classList.contains("is-active")) card.classList.remove("is-active");
+            else { deactivateAll(); card.classList.add("is-active"); }
+          });
 
-        // 카드 밖을 터치하면 오버레이 해제
-        document.addEventListener("touchstart", (e) => {
-          const tappedCard = e.target.closest?.(".shop-card");
-          if (!tappedCard) deactivateAll();
-        }, { passive: true });
-      }
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              if (document.activeElement === card) {
+                e.preventDefault();
+                if (card.classList.contains("is-active")) card.classList.remove("is-active");
+                else { deactivateAll(); card.classList.add("is-active"); }
+              }
+            }
+          });
+        }
+      });
 
       /* ---------- Make image copy annoying (right click / drag / select) ---------- */
       document.addEventListener("contextmenu", function (e) {
