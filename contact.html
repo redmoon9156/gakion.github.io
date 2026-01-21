@@ -22,12 +22,10 @@
       --muted:#666666;
       --max:1060px;
       --pad:18px;
-      --radius:14px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-      --line: rgba(0,0,0,.14);
 
       /* ✅ mobile dropdown menu */
-      --menu-bg: rgba(245,245,245,.98); /* 밝은 회색빛 흰 배경 */
+      --menu-bg: rgba(245,245,245,.98);
       --menu-dur: 360ms;
       --menu-ease: cubic-bezier(.22, 1, .36, 1);
     }
@@ -51,7 +49,7 @@
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
 
-      /* ✅ footer를 항상 하단으로 보내기 */
+      /* footer 하단 고정 */
       display:flex;
       flex-direction:column;
       min-height:100vh;
@@ -209,14 +207,14 @@
       flex: 1;
     }
 
-    /* Contact layout */
     .contact{
-      max-width: 640px;
+      max-width: 760px;
       margin: 0 auto;
       padding-top: 10px;
+      text-align:center;
     }
 
-    /* Title (✅ Pretendard) */
+    /* Title (Pretendard) */
     .page-title{
       font-size: 28px;
       font-weight: 700;
@@ -225,67 +223,50 @@
       text-align: center;
     }
 
-    /* ✅ 윤곽선 유지 + 라운드 제거 */
-    .contact-card{
-      border: 1px solid rgba(0,0,0,.12);
-      border-radius: 0;   /* 라운드 제거 */
-      padding: 18px;
-      background: #fff;
-    }
-
-    .row{
+    /* ✅ 임시 윤곽선/블럭 제거: 그냥 가운데 정렬만 */
+    .contact-links{
       display:flex;
+      flex-direction:column;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
       gap: 14px;
-      padding: 14px 6px;
-      border-bottom: 1px solid rgba(0,0,0,.08);
-    }
-    .row:last-child{ border-bottom: 0; }
-
-    /* ✅ label도 Pretendard (메뉴/브랜드 아님) */
-    .label{
-      font-weight: 600;
-      letter-spacing: .4px;
-      color: rgba(0,0,0,.72);
-      min-width: 92px;
+      padding-top: 4px;
     }
 
-    .value{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap: 10px;
-      flex-wrap: wrap;
-      text-align:right;
-      margin-left: auto;
-    }
-
-    .link{
+    .contact-link{
       display:inline-flex;
       align-items:center;
+      justify-content:center;
       gap: 10px;
       padding: 10px 0;
-      border-radius: 0;     /* 라운드 제거 */
-      border: 0;
-      background: transparent;
-      transition: opacity .12s ease, transform .12s ease;
       -webkit-tap-highlight-color: transparent;
+      transition: opacity .12s ease, transform .12s ease;
     }
-    .link:hover{
+    .contact-link:hover{
       opacity: .86;
       transform: translateY(-1px);
     }
-    .link:active{
+    .contact-link:active{
       transform: translateY(0);
     }
 
-    .muted{ color: rgba(0,0,0,.64); }
+    .email-text{
+      color: rgba(0,0,0,.72);
+      font-size: 15px;
+      letter-spacing: .1px;
+    }
 
     .ig-icon{
       width: 18px;
       height: 18px;
       display:block;
+      color: rgba(0,0,0,.72);
+    }
+
+    .ig-text{
+      color: rgba(0,0,0,.72);
+      font-size: 15px;
+      letter-spacing: .1px;
     }
 
     /* Footer */
@@ -316,8 +297,7 @@
         margin: 18px 0 26px;
       }
 
-      .contact-card{ padding: 22px; }
-      .label{ min-width: 110px; }
+      .email-text, .ig-text{ font-size: 16px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -364,29 +344,21 @@
       <section class="contact" aria-label="Contact">
         <div class="page-title">Contact</div>
 
-        <div class="contact-card" role="group" aria-label="Contact links">
-          <div class="row">
-            <div class="label">Email</div>
-            <div class="value">
-              <a class="link" href="mailto:gakion.kim@gmail.com" aria-label="Email gakion.kim@gmail.com">
-                <span class="muted">gakion.kim@gmail.com</span>
-              </a>
-            </div>
-          </div>
+        <div class="contact-links" aria-label="Contact links">
+          <!-- ✅ Email: 가운데 정렬로 주소만 -->
+          <a class="contact-link" href="mailto:gakion.kim@gmail.com" aria-label="Email gakion.kim@gmail.com">
+            <span class="email-text">gakion.kim@gmail.com</span>
+          </a>
 
-          <div class="row">
-            <div class="label">SNS</div>
-            <div class="value">
-              <a class="link" href="https://www.instagram.com/gakion.kim/#" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
-                <svg class="ig-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M7.5 2.75h9A4.75 4.75 0 0 1 21.25 7.5v9A4.75 4.75 0 0 1 16.5 21.25h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z" stroke="currentColor" stroke-width="1.7"/>
-                  <path d="M12 16.2A4.2 4.2 0 1 0 12 7.8a4.2 4.2 0 0 0 0 8.4Z" stroke="currentColor" stroke-width="1.7"/>
-                  <path d="M17.2 6.8h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
-                </svg>
-                <span class="muted">Instagram</span>
-              </a>
-            </div>
-          </div>
+          <!-- ✅ Instagram: 가운데 정렬로 아이콘 + Instagram만 -->
+          <a class="contact-link" href="https://www.instagram.com/gakion.kim/#" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
+            <svg class="ig-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7.5 2.75h9A4.75 4.75 0 0 1 21.25 7.5v9A4.75 4.75 0 0 1 16.5 21.25h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M12 16.2A4.2 4.2 0 1 0 12 7.8a4.2 4.2 0 0 0 0 8.4Z" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M17.2 6.8h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+            <span class="ig-text">Instagram</span>
+          </a>
         </div>
 
       </section>
