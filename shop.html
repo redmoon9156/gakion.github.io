@@ -206,8 +206,9 @@
       flex: 1;
     }
 
-    /* ✅ Title: Pretendard (brand/menu만 Montserrat) */
+    /* ✅ Title: Montserrat (요청사항 반영) */
     .page-title{
+      font-family:"Montserrat", sans-serif;
       font-size: 28px;
       font-weight: 700;
       letter-spacing: .2px;
@@ -319,10 +320,10 @@
       pointer-events: auto;
     }
 
-    /* ✅ 3) 모바일에서 이미지가 너무 커서: 30% 줄이기(대략) */
+    /* ✅ 모바일에서 이미지(카드) 크기 60%로 축소 */
     @media (max-width: 520px){
       .shop-grid{
-        grid-template-columns: min(300px, 92vw);
+        grid-template-columns: min(252px, 92vw); /* 420px의 60% = 252px */
       }
       .page-title{ margin-bottom: 18px; }
     }
