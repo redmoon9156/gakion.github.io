@@ -214,31 +214,33 @@
       text-align:center;
     }
 
-    /* Title (Pretendard) */
+    /* ✅ Title: Montserrat */
     .page-title{
+      font-family:"Montserrat", sans-serif;
       font-size: 28px;
       font-weight: 700;
-      letter-spacing: .2px;
-      margin: 14px 0 22px;
+      letter-spacing: .35px;
+      margin: 14px 0 28px; /* 제목과 첫 아이콘 사이 여백 확보 */
       text-align: center;
     }
 
-    /* ✅ 임시 윤곽선/블럭 제거: 그냥 가운데 정렬만 */
+    /* ✅ 세로 배치(아이콘 위, 텍스트 아래) */
     .contact-links{
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap: 14px;
-      padding-top: 4px;
+      gap: 26px;            /* 이메일 블록과 인스타 블록 사이 */
+      padding-top: 2px;
     }
 
     .contact-link{
       display:inline-flex;
+      flex-direction:column; /* 아이콘 위로 */
       align-items:center;
       justify-content:center;
-      gap: 10px;
-      padding: 10px 0;
+      gap: 10px;             /* 아이콘-텍스트 간격 */
+      padding: 4px 0;
       -webkit-tap-highlight-color: transparent;
       transition: opacity .12s ease, transform .12s ease;
     }
@@ -250,23 +252,28 @@
       transform: translateY(0);
     }
 
-    .email-text{
-      color: rgba(0,0,0,.72);
-      font-size: 15px;
-      letter-spacing: .1px;
-    }
-
-    .ig-icon{
+    /* 아이콘 공통 톤 (인스타와 동일한 분위기) */
+    .icon{
       width: 18px;
       height: 18px;
       display:block;
       color: rgba(0,0,0,.72);
     }
 
+    /* 이메일 텍스트 */
+    .email-text{
+      color: rgba(0,0,0,.72);
+      font-size: 15px;
+      letter-spacing: .1px;
+      line-height: 1.2;
+    }
+
+    /* 인스타 텍스트 */
     .ig-text{
       color: rgba(0,0,0,.72);
       font-size: 15px;
       letter-spacing: .1px;
+      line-height: 1.2;
     }
 
     /* Footer */
@@ -294,10 +301,13 @@
 
       .page-title{
         font-size: 32px;
-        margin: 18px 0 26px;
+        margin: 18px 0 34px;
       }
 
       .email-text, .ig-text{ font-size: 16px; }
+      .contact-links{ gap: 30px; }
+      .contact-link{ gap: 12px; }
+      .icon{ width: 19px; height: 19px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -345,16 +355,25 @@
         <div class="page-title">Contact</div>
 
         <div class="contact-links" aria-label="Contact links">
-          <!-- ✅ Email: 가운데 정렬로 주소만 -->
+          <!-- ✅ Email: 아이콘(봉투) + 주소, 세로/가운데 정렬 -->
           <a class="contact-link" href="mailto:gakion.kim@gmail.com" aria-label="Email gakion.kim@gmail.com">
+            <!-- Envelope icon (line only, minimal) -->
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5.5 7.5h13A2.5 2.5 0 0 1 21 10v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18v-8A2.5 2.5 0 0 1 5.5 7.5Z"
+                    stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+              <path d="M4.6 9.1 12 13.8l7.4-4.7"
+                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <span class="email-text">gakion.kim@gmail.com</span>
           </a>
 
-          <!-- ✅ Instagram: 가운데 정렬로 아이콘 + Instagram만 -->
+          <!-- ✅ Instagram: 아이콘 위 / 글자 아래, 가운데 정렬 -->
           <a class="contact-link" href="https://www.instagram.com/gakion.kim/#" target="_blank" rel="noopener noreferrer" aria-label="Open Instagram">
-            <svg class="ig-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M7.5 2.75h9A4.75 4.75 0 0 1 21.25 7.5v9A4.75 4.75 0 0 1 16.5 21.25h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z" stroke="currentColor" stroke-width="1.7"/>
-              <path d="M12 16.2A4.2 4.2 0 1 0 12 7.8a4.2 4.2 0 0 0 0 8.4Z" stroke="currentColor" stroke-width="1.7"/>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7.5 2.75h9A4.75 4.75 0 0 1 21.25 7.5v9A4.75 4.75 0 0 1 16.5 21.25h-9A4.75 4.75 0 0 1 2.75 16.5v-9A4.75 4.75 0 0 1 7.5 2.75Z"
+                    stroke="currentColor" stroke-width="1.7"/>
+              <path d="M12 16.2A4.2 4.2 0 1 0 12 7.8a4.2 4.2 0 0 0 0 8.4Z"
+                    stroke="currentColor" stroke-width="1.7"/>
               <path d="M17.2 6.8h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
             </svg>
             <span class="ig-text">Instagram</span>
