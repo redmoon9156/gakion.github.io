@@ -222,14 +222,14 @@
       text-align: center;
     }
 
-    /* ✅ Works.html의 캡션 정도 크기/톤 */
+    /* ✅ 작품 설명: 크기 75%, 자간 -10(= -0.01em), 행간 = 글씨크기*1.75 */
     .work-desc{
       font-family:"Montserrat", sans-serif;
-      font-size:16px;
-      letter-spacing:.3px;
-      line-height:1.6;
+      font-size: 12px;           /* 16px * 0.75 = 12px */
+      letter-spacing: -0.01em;   /* 자간 -10(1000em 기준이라면 -0.01em로 근사) */
+      line-height: 1.75;         /* 글씨크기 * 1.75 */
       text-align:center;
-      white-space: pre-line; /* 사용자가 준 줄바꿈 그대로 */
+      white-space: pre-line;
       color: rgba(0,0,0,.82);
       margin: 0 auto 26px;
       max-width: 880px;
@@ -384,7 +384,13 @@
 
       main{ padding: 30px 0 100px; }
       .work-title{ font-size: 32px; margin: 18px 0 12px; }
-      .work-desc{ font-size:17px; }
+
+      /* ✅ 데스크탑에서도 75% 룰 유지: 17px * 0.75 = 12.75px ≈ 13px */
+      .work-desc{
+        font-size: 13px;
+        line-height: 1.75;
+        letter-spacing: -0.01em;
+      }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -441,7 +447,6 @@
     <div class="wrap">
       <div class="work-title">Fox Dream</div>
 
-      <!-- ✅ 요청하신 본문(그대로) -->
       <div class="work-desc">
 Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
 
@@ -616,7 +621,6 @@ Bologna Children’s Book Fair Finalist 2026
         if (e.key === "ArrowRight") next();
       });
 
-      /* ✅ 좌우 끝 영역 탭(포인터)로 이전/다음 — 모바일에서도 확실 */
       function edgeTapNavigatePointer(e){
         if (!lightbox.classList.contains("open")) return;
 
@@ -635,7 +639,6 @@ Bologna Children’s Book Fair Finalist 2026
       }
       if (lbFrame) lbFrame.addEventListener("pointerdown", edgeTapNavigatePointer);
 
-      /* ✅ (모바일) 스와이프(밀기)로 이전/다음 */
       let touchStartX = 0;
       let touchStartY = 0;
       let touchActive = false;
@@ -674,7 +677,6 @@ Bologna Children’s Book Fair Finalist 2026
         lbFrame.addEventListener("touchend", onTouchEnd, { passive: true });
       }
 
-      /* 복사/저장 “귀찮게” 만들기: 우클릭/드래그 막기 (완전 방지 아님) */
       document.addEventListener("contextmenu", function (e) {
         const t = e.target;
         if (!t) return;
