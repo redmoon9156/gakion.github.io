@@ -25,8 +25,7 @@
       --radius:14px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
 
-      /* ✅ mobile dropdown menu */
-      --menu-bg: rgba(245,245,245,.98); /* 밝은 회색빛 흰 배경 */
+      --menu-bg: rgba(245,245,245,.98);
       --menu-dur: 360ms;
       --menu-ease: cubic-bezier(.22, 1, .36, 1);
     }
@@ -38,22 +37,16 @@
       margin:0;
       background:var(--bg);
       color:var(--fg);
-
-      /* ✅ Pretendard: 본문/푸터 포함 전부 */
       font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
                    "Segoe UI", Roboto, "Apple SD Gothic Neo",
                    "Noto Sans KR", "Malgun Gothic", sans-serif;
-
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
 
-      /* footer 하단 고정 */
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -66,7 +59,6 @@
       width:100%;
     }
 
-    /* Header (same structure as index) */
     header{
       background:#ffffff;
       position:sticky;
@@ -82,7 +74,7 @@
       gap:14px;
     }
 
-    /* ✅ Brand: Montserrat */
+    /* ✅ Brand (index와 동일) */
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size:22.5px;
@@ -91,20 +83,18 @@
       line-height:1.1;
       min-width:160px;
 
-      /* ✅ 이미지 + 텍스트 한 줄 정렬 */
       display:inline-flex;
       align-items:center;
       gap:10px;
     }
 
-    /* ✅ 브랜드 아이콘: 글자 높이에 맞춰 자동 스케일 */
     .brand-mark{
-      height:1em;           /* 글자 크기(폰트 사이즈)에 자동 연동 */
+      height:1em;
       width:auto;
       display:block;
       object-fit:contain;
       flex:0 0 auto;
-      transform: translateY(0.02em); /* 베이스라인 미세 보정(원치 않으면 삭제 가능) */
+      transform: translateY(0.02em);
     }
 
     nav.desktop{
@@ -116,219 +106,162 @@
       align-items:center;
     }
 
-    /* ✅ Desktop menu: Montserrat */
     nav.desktop a{
       font-family:"Montserrat", sans-serif;
       font-weight:600;
-      padding: 8px 4px;
-      color: rgba(0,0,0,.82);
+      padding:8px 4px;
+      color:rgba(0,0,0,.82);
     }
-    nav.desktop a:hover{ color: rgba(0,0,0,1); }
+    nav.desktop a:hover{ color:rgba(0,0,0,1); }
 
-    /* Mobile menu button */
     .menu-btn{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
+      width:42px;
+      height:42px;
+      border:0;
+      border-radius:12px;
+      background:transparent;
       cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
-    .menu-icon{
-      width: 18px; height: 12px;
-      position: relative;
-    }
+
+    .menu-icon{ width:18px; height:12px; position:relative; }
     .menu-icon span{
-      position:absolute;
-      left:0; right:0;
+      position:absolute; left:0; right:0;
       height:1px;
-      background: rgba(0,0,0,.82);
+      background:rgba(0,0,0,.82);
     }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* ✅ Overlay (click to close) */
     .drawer-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.32);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .22s ease;
-      z-index: 1000;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.32);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .22s ease;
+      z-index:1000;
     }
 
-    /* ✅ Mobile dropdown panel (top -> down, 50vh) */
     .drawer{
-      position: fixed;
-      left: 0; right: 0;
-      top: 0;
-      height: 50vh;
-      background: var(--menu-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      transform: translateY(-105%);
-      transition: transform var(--menu-dur) var(--menu-ease);
-      z-index: 1001;
+      position:fixed;
+      left:0; right:0;
+      top:0;
+      height:50vh;
+      background:var(--menu-bg);
+      backdrop-filter:blur(10px);
+      box-shadow:var(--shadow);
+      transform:translateY(-105%);
+      transition:transform var(--menu-dur) var(--menu-ease);
+      z-index:1001;
 
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 18px var(--pad);
+      padding:18px var(--pad);
     }
 
-    /* ✅ Centered menu */
     .drawer-nav{
       width:100%;
       max-width:520px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:center;
       gap:10px;
       text-align:center;
     }
 
-    /* ✅ Mobile menu: Montserrat */
     .drawer-nav a{
       font-family:"Montserrat", sans-serif;
       font-weight:600;
       font-size:16px;
       letter-spacing:.6px;
-      padding:12px 12px;
+      padding:12px;
       border-radius:14px;
-      color: rgba(0,0,0,.86);
       width:100%;
       max-width:320px;
     }
-    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
 
     body[data-menu-open="true"] .drawer-overlay{
-      opacity: 1;
-      pointer-events: auto;
+      opacity:1;
+      pointer-events:auto;
     }
     body[data-menu-open="true"] .drawer{
-      transform: translateY(0);
+      transform:translateY(0);
     }
 
-    /* Main */
     main{
       padding:40px 0 80px;
-      flex: 1;
+      flex:1;
     }
 
-    /* ✅ Title: Montserrat (요청사항 반영) */
     .page-title{
       font-family:"Montserrat", sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      margin: 14px 0 22px;
-      text-align: center;
+      font-size:28px;
+      font-weight:700;
+      text-align:center;
+      margin:14px 0 22px;
     }
 
-    /* CV layout */
     .cv-grid{
       display:grid;
-      grid-template-columns: 1fr;
-      gap: 26px;
-      align-items:start;
+      grid-template-columns:1fr;
+      gap:26px;
     }
 
-    /* Image area */
     .cv-image{
-      border-radius: var(--radius);
+      border-radius:var(--radius);
       overflow:hidden;
     }
     .cv-image img{
       width:100%;
-      height:auto;
       display:block;
-      border-radius: var(--radius);
+      border-radius:var(--radius);
     }
 
-    /* Text block */
     .cv-text{
-      padding: 2px 0;
-      text-align: left;
-      font-size: 15px;
-      line-height: 1.7;
+      font-size:15px;
+      line-height:1.7;
     }
 
-    .intro{
-      margin: 0 0 18px 0;
-      white-space: pre-line;
-    }
+    .intro{ margin:0 0 18px; }
 
     .section-title{
-      margin: 18px 0 8px;
-      font-weight: 700;
-      font-size: 15px;
-      letter-spacing: .1px;
+      margin:18px 0 8px;
+      font-weight:700;
     }
 
     .cv-list{
-      margin: 0 0 10px 0;
-      padding-left: 18px;
-    }
-    .cv-list li{
-      margin: 6px 0;
+      margin:0 0 10px;
+      padding-left:18px;
     }
 
-    /* Footer */
     footer{
-      padding: 24px 0 34px;
-    }
-    .copyright{
-      display:block;
-      width:100%;
+      padding:24px 0 34px;
       text-align:center;
-      color: rgba(0,0,0,.56);
-      font-size: 12.5px;
-      letter-spacing: .2px;
+      font-size:12.5px;
+      color:rgba(0,0,0,.56);
     }
 
-    /* Desktop */
-    @media (min-width: 900px){
+    @media (min-width:900px){
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
-
-      /* desktop에서는 모바일 드롭다운 사용 안 함 */
       .drawer, .drawer-overlay{ display:none; }
 
-      .page-title{
-        font-size: 32px;
-        margin: 18px 0 26px;
-      }
-
-      .cv-grid{
-        grid-template-columns: 1fr 1.15fr;
-        gap: 56px;
-        align-items:start;
-      }
-
-      .cv-text{ font-size: 16px; }
-      .section-title{ font-size: 16px; }
+      .page-title{ font-size:32px; }
+      .cv-grid{ grid-template-columns:1fr 1.15fr; gap:56px; }
+      .cv-text{ font-size:16px; }
     }
 
-    @media (prefers-reduced-motion: reduce){
-      *{ transition: none !important; scroll-behavior:auto !important; }
-    }
-
-    /* 이미지 우클릭/드래그 억제(완전 보안 아님) */
     img{
-      -webkit-user-drag: none;
-      user-drag: none;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
+      -webkit-user-drag:none;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
   </style>
 </head>
@@ -338,30 +271,27 @@
     <div class="wrap">
       <div class="topbar">
         <a class="brand" href="index.html" aria-label="Go to Index">
-          <img class="brand-mark" src="images/home/late_atumn.jpg" alt="" aria-hidden="true" draggable="false" />
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" draggable="false" />
           <span>Gakion</span>
         </a>
 
-        <nav class="desktop" aria-label="Primary">
+        <nav class="desktop">
           <a href="cv.html" aria-current="page">CV</a>
           <a href="works.html">Works</a>
           <a href="contact.html">Contact</a>
           <a href="shop.html">Shop</a>
         </nav>
 
-        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <div class="menu-icon" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
+        <button class="menu-btn" id="menuOpenBtn" aria-label="Open menu">
+          <div class="menu-icon"><span></span><span></span><span></span></div>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile dropdown menu -->
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
-    <nav class="drawer-nav" aria-label="Primary (mobile)">
+  <aside class="drawer" id="drawer">
+    <nav class="drawer-nav">
       <a href="cv.html" aria-current="page">CV</a>
       <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
@@ -373,108 +303,67 @@
     <div class="wrap">
       <div class="page-title">CV</div>
 
-      <section class="cv-grid" aria-label="CV content">
-        <!-- Image -->
+      <section class="cv-grid">
         <div class="cv-image">
-          <img src="images/CV/CV_image.jpg" alt="Gakion portrait" draggable="false">
+          <img src="images/CV/CV_image.jpg" alt="Gakion portrait">
         </div>
 
-        <!-- Text -->
         <div class="cv-text">
           <p class="intro">
 Born and raised in Seoul, Gakion studied motion graphics, and later explored picture book illustration at Si Picturebook. She seeks to leave subtle traces of emotion in works through contrast and quiet space. Her works aim to tell weighty stories with a gentle touch through the language of picture book.
           </p>
 
-          <div class="section">
-            <div class="section-title">Education</div>
-            <ul class="cv-list">
-              <li>Si Picturebook, 38th Term</li>
-              <li>Kookmin University, College of Design — B.A. in Entertainment of Design</li>
-              <li>University of Seoul, Graduate School of Design — M.A. in illustration</li>
-            </ul>
-          </div>
+          <div class="section-title">Education</div>
+          <ul class="cv-list">
+            <li>Si Picturebook, 38th Term</li>
+            <li>Kookmin University — B.A. in Entertainment of Design</li>
+            <li>University of Seoul — M.A. in Illustration</li>
+          </ul>
 
-          <div class="section">
-            <div class="section-title">Awards</div>
-            <ul class="cv-list">
-              <li>Finalist, Golden Pinwheel Young Illustrators Competition 2025</li>
-              <li>Finalist, Bologna Children's Book Fair The Illustrators Exhibition 60th Edition 2026</li>
-            </ul>
-          </div>
+          <div class="section-title">Awards</div>
+          <ul class="cv-list">
+            <li>Finalist, Golden Pinwheel Young Illustrators Competition 2025</li>
+            <li>Finalist, Bologna Children's Book Fair Illustrators Exhibition 2026</li>
+          </ul>
 
-          <div class="section">
-            <div class="section-title">Publications</div>
-            <ul class="cv-list">
-              <li>Fox Dream, Somebooks, 2026</li>
-              <li>Dear My Black Dog, Maum’s Forest, 2019</li>
-            </ul>
-          </div>
+          <div class="section-title">Publications</div>
+          <ul class="cv-list">
+            <li>Fox Dream, Somebooks, 2026</li>
+            <li>Dear My Black Dog, Maum’s Forest, 2019</li>
+          </ul>
 
-          <div class="section">
-            <div class="section-title">Professional Experience</div>
-            <ul class="cv-list">
-              <li>Konkuk University — Lecturer, Department of Film and Animation (2025–Present)</li>
-              <li>NCSOFT, Devsisters, CJ ENM — Motion Graphic Designer</li>
-            </ul>
-          </div>
+          <div class="section-title">Professional Experience</div>
+          <ul class="cv-list">
+            <li>Konkuk University — Lecturer (2025–Present)</li>
+            <li>NCSOFT, Devsisters, CJ ENM — Motion Graphic Designer</li>
+          </ul>
         </div>
       </section>
     </div>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <div class="copyright">© Gakion. All rights reserved.</div>
-    </div>
-  </footer>
+  <footer>© Gakion. All rights reserved.</footer>
 
   <script>
-    (function () {
-      const body = document.body;
-      const openBtn = document.getElementById("menuOpenBtn");
-      const drawer = document.getElementById("drawer");
-      const overlay = document.getElementById("drawerOverlay");
-
-      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+    (function(){
+      const body=document.body;
+      const openBtn=document.getElementById("menuOpenBtn");
+      const drawer=document.getElementById("drawer");
+      const overlay=document.getElementById("drawerOverlay");
 
       function openMenu(){
-        body.dataset.menuOpen = "true";
-        openBtn.setAttribute("aria-expanded", "true");
-        drawer.setAttribute("aria-hidden", "false");
-        setOverlayHidden(false);
-        body.style.overflow = "hidden";
+        body.dataset.menuOpen="true";
+        overlay.hidden=false;
+        body.style.overflow="hidden";
       }
-
       function closeMenu(){
-        body.dataset.menuOpen = "false";
-        openBtn.setAttribute("aria-expanded", "false");
-        drawer.setAttribute("aria-hidden", "true");
-        body.style.overflow = "";
-        window.setTimeout(() => setOverlayHidden(true), 180);
+        body.dataset.menuOpen="false";
+        body.style.overflow="";
+        setTimeout(()=>overlay.hidden=true,180);
       }
 
-      if (openBtn) openBtn.addEventListener("click", openMenu);
-      if (overlay) overlay.addEventListener("click", closeMenu);
-
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
-      });
-
-      body.dataset.menuOpen = "false";
-      setOverlayHidden(true);
-    })();
-
-    /* 이미지 우클릭/드래그 방지(완전 보안 아님) */
-    (function () {
-      document.addEventListener("contextmenu", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      });
-      document.addEventListener("dragstart", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      }, { passive: false });
-      document.querySelectorAll("img").forEach((img) => img.setAttribute("draggable", "false"));
+      openBtn.addEventListener("click",openMenu);
+      overlay.addEventListener("click",closeMenu);
     })();
   </script>
 </body>
