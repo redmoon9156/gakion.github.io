@@ -38,7 +38,6 @@
       background:var(--bg);
       color:var(--fg);
 
-      /* ✅ Pretendard: 본문/푸터 포함 전부 */
       font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
                    "Segoe UI", Roboto, "Apple SD Gothic Neo",
                    "Noto Sans KR", "Malgun Gothic", sans-serif;
@@ -112,7 +111,6 @@
       white-space:nowrap;
     }
 
-    /* ✅ Desktop menu: Montserrat */
     nav.desktop a{
       font-family:"Montserrat", sans-serif;
       font-weight:600;
@@ -175,7 +173,6 @@
       padding: 18px var(--pad);
     }
 
-    /* ✅ Centered menu */
     .drawer-nav{
       width:100%;
       max-width:520px;
@@ -187,7 +184,6 @@
       text-align:center;
     }
 
-    /* ✅ Mobile menu: Montserrat */
     .drawer-nav a{
       font-family:"Montserrat", sans-serif;
       font-weight:600;
@@ -221,34 +217,38 @@
       text-align: center;
     }
 
-    /* ===== Description + Awards ===== */
     .desc-wrap{
-      width: 100%;
+      width:100%;
       margin: 0 auto 26px;
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap: 14px; /* ✅ 지금과 같은 간격 유지 */
+      gap: 14px; /* ✅ 기존 간격 유지 */
     }
 
-    /* ✅ 기본(14px) 유지 + 공백 늘어나는 정렬 방지 */
+    /* ✅ 모바일: 자연 줄바꿈 / PC: 3줄은 (PC 전용 <br>)로 제어 */
     .work-desc{
       font-size: 1rem;          /* 14px */
       line-height: 1.75;
       letter-spacing: -0.01em;
       color: rgba(0,0,0,.86);
 
-      text-align: center;
-      word-spacing: normal;
+      text-align:center;
+
+      /* ✅ 띄어쓰기/단어가 뚝뚝 끊기는 현상 방지 */
       white-space: normal;
-      word-break: normal;
+      word-break: keep-all;
       overflow-wrap: normal;
       hyphens: none;
+      word-spacing: normal;
 
-      text-wrap: balance;
-      max-width: min(72ch, 92vw);
+      /* ✅ 줄 길이 더 넓게 (요청 반영) */
+      max-width: min(980px, 92vw);
       margin: 0;
     }
+
+    /* PC에서만 보이는 강제 줄바꿈 */
+    .pc-br{ display:none; }
 
     .awards{
       display:flex;
@@ -256,7 +256,7 @@
       align-items:center;
       gap: 6px;
       width:100%;
-      max-width: min(72ch, 92vw);
+      max-width: min(980px, 92vw);
     }
 
     .award-year{
@@ -277,7 +277,7 @@
       text-align:center;
       margin: 0;
       font-weight: 400;
-      white-space: normal;      /* 모바일은 2줄 넘어가도 허용 */
+      white-space: normal; /* 모바일에서는 2줄 넘어가도 허용 */
     }
 
     .img-stack{
@@ -401,11 +401,6 @@
     @media (max-width: 899px){
       .lb-arrow{ display:none !important; }
       .lb-frame{ padding: 0; }
-
-      .work-desc,
-      .awards{
-        max-width: min(44ch, 92vw);
-      }
     }
 
     /* Footer */
@@ -424,20 +419,13 @@
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
-
       .drawer, .drawer-overlay{ display:none; }
 
       main{ padding: 30px 0 100px; }
       .work-title{ font-size: 32px; margin: 18px 0 14px; }
 
-      /* ✅ PC: 설명을 3줄로 "표현" (높이를 3줄로 고정, 간격은 그대로) */
-      .work-desc{
-        max-width: 72ch;                 /* 줄 길이 기준 */
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3;           /* ✅ 3줄 */
-        overflow: hidden;
-      }
+      /* ✅ PC에서만 강제 줄바꿈 켜서 "정확히 3줄" */
+      .pc-br{ display:block; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -496,10 +484,13 @@
 
       <div class="desc-wrap" aria-label="Work description">
         <p class="work-desc">
-Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
+Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest.
+<br class="pc-br">
+Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises—
+<br class="pc-br">
+only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
         </p>
 
-        <!-- ✅ Awards: year first, then award text -->
         <div class="awards" aria-label="Awards">
           <div class="award-year">2025</div>
           <div class="award-text">The Golden Pinwheel, Young Illustrators Competition Finalist</div>
