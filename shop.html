@@ -80,7 +80,7 @@
       padding:16px 0;
     }
 
-    /* ✅ Brand: Montserrat */
+    /* ✅ Brand: Montserrat (index와 동일하게: 이미지 + 텍스트) */
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size:22.5px;
@@ -88,6 +88,20 @@
       letter-spacing:.35px;
       line-height:1.1;
       min-width:160px;
+
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    /* ✅ 브랜드 아이콘: 글자 높이에 맞춰 자동 스케일 */
+    .brand-mark{
+      height:1em;
+      width:auto;
+      display:block;
+      object-fit:contain;
+      flex:0 0 auto;
+      transform: translateY(0.02em);
     }
 
     nav.desktop{
@@ -366,7 +380,10 @@
   <header>
     <div class="wrap">
       <div class="topbar">
-        <a class="brand" href="index.html">Gakion</a>
+        <a class="brand" href="index.html" aria-label="Go to Index">
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" draggable="false" />
+          <span>Gakion</span>
+        </a>
 
         <nav class="desktop" aria-label="Primary">
           <a href="cv.html">CV</a>
