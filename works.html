@@ -50,6 +50,10 @@
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
+
+      min-height: 100vh;
+      display:flex;
+      flex-direction:column;
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -58,6 +62,7 @@
       max-width:var(--max);
       margin:0 auto;
       padding:0 var(--pad);
+      width:100%;
     }
 
     /* ---------- Header ---------- */
@@ -73,9 +78,10 @@
       align-items:center;
       justify-content:space-between;
       padding:16px 0;
+      gap:14px;
     }
 
-    /* ✅ brand: Montserrat */
+    /* ✅ brand: Montserrat (index와 동일하게: 이미지 + 텍스트) */
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size:22.5px;
@@ -83,6 +89,20 @@
       letter-spacing:.35px;
       line-height:1.1;
       min-width:160px;
+
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    /* ✅ 브랜드 아이콘 */
+    .brand-mark{
+      height:1em;
+      width:auto;
+      display:block;
+      object-fit:contain;
+      flex:0 0 auto;
+      transform: translateY(0.02em);
     }
 
     nav.desktop{
@@ -198,6 +218,7 @@
     /* ---------- Main ---------- */
     main{
       padding:26px 0 80px;
+      flex:1;
     }
 
     /* ✅ Works 페이지 타이틀: Montserrat */
@@ -276,6 +297,7 @@
     }
 
     @media (min-width:900px){
+      :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
 
@@ -296,11 +318,14 @@
 <header>
   <div class="wrap">
     <div class="topbar">
-      <a class="brand" href="index.html">Gakion</a>
+      <a class="brand" href="index.html" aria-label="Go to Index">
+        <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" draggable="false" />
+        <span>Gakion</span>
+      </a>
 
       <nav class="desktop" aria-label="Primary">
         <a href="cv.html">CV</a>
-        <a href="works.html">Works</a>
+        <a href="works.html" aria-current="page">Works</a>
         <a href="contact.html">Contact</a>
         <a href="shop.html">Shop</a>
       </nav>
@@ -318,7 +343,7 @@
 <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
   <nav class="drawer-nav" aria-label="Primary (mobile)">
     <a href="cv.html">CV</a>
-    <a href="works.html">Works</a>
+    <a href="works.html" aria-current="page">Works</a>
     <a href="contact.html">Contact</a>
     <a href="shop.html">Shop</a>
   </nav>
@@ -343,7 +368,6 @@
         </div>
       </a>
 
-      <!-- ✅ 캡션도 링크 -->
       <a class="work-caption" href="work_A.html">Fox Dream</a>
     </div>
   </div>
@@ -409,7 +433,6 @@
       box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
     }, { once:true });
 
-    // 캐시로 load가 이미 끝난 경우 대비
     if (imgs[0].complete && imgs[0].naturalWidth){
       box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
     }
