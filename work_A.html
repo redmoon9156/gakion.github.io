@@ -38,12 +38,13 @@
       background:var(--bg);
       color:var(--fg);
 
+      /* ✅ Pretendard: 본문/푸터 포함 전부 */
       font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
                    "Segoe UI", Roboto, "Apple SD Gothic Neo",
                    "Noto Sans KR", "Malgun Gothic", sans-serif;
 
-      font-size:14px;          /* ✅ shop_work_A.html과 동일(명시) */
-      line-height:1.55;        /* ✅ shop_work_A.html과 동일(명시) */
+      font-size:14px;
+      line-height:1.6;
       letter-spacing:.15px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
@@ -79,7 +80,7 @@
       padding:16px 0;
     }
 
-    /* ✅ Brand: Montserrat (이미지 + 텍스트) */
+    /* ✅ Brand: Montserrat (index와 동일: 이미지 + 텍스트) */
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size:22.5px;
@@ -174,6 +175,7 @@
       padding: 18px var(--pad);
     }
 
+    /* ✅ Centered menu */
     .drawer-nav{
       width:100%;
       max-width:520px;
@@ -211,46 +213,73 @@
     main{ padding: 24px 0 90px; flex:1; }
 
     .work-title{
+      /* ✅ 작품 제목: Montserrat */
       font-family:"Montserrat", sans-serif;
       font-size: 28px;
       font-weight: 700;
       letter-spacing: .2px;
-      margin: 14px 0 10px;
+      margin: 14px 0 12px;
       text-align: center;
     }
 
-    /* ✅ 작품 설명: shop_work_A.html과 같은 글씨 크기/행간(= body) */
-    .work-desc{
+    /* =========================
+       ✅ Description block (FIX)
+       - 공백 늘어나는 정렬 금지
+       - "줄 길이 비슷"하게: text-wrap: balance + ch 기반 폭 조절
+       - 폰트 크기: shop_work_A.html 설명과 동일(기본 14px)
+       ========================= */
+    .desc-wrap{
+      width: 100%;
       margin: 0 auto 26px;
-      max-width: 880px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 14px;
+    }
+
+    .work-desc{
+      /* body 기본(14px) 그대로 사용 */
+      font-size: 1rem;                 /* 14px */
+      line-height: 1.75;               /* 요청 취지 반영 */
+      letter-spacing: -0.01em;         /* “자간 -10” 느낌을 과하지 않게 */
       color: rgba(0,0,0,.86);
-    }
 
-    /* ✅ “문장 줄 길이”를 최대한 동일하게 보이도록: 양쪽 정렬 + 마지막 줄도 정렬 */
-    .synopsis{
-      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
-                   "Segoe UI", Roboto, "Apple SD Gothic Neo",
-                   "Noto Sans KR", "Malgun Gothic", sans-serif;
-      text-align: justify;
-      text-justify: inter-word;
-      text-align-last: justify;          /* 마지막 줄도 늘려서 “짧게 끝나는 느낌” 최소화 */
-      -webkit-text-align-last: justify;  /* Safari 보강 */
-      hyphens: auto;
-      margin: 0 auto;
-      max-width: 880px;
-    }
-
-    /* ✅ 수상 내역: 기본은 가운데 + 줄바꿈 허용(모바일 포함) */
-    .awards{
-      margin-top: 14px;
+      /* ✅ 공백 늘어나는 justify 금지 */
       text-align: center;
-      color: rgba(0,0,0,.86);
-    }
-    .award{
-      display:block;
+      word-spacing: normal;
+
+      /* ✅ 단어/공백이 이상하게 쪼개지는 것 방지 */
+      white-space: normal;
+      word-break: normal;
+      overflow-wrap: normal;
+      hyphens: none;
+
+      /* ✅ 줄 길이 균형(지원 브라우저에서) */
+      text-wrap: balance;
+
+      /* ✅ "열 크기" 고정 느낌: ch 기반 폭 조절 */
+      max-width: min(72ch, 92vw);
       margin: 0;
-      padding: 0;
-      white-space: normal; /* 기본: 모바일에서 2줄 넘어가도 OK */
+    }
+
+    .awards{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 6px;
+      width:100%;
+      max-width: min(72ch, 92vw);
+    }
+
+    .award{
+      font-size: 1rem;                 /* 14px */
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: rgba(0,0,0,.86);
+      text-align:center;
+      margin:0;
+      /* 모바일은 2줄 넘어가도 허용(요청 반영) */
+      white-space: normal;
     }
 
     .img-stack{
@@ -259,6 +288,7 @@
       gap: 22px;
     }
 
+    /* ✅ 윤곽선/라운드 제거 */
     .img-card{
       border: 0;
       border-radius: 0;
@@ -319,7 +349,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 0 72px; /* PC에서만 화살표 공간 */
+      padding: 0 72px;
     }
 
     .lb-img{
@@ -336,7 +366,6 @@
       pointer-events: auto;
     }
 
-    /* PC 화살표(이미지 밖 + 회색) */
     .lb-arrow{
       position:absolute;
       top: 50%;
@@ -375,6 +404,12 @@
     @media (max-width: 899px){
       .lb-arrow{ display:none !important; }
       .lb-frame{ padding: 0; }
+
+      /* 모바일에서 "열 크기"도 유지하되 너무 좁아지는 건 방지 */
+      .work-desc,
+      .awards{
+        max-width: min(44ch, 92vw);
+      }
     }
 
     /* Footer */
@@ -397,9 +432,9 @@
       .drawer, .drawer-overlay{ display:none; }
 
       main{ padding: 30px 0 100px; }
-      .work-title{ font-size: 32px; margin: 18px 0 12px; }
+      .work-title{ font-size: 32px; margin: 18px 0 14px; }
 
-      /* ✅ PC에서는 수상 내역 “각 1줄” 고정 */
+      /* ✅ PC에서는 수상 내역 1줄로 고정 */
       .award{ white-space: nowrap; }
     }
 
@@ -457,10 +492,10 @@
     <div class="wrap">
       <div class="work-title">Fox Dream</div>
 
-      <div class="work-desc" aria-label="Work description">
-        <div class="synopsis">
+      <div class="desc-wrap" aria-label="Work description">
+        <p class="work-desc">
 Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
-        </div>
+        </p>
 
         <div class="awards" aria-label="Awards">
           <div class="award">The Golden Pinwheel Young Illustrators Competition Finalist 2025</div>
