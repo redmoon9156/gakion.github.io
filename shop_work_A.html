@@ -261,7 +261,6 @@
        Shop Work A (page-only)
        ========================= */
 
-    /* ✅ 임시윤곽선/라운드 제거: (클래스는 남겨도 무해하지만, 효과는 0으로) */
     .temp-outline{
       border: 0;
       border-radius: 0;
@@ -313,6 +312,16 @@
       margin: 0 0 14px 0;
       white-space: pre-line; /* ✅ 줄바꿈 유지 */
       color: rgba(0,0,0,.9);
+    }
+
+    /* ✅ 수상 내역: 연도 먼저 */
+    .award-year{
+      font-weight: 400;
+      margin: 12px 0 2px;
+    }
+    .award-item{
+      font-weight: 400;
+      margin: 0 0 8px;
     }
 
     /* ✅ 링크도 본문 영역 -> Pretendard */
@@ -380,19 +389,20 @@
     <div class="wrap">
       <section class="shop-grid" aria-label="Shop Work A layout">
         <div class="shop-media temp-outline" aria-label="Fox Dream image">
-          <!-- ✅ shop.html과 동일한 경로/파일명 유지 -->
           <img src="images/shop/shop_work_A.jpg" alt="Fox Dream cover" loading="eager" draggable="false" />
         </div>
 
         <div class="shop-info temp-outline" aria-label="Fox Dream description">
           <h1 class="shop-title">Fox Dream</h1>
 
-          <!-- ✅ 요청하신 내용으로 교체(줄바꿈 유지) -->
-          <p class="shop-desc">Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
+          <div class="shop-desc">
+Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
 
-The Golden Pinwheel Young Illustrators
-Competition Finalist 2025
-Bologna Children’s Book Fair Finalist 2026</p>
+<span class="award-year">2025</span>
+<span class="award-item">The Golden Pinwheel, Young Illustrators Competition Finalist</span>
+<span class="award-year">2026</span>
+<span class="award-item">Bologna, Children’s Book Fair Finalist</span>
+          </div>
 
           <a class="shop-buy" href="https://example.com" target="_blank" rel="noopener">
             Purchase to this link
@@ -443,7 +453,6 @@ Bologna Children’s Book Fair Finalist 2026</p>
       setOverlayHidden(true);
     })();
 
-    /* ✅ 이미지 우클릭 저장/복사(컨텍스트 메뉴) & 드래그 방지 (완전 보안은 아님) */
     (function () {
       document.addEventListener("contextmenu", function (e) {
         const t = e.target;
