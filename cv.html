@@ -212,14 +212,15 @@
       gap:26px;
     }
 
+    /* ✅ 변경: CV 이미지는 각진 원본 그대로 */
     .cv-image{
-      border-radius:var(--radius);
-      overflow:hidden;
+      border-radius:0;
+      overflow:visible;
     }
     .cv-image img{
       width:100%;
       display:block;
-      border-radius:var(--radius);
+      border-radius:0;
     }
 
     .cv-text{
