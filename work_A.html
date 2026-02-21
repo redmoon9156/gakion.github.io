@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-  <title>Shop — Work A</title>
-  <meta name="description" content="Shop — Work A (fixture book)." />
+  <title>Work_A — Gakion</title>
+  <meta name="description" content="Work_A — Gakion" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,73 +15,276 @@
 
   <style>
     :root{
-      --bg:#ffffff; --fg:#111111; --muted:#666666;
-      --max: 1060px; --pad: 18px; --radius: 14px;
+      --bg:#ffffff;
+      --fg:#111111;
+      --muted:#666666;
+      --max:1060px;
+      --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
+
+      /* ✅ mobile dropdown menu */
       --menu-bg: rgba(245,245,245,.98);
       --menu-dur: 360ms;
       --menu-ease: cubic-bezier(.22, 1, .36, 1);
     }
 
     *{ box-sizing:border-box; }
-    html, body{ height:100%; }
+    html, body{ height:100%; width: 100%; overflow-x: hidden; }
 
     body{
-      margin:0; background:var(--bg); color:var(--fg);
-      font-family: Pretendard, sans-serif;
-      font-size: 14px; line-height: 1.55; letter-spacing: .15px;
-      -webkit-font-smoothing: antialiased;
-      display:flex; flex-direction:column; min-height:100vh;
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      font-size:14px;
+      line-height:1.6;
+      letter-spacing:.15px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
     }
 
     a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width: var(--max); margin: 0 auto; padding: 0 var(--pad); width:100%; }
+    button{ font: inherit; }
 
-    header{ background: #ffffff; position: relative; z-index: 5; }
-    .topbar{ display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
-    .brand{ font-family: "Montserrat", sans-serif; font-size: 22.5px; font-weight: 700; display:inline-flex; align-items:center; gap:10px; }
-    .brand-mark{ height:1em; width:auto; }
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--pad);
+      width:100%;
+    }
 
-    nav.desktop{ display:none; gap: 18px; font-size: 13px; }
-    nav.desktop a{ font-family: "Montserrat", sans-serif; font-weight: 600; color: rgba(0,0,0,.82); }
+    /* Header */
+    header{
+      background:#ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
 
-    .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width: 42px; height: 42px; border: 0; background: transparent; cursor:pointer; }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:16px 0;
+    }
+
+    .brand{
+      font-family:"Montserrat", sans-serif;
+      font-size:22.5px;
+      font-weight:700;
+      letter-spacing:.35px;
+      line-height:1.1;
+      min-width:160px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .brand-mark{
+      height:1em;
+      width:auto;
+      display:block;
+      object-fit:contain;
+      flex:0 0 auto;
+      transform: translateY(0.02em);
+    }
+
+    nav.desktop{
+      display:none;
+      gap:18px;
+      align-items:center;
+      font-size:13px;
+      letter-spacing:.6px;
+      white-space:nowrap;
+    }
+
+    nav.desktop a{
+      font-family:"Montserrat", sans-serif;
+      font-weight:600;
+      padding: 8px 4px;
+      color: rgba(0,0,0,.82);
+    }
+    nav.desktop a:hover{ color: rgba(0,0,0,1); }
+
+    .menu-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 12px;
+      background: transparent;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
     .menu-icon{ width: 18px; height: 12px; position: relative; }
-    .menu-icon span{ position:absolute; left:0; right:0; height:1px; background: rgba(0,0,0,.82); }
+    .menu-icon span{
+      position:absolute; left:0; right:0;
+      height:1px;
+      background: rgba(0,0,0,.82);
+    }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    .drawer-overlay{ position: fixed; inset: 0; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 1000; }
-    .drawer{ position: fixed; left: 0; right: 0; top: 0; height: 50vh; background: var(--menu-bg); transform: translateY(-105%); transition: transform var(--menu-dur) var(--menu-ease); z-index: 1001; display:flex; align-items:center; justify-content:center; }
-    .drawer-nav{ display:flex; flex-direction:column; align-items:center; gap:10px; }
-    .drawer-nav a{ font-family: "Montserrat", sans-serif; font-weight: 600; font-size: 16px; padding: 12px; }
+    .drawer-overlay{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+      z-index: 1000;
+    }
+
+    .drawer{
+      position: fixed;
+      left: 0; right: 0;
+      top: 0;
+      height: 50vh;
+      background: var(--menu-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      transform: translateY(-105%);
+      transition: transform var(--menu-dur) var(--menu-ease);
+      z-index: 1001;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 18px var(--pad);
+    }
+
+    .drawer-nav{
+      width:100%;
+      max-width:520px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      text-align:center;
+    }
+
+    .drawer-nav a{
+      font-family:"Montserrat", sans-serif;
+      font-weight:600;
+      font-size:16px;
+      letter-spacing:.6px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      color: rgba(0,0,0,.86);
+      width: 100%;
+      max-width: 320px;
+    }
+    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
 
     body[data-menu-open="true"] .drawer-overlay{ opacity: 1; pointer-events: auto; }
     body[data-menu-open="true"] .drawer{ transform: translateY(0); }
 
-    main{ padding: 28px 0 60px; flex: 1; }
-    footer{ padding: 18px 0 28px; color: var(--muted); font-size: 12px; text-align: center; }
+    main{ padding: 24px 0 90px; flex:1; }
 
-    @media (min-width: 900px){
-      nav.desktop{ display:flex; }
-      .menu-btn{ display:none; }
-      main{ padding: 36px 0 80px; }
+    .work-title{
+      font-family:"Montserrat", sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      margin: 14px 0 12px;
+      text-align: center;
     }
 
-    /* Gallery */
-    .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
-    @media (min-width: 900px){ .shop-grid{ grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; } }
+    .desc-wrap{
+      width:100%;
+      margin: 0 auto 26px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 14px;
+    }
 
-    .shop-media { display: flex; flex-direction: column; gap: 12px; }
-    .main-viewer { width: 100%; cursor: zoom-in; overflow: hidden; background: #f9f9f9; line-height: 0; }
-    .main-viewer img { width: 100%; height: auto; display: block; border-radius: 0 !important; }
+    .work-desc{
+      font-size: 1rem;
+      line-height: 1.75;
+      letter-spacing: -0.01em;
+      color: rgba(0,0,0,.86);
+      text-align:center;
+      white-space: normal;
+      word-break: keep-all;
+      max-width: min(980px, 92vw);
+      margin: 0;
+    }
 
-    .thumb-list { display: flex; gap: 10px; }
-    .thumb-img { width: calc(25% - 7.5px); cursor: pointer; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0 !important; border: 1px solid transparent; }
+    .pc-br{ display:none; }
 
-    /* Lightbox - 요동침 방지 핵심 설정 */
-    .lightbox {
+    .awards{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 6px;
+      width:100%;
+      max-width: min(980px, 92vw);
+    }
+
+    .award-year{
+      font-size: 1rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: rgba(0,0,0,.86);
+      text-align:center;
+      margin: 6px 0 0 0;
+      font-weight: 400;
+    }
+
+    .award-text{
+      font-size: 1rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      color: rgba(0,0,0,.86);
+      text-align:center;
+      margin: 0;
+      font-weight: 400;
+      white-space: normal;
+    }
+
+    .img-stack{
+      display:flex;
+      flex-direction:column;
+      gap: 22px;
+    }
+
+    .img-card{
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+    }
+
+    .img-btn{
+      display:block;
+      width:100%;
+      border:0;
+      padding:0;
+      background:transparent;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      user-select:none;
+    }
+
+    .img-btn img{
+      width:100%;
+      height:auto;
+      display:block;
+      object-fit:cover;
+      transition: transform .22s cubic-bezier(.2,.8,.2,1);
+      border-radius: 0;
+    }
+
+    /* Lightbox - 요동침 방지를 위한 고정 높이 틀 */
+    .lightbox{
       position: fixed;
       inset: 0;
       display:none;
@@ -89,58 +292,80 @@
       justify-content:center;
       z-index: 2000;
     }
-    .lightbox.open { display: flex; }
-    .lb-backdrop { position:absolute; inset:0; background: rgba(0,0,0,.6); backdrop-filter: blur(6px); }
+    .lightbox.open{ display:flex; }
 
-    .lb-frame {
+    .lb-backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.6);
+      backdrop-filter: blur(6px);
+    }
+
+    .lb-frame{
       position: relative;
       width: 100vw;
-      height: 100vh;
+      height: 100vh; /* 전체 화면 고정 */
       z-index: 1;
       display:flex;
       align-items:center;
       justify-content:center;
-      overflow: hidden; /* 영역 밖으로 튀어나가지 않게 고정 */
+      overflow: hidden;
+      touch-action: none;
     }
 
-    .lb-img {
-      max-width: 100%; /* 모바일 좌우 꽉 참 */
-      max-height: 90vh; /* 위아래 여백 확보 */
+    .lb-img{
+      /* ✅ 모바일 가로 꽉 채움 및 크기 요동 방지 고정 설정 */
+      max-width: 100%;
+      max-height: 85vh; /* 상하 여백 확보하여 안정성 유지 */
+      width: auto;
+      height: auto;
       object-fit: contain;
+      display:block;
       user-select:none;
       pointer-events: auto;
-      transition: opacity 0.1s ease; /* 전환 시 시각적 떨림 완화 */
+      transition: opacity 0.15s ease-in-out; /* 전환 시 부드럽게 */
     }
 
-    .lb-arrow {
+    .lb-arrow{
       position:absolute;
-      top: 0; bottom: 0; /* 세로 전체 영역 클릭 가능하게 */
+      top: 0; bottom: 0;
       width: 60px;
-      border: 0; background: transparent;
+      border: 0;
+      background: transparent;
       color: rgba(255,255,255,.8);
       cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       z-index: 10;
     }
-    .lb-prev { left: 0; }
-    .lb-next { right: 0; }
-    .lb-arrow svg { width: 34px; height: 34px; filter: drop-shadow(0 0 4px rgba(0,0,0,0.5)); }
+    .lb-prev{ left: 0; }
+    .lb-next{ right: 0; }
+    .lb-arrow svg{ width: 34px; height: 34px; filter: drop-shadow(0 0 4px rgba(0,0,0,0.5)); }
 
-    @media (max-width: 899px) {
-      .lb-arrow { display:none !important; }
-      .lb-frame { padding: 0; }
-      .lb-img { max-width: 100vw; } /* 모바일 가로 꽉 채움 고정 */
+    @media (max-width: 899px){
+      .lb-arrow{ display:none !important; }
+      .lb-img { max-width: 100vw; } /* 모바일에서는 가로를 화면에 맞춤 */
     }
 
-    /* Info */
-    .shop-info{ padding: 0; }
-    .shop-title{ margin: 0 0 10px; font-weight: 700; font-size: 18px; }
-    .shop-desc{ margin: 0; white-space: pre-line; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
-    .awards-container { margin-top: 4px; }
-    .award-item{ display: block; font-weight: 400; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
-    .shop-buy{ display: inline-block; font-weight: 600; font-size: 13px; color: #000; padding: 4px 0; text-decoration: underline; margin-top: 10px; }
+    footer{ padding: 24px 0 34px; }
+    .copyright{
+      display:block;
+      width:100%;
+      text-align:center;
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
+      letter-spacing: .2px;
+    }
 
-    img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
+    @media (min-width: 900px){
+      :root{ --pad:22px; }
+      nav.desktop{ display:flex; }
+      .menu-btn{ display:none; }
+      main{ padding: 30px 0 100px; }
+      .work-title{ font-size: 32px; }
+      .pc-br{ display:block; }
+    }
   </style>
 </head>
 
@@ -149,116 +374,137 @@
     <div class="wrap">
       <div class="topbar">
         <a class="brand" href="index.html">
-          <img class="brand-mark" src="images/home/late_autumn.png" alt="Logo" />
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="" />
           <span>Gakion</span>
         </a>
-        <nav class="desktop"><a href="cv.html">CV</a><a href="works.html">Works</a><a href="contact.html">Contact</a><a href="shop.html">Shop</a></nav>
-        <button class="menu-btn" type="button" id="menuOpenBtn"><div class="menu-icon"><span></span><span></span><span></span></div></button>
+        <nav class="desktop">
+          <a href="cv.html">CV</a>
+          <a href="works.html" aria-current="page">Works</a>
+          <a href="contact.html">Contact</a>
+          <a href="shop.html">Shop</a>
+        </nav>
+        <button class="menu-btn" type="button" id="menuOpenBtn">
+          <div class="menu-icon"><span></span><span></span><span></span></div>
+        </button>
       </div>
     </div>
   </header>
 
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer"><nav class="drawer-nav"><a href="cv.html">CV</a><a href="works.html">Works</a><a href="contact.html">Contact</a><a href="shop.html">Shop</a></nav></aside>
+  <aside class="drawer" id="drawer">
+    <nav class="drawer-nav">
+      <a href="cv.html">CV</a>
+      <a href="works.html">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="shop.html">Shop</a>
+    </nav>
+  </aside>
 
   <main>
     <div class="wrap">
-      <section class="shop-grid">
-        <div class="shop-media">
-          <div class="main-viewer" id="mainViewer"><img src="images/shop/shop_work_A1.PNG" id="currentMainImg" alt="Main Product"></div>
-          <div class="thumb-list" id="thumbList"></div>
+      <div class="work-title">Fox Dream</div>
+      <div class="desc-wrap">
+        <p class="work-desc">
+          Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest.
+          <br class="pc-br">
+          Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises—
+          <br class="pc-br">
+          only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
+        </p>
+        <div class="awards">
+          <div class="award-year">2026</div>
+          <div class="award-text">Bologna Children’s Book Fair Finalist</div>
+          <div class="award-year">2025</div>
+          <div class="award-text">The Golden Pinwheel Young Illustrators Competition Finalist</div>
         </div>
-        <div class="shop-info">
-          <h1 class="shop-title">Fox Dream</h1>
-          <div class="shop-desc">
-            Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
-            <div class="awards-container">
-              <span class="award-item">Bologna Children’s Book Fair Finalist, 2026</span>
-              <span class="award-item">The Golden Pinwheel Young Illustrators Competition Finalist, 2025</span>
-            </div>
-          </div>
-          <a class="shop-buy" href="https://example.com" target="_blank">Purchase to this link</a>
-        </div>
-      </section>
+      </div>
+      <section class="img-stack" id="imgStack"></section>
     </div>
   </main>
 
-  <div id="lightbox" class="lightbox">
+  <footer>
+    <div class="wrap"><div class="copyright">© Gakion. All rights reserved.</div></div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lb-backdrop" id="lbBackdrop"></div>
     <div class="lb-frame" id="lbFrame">
-      <button class="lb-arrow lb-prev" id="prevBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 4 L7 12 L15 20"/></svg></button>
-      <img id="lightboxImg" class="lb-img" src="">
-      <button class="lb-arrow lb-next" id="nextBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 4 L17 12 L9 20"/></svg></button>
+      <button class="lb-arrow lb-prev" id="lbPrev" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 4 L7 12 L15 20"/></svg></button>
+      <img class="lb-img" id="lbImg" alt="" />
+      <button class="lb-arrow lb-next" id="lbNext" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 4 L17 12 L9 20"/></svg></button>
     </div>
   </div>
-
-  <footer><div class="wrap">© Gakion. All rights reserved.</div></footer>
 
   <script>
     (function () {
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
       const overlay = document.getElementById("drawerOverlay");
-      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
-      function openMenu(){ body.dataset.menuOpen = "true"; setOverlayHidden(false); body.style.overflow = "hidden"; }
-      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => setOverlayHidden(true), 180); }
+
+      function openMenu(){ body.dataset.menuOpen = "true"; overlay.hidden = false; body.style.overflow = "hidden"; }
+      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => overlay.hidden = true, 180); }
+
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
 
-      const images = ["images/shop/shop_work_A1.PNG", "images/shop/shop_work_A2.PNG", "images/shop/shop_work_A3.PNG", "images/shop/shop_work_A4.PNG", "images/shop/shop_work_A5.PNG"];
-      let currentIdx = 0;
-      const mainImg = document.getElementById('currentMainImg');
-      const thumbList = document.getElementById('thumbList');
-      const lightbox = document.getElementById('lightbox');
-      const lightboxImg = document.getElementById('lightboxImg');
-      const lbFrame = document.getElementById('lbFrame');
+      const images = [
+        "images/works/Work_A1.jpg",
+        "images/works/Work_A2.jpg",
+        "images/works/Work_A3.jpg",
+        "images/works/Work_A4.jpg",
+        "images/works/Work_A5.jpg",
+      ];
 
-      function updateGallery(index) {
-        currentIdx = index;
-        mainImg.src = images[currentIdx];
-        thumbList.innerHTML = '';
-        images.forEach((src, idx) => {
-          if (idx !== currentIdx) {
-            const img = document.createElement('img');
-            img.src = src; img.className = 'thumb-img';
-            img.onclick = () => updateGallery(idx);
-            thumbList.appendChild(img);
-          }
-        });
+      const stack = document.getElementById("imgStack");
+      images.forEach((url, idx) => {
+        const card = document.createElement("div"); card.className = "img-card";
+        const btn = document.createElement("button"); btn.className = "img-btn";
+        const im = document.createElement("img"); im.src = url; im.loading = "lazy";
+        btn.appendChild(im); card.appendChild(btn); stack.appendChild(card);
+        btn.addEventListener("click", () => openLightbox(idx));
+      });
+
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lbImg");
+      const lbFrame = document.getElementById("lbFrame");
+      let current = 0;
+
+      function setLbImage(idx){
+        current = idx;
+        lbImg.style.opacity = "0"; // 전환 깜빡임 방지
+        setTimeout(() => {
+          lbImg.src = images[current];
+          lbImg.onload = () => { lbImg.style.opacity = "1"; };
+        }, 50);
       }
-      updateGallery(0);
 
-      mainImg.onclick = () => {
-        lightbox.classList.add('open');
-        lightboxImg.src = images[currentIdx];
-        body.style.overflow = 'hidden';
-      };
+      function openLightbox(idx){ setLbImage(idx); lightbox.classList.add("open"); body.style.overflow = "hidden"; }
+      function closeLightbox(){ lightbox.classList.remove("open"); body.style.overflow = ""; }
 
-      const closeLightbox = () => { lightbox.classList.remove('open'); body.style.overflow = ''; };
-      document.getElementById('lbBackdrop').onclick = closeLightbox;
+      function prev(){ setLbImage((current - 1 + images.length) % images.length); }
+      function next(){ setLbImage((current + 1) % images.length); }
 
-      const goPrev = () => { currentIdx = (currentIdx - 1 + images.length) % images.length; lightboxImg.src = images[currentIdx]; updateGallery(currentIdx); };
-      const goNext = () => { currentIdx = (currentIdx + 1) % images.length; lightboxImg.src = images[currentIdx]; updateGallery(currentIdx); };
+      document.getElementById("lbBackdrop").addEventListener("click", closeLightbox);
+      document.getElementById("lbPrev").addEventListener("click", (e) => { e.stopPropagation(); prev(); });
+      document.getElementById("lbNext").addEventListener("click", (e) => { e.stopPropagation(); next(); });
 
-      document.getElementById('prevBtn').onclick = (e) => { e.stopPropagation(); goPrev(); };
-      document.getElementById('nextBtn').onclick = (e) => { e.stopPropagation(); goNext(); };
-
-      lbFrame.onclick = (e) => {
+      // ✅ 고정된 좌우 클릭 영역 터치/클릭 내비게이션
+      lbFrame.addEventListener("click", (e) => {
         if (e.target.closest('.lb-arrow')) return;
-        const rect = lbFrame.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const ratio = x / rect.width;
-        if (ratio <= 0.3) goPrev();
-        else if (ratio >= 0.7) goNext();
-        else closeLightbox();
-      };
+        const width = window.innerWidth;
+        const x = e.clientX;
+        if (x < width * 0.3) prev(); // 좌측 30%
+        else if (x > width * 0.7) next(); // 우측 70%
+        else closeLightbox(); // 중앙 클릭 시 닫기
+      });
 
       window.addEventListener("keydown", (e) => {
         if (!lightbox.classList.contains("open")) return;
         if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowLeft") goPrev();
-        if (e.key === "ArrowRight") goNext();
+        if (e.key === "ArrowLeft") prev();
+        if (e.key === "ArrowRight") next();
       });
+
       document.addEventListener("contextmenu", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
     })();
   </script>
