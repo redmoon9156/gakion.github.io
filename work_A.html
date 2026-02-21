@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Work_A — Gakion</title>
   <meta name="description" content="Work_A — Gakion" />
 
@@ -29,23 +29,18 @@
     }
 
     *{ box-sizing:border-box; }
-    html, body{ height:100%; }
+    html, body{ height:100%; overflow-x: hidden; }
 
     body{
       margin:0;
       background:var(--bg);
       color:var(--fg);
-
-      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
-                   "Segoe UI", Roboto, "Apple SD Gothic Neo",
-                   "Noto Sans KR", "Malgun Gothic", sans-serif;
-
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-
       min-height:100vh;
       display:flex;
       flex-direction:column;
@@ -61,381 +56,116 @@
       width:100%;
     }
 
-    /* Header */
-    header{
-      background:#ffffff;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
+    header{ background:#ffffff; position: sticky; top: 0; z-index: 50; }
+    .topbar{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 0; }
+    .brand{ font-family:"Montserrat", sans-serif; font-size:22.5px; font-weight:700; letter-spacing:.35px; line-height:1.1; min-width:160px; display:inline-flex; align-items:center; gap:10px; }
+    .brand-mark{ height:1em; width:auto; display:block; object-fit:contain; flex:0 0 auto; transform: translateY(0.02em); }
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding:16px 0;
-    }
-
-    /* ✅ Brand: Montserrat (index와 동일: 이미지 + 텍스트) */
-    .brand{
-      font-family:"Montserrat", sans-serif;
-      font-size:22.5px;
-      font-weight:700;
-      letter-spacing:.35px;
-      line-height:1.1;
-      min-width:160px;
-
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .brand-mark{
-      height:1em;
-      width:auto;
-      display:block;
-      object-fit:contain;
-      flex:0 0 auto;
-      transform: translateY(0.02em);
-    }
-
-    nav.desktop{
-      display:none;
-      gap:18px;
-      align-items:center;
-      font-size:13px;
-      letter-spacing:.6px;
-      white-space:nowrap;
-    }
-
-    nav.desktop a{
-      font-family:"Montserrat", sans-serif;
-      font-weight:600;
-      padding: 8px 4px;
-      color: rgba(0,0,0,.82);
-    }
+    nav.desktop{ display:none; gap:18px; align-items:center; font-size:13px; letter-spacing:.6px; white-space:nowrap; }
+    nav.desktop a{ font-family:"Montserrat", sans-serif; font-weight:600; padding: 8px 4px; color: rgba(0,0,0,.82); }
     nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
-    /* Mobile menu button */
-    .menu-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width: 42px; height: 42px; border: 0; border-radius: 12px; background: transparent; cursor:pointer; user-select:none; }
     .menu-icon{ width: 18px; height: 12px; position: relative; }
-    .menu-icon span{
-      position:absolute; left:0; right:0;
-      height:1px;
-      background: rgba(0,0,0,.82);
-    }
+    .menu-icon span{ position:absolute; left:0; right:0; height:1px; background: rgba(0,0,0,.82); }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* ✅ Overlay (click to close) */
-    .drawer-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.32);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .22s ease;
-      z-index: 1000;
-    }
-
-    /* ✅ Mobile dropdown panel (top -> down, 50vh) */
-    .drawer{
-      position: fixed;
-      left: 0; right: 0;
-      top: 0;
-      height: 50vh;
-      background: var(--menu-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      transform: translateY(-105%);
-      transition: transform var(--menu-dur) var(--menu-ease);
-      z-index: 1001;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 18px var(--pad);
-    }
-
-    .drawer-nav{
-      width:100%;
-      max-width:520px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      text-align:center;
-    }
-
-    .drawer-nav a{
-      font-family:"Montserrat", sans-serif;
-      font-weight:600;
-      font-size:16px;
-      letter-spacing:.6px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      color: rgba(0,0,0,.86);
-      width: 100%;
-      max-width: 320px;
-    }
+    .drawer-overlay{ position: fixed; inset: 0; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 1000; }
+    .drawer{ position: fixed; left: 0; right: 0; top: 0; height: 50vh; background: var(--menu-bg); backdrop-filter: blur(10px); box-shadow: var(--shadow); transform: translateY(-105%); transition: transform var(--menu-dur) var(--menu-ease); z-index: 1001; display:flex; align-items:center; justify-content:center; padding: 18px var(--pad); }
+    .drawer-nav{ width:100%; max-width:520px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; }
+    .drawer-nav a{ font-family:"Montserrat", sans-serif; font-weight:600; font-size:16px; letter-spacing:.6px; padding: 12px 12px; border-radius: 14px; color: rgba(0,0,0,.86); width: 100%; max-width: 320px; }
     .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
 
-    body[data-menu-open="true"] .drawer-overlay{
-      opacity: 1;
-      pointer-events: auto;
-    }
-    body[data-menu-open="true"] .drawer{
-      transform: translateY(0);
-    }
+    body[data-menu-open="true"] .drawer-overlay{ opacity: 1; pointer-events: auto; }
+    body[data-menu-open="true"] .drawer{ transform: translateY(0); }
 
-    /* Main */
     main{ padding: 24px 0 90px; flex:1; }
-
-    .work-title{
-      font-family:"Montserrat", sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      margin: 14px 0 12px;
-      text-align: center;
-    }
-
-    .desc-wrap{
-      width:100%;
-      margin: 0 auto 26px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 14px; /* ✅ 기존 간격 유지 */
-    }
-
-    /* ✅ 모바일: 자연 줄바꿈 / PC: 3줄은 (PC 전용 <br>)로 제어 */
-    .work-desc{
-      font-size: 1rem;          /* 14px */
-      line-height: 1.75;
-      letter-spacing: -0.01em;
-      color: rgba(0,0,0,.86);
-
-      text-align:center;
-
-      /* ✅ 띄어쓰기/단어가 뚝뚝 끊기는 현상 방지 */
-      white-space: normal;
-      word-break: keep-all;
-      overflow-wrap: normal;
-      hyphens: none;
-      word-spacing: normal;
-
-      /* ✅ 줄 길이 더 넓게 (요청 반영) */
-      max-width: min(980px, 92vw);
-      margin: 0;
-    }
-
-    /* PC에서만 보이는 강제 줄바꿈 */
+    .work-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin: 14px 0 12px; text-align: center; }
+    .desc-wrap{ width:100%; margin: 0 auto 26px; display:flex; flex-direction:column; align-items:center; gap: 14px; }
+    .work-desc{ font-size: 1rem; line-height: 1.75; letter-spacing: -0.01em; color: rgba(0,0,0,.86); text-align:center; white-space: normal; word-break: keep-all; max-width: min(980px, 92vw); margin: 0; }
     .pc-br{ display:none; }
 
-    .awards{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 6px;
-      width:100%;
-      max-width: min(980px, 92vw);
-    }
+    .awards{ display:flex; flex-direction:column; align-items:center; gap: 6px; width:100%; max-width: min(980px, 92vw); }
+    .award-year{ font-size: 1rem; line-height: 1.2; letter-spacing: -0.01em; color: rgba(0,0,0,.86); text-align:center; margin: 6px 0 0 0; font-weight: 400; }
+    .award-text{ font-size: 1rem; line-height: 1.2; letter-spacing: -0.01em; color: rgba(0,0,0,.86); text-align:center; margin: 0; font-weight: 400; white-space: normal; }
 
-    .award-year{
-      font-size: 1rem;          /* 14px */
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: rgba(0,0,0,.86);
-      text-align:center;
-      margin: 6px 0 0 0;
-      font-weight: 400;
-    }
+    .img-stack{ display:flex; flex-direction:column; gap: 22px; }
+    .img-card{ border: 0; border-radius: 0; overflow: visible; background: transparent; }
+    .img-btn{ display:block; width:100%; border:0; padding:0; background:transparent; cursor:pointer; user-select:none; }
+    .img-btn img{ width:100%; height:auto; display:block; object-fit:cover; transition: transform .22s cubic-bezier(.2,.8,.2,1); }
 
-    .award-text{
-      font-size: 1rem;          /* 14px */
-      line-height: 1.2;
-      letter-spacing: -0.01em;
-      color: rgba(0,0,0,.86);
-      text-align:center;
-      margin: 0;
-      font-weight: 400;
-      white-space: normal; /* 모바일에서는 2줄 넘어가도 허용 */
-    }
-
-    .img-stack{
-      display:flex;
-      flex-direction:column;
-      gap: 22px;
-    }
-
-    .img-card{
-      border: 0;
-      border-radius: 0;
-      overflow: visible;
-      background: transparent;
-    }
-
-    .img-btn{
-      display:block;
-      width:100%;
-      border:0;
-      padding:0;
-      background:transparent;
-      cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      user-select:none;
-    }
-
-    .img-btn img{
-      width:100%;
-      height:auto;
-      display:block;
-      object-fit:cover;
-      transform: translateZ(0);
-      transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
-      border-radius: 0;
-    }
-
-    .img-btn:active img{
-      transform: scale(1.02);
-      filter: saturate(1.02);
-    }
-
-    /* Lightbox */
+    /* Lightbox - Fixed Layout for Stability */
     .lightbox{
       position: fixed;
       inset: 0;
       display:none;
       align-items:center;
       justify-content:center;
-      padding: 10px;
       z-index: 2000;
     }
     .lightbox.open{ display:flex; }
-
-    .lb-backdrop{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(6px);
-    }
+    .lb-backdrop{ position:absolute; inset:0; background: rgba(0,0,0,.6); backdrop-filter: blur(6px); }
 
     .lb-frame{
       position: relative;
-      width: min(98vw, 1400px);
-      max-height: 96vh;
+      width: 100vw;
+      height: 100vh;
       z-index: 1;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 0 72px;
+      /* Prevent layout shifts */
+      overflow: hidden;
     }
 
     .lb-img{
+      /* ✅ 모바일 가로 꽉 채움 및 크기 요동 방지 고정 설정 */
       max-width: 100%;
-      max-height: 96vh;
-      border-radius: 0;
-      box-shadow: var(--shadow);
-      display:block;
-
+      max-height: 90vh;
+      object-fit: contain;
       user-select:none;
-      -webkit-user-select:none;
-      -webkit-user-drag:none;
-      -webkit-touch-callout: none;
       pointer-events: auto;
+      /* Smooth transition when changing images */
+      transition: opacity 0.2s ease;
     }
 
     .lb-arrow{
       position:absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 100vh; /* Full height for easier click on desktop */
       border: 0;
-      border-radius: 0;
       background: transparent;
-      color: rgba(210,210,210,.95);
+      color: rgba(255,255,255,.8);
       cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .12s ease, opacity .12s ease;
-      opacity: .95;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,.55));
+      z-index: 10;
     }
-    .lb-arrow:hover{
-      opacity: 1;
-      transform: translateY(-50%) scale(1.06);
-    }
-    .lb-arrow:active{
-      transform: translateY(-50%) scale(0.96);
-    }
-    .lb-prev{ left: 12px; }
-    .lb-next{ right: 12px; }
-    .lb-arrow svg{ width: 34px; height: 34px; }
-    .lb-arrow svg path{
-      stroke-width: 3.2;
-      stroke-linecap: square;
-      stroke-linejoin: miter;
-    }
+    .lb-prev{ left: 0; }
+    .lb-next{ right: 0; }
+    .lb-arrow svg{ width: 34px; height: 34px; filter: drop-shadow(0 0 4px rgba(0,0,0,0.5)); }
 
     @media (max-width: 899px){
       .lb-arrow{ display:none !important; }
-      .lb-frame{ padding: 0; }
+      /* ✅ 모바일은 이미지가 좌우에 더 붙도록 설정 */
+      .lb-img { max-width: 100vw; }
     }
 
-    /* Footer */
     footer{ padding: 24px 0 34px; }
-    .copyright{
-      display:block;
-      width:100%;
-      text-align:center;
-      color: rgba(0,0,0,.56);
-      font-size: 12.5px;
-      letter-spacing: .2px;
-    }
+    .copyright{ display:block; width:100%; text-align:center; color: rgba(0,0,0,.56); font-size: 12.5px; }
 
-    /* Desktop breakpoint */
     @media (min-width: 900px){
       :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
-      .drawer, .drawer-overlay{ display:none; }
-
       main{ padding: 30px 0 100px; }
-      .work-title{ font-size: 32px; margin: 18px 0 14px; }
-
-      /* ✅ PC에서만 강제 줄바꿈 켜서 "정확히 3줄" */
+      .work-title{ font-size: 32px; }
       .pc-br{ display:block; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ transition:none !important; }
-    }
-
-    img{
-      -webkit-user-drag: none;
-      user-drag: none;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
     }
   </style>
 </head>
@@ -444,32 +174,28 @@
   <header>
     <div class="wrap">
       <div class="topbar">
-        <a class="brand" href="index.html" aria-label="Go to Index">
-          <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" draggable="false" />
+        <a class="brand" href="index.html">
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="" />
           <span>Gakion</span>
         </a>
-
-        <nav class="desktop" aria-label="Primary">
+        <nav class="desktop">
           <a href="cv.html">CV</a>
           <a href="works.html" aria-current="page">Works</a>
           <a href="contact.html">Contact</a>
           <a href="shop.html">Shop</a>
         </nav>
-
-        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <div class="menu-icon" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
+        <button class="menu-btn" type="button" id="menuOpenBtn">
+          <div class="menu-icon"><span></span><span></span><span></span></div>
         </button>
       </div>
     </div>
   </header>
 
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
-    <nav class="drawer-nav" aria-label="Primary (mobile)">
+  <aside class="drawer" id="drawer">
+    <nav class="drawer-nav">
       <a href="cv.html">CV</a>
-      <a href="works.html" aria-current="page">Works</a>
+      <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
       <a href="shop.html">Shop</a>
     </nav>
@@ -478,52 +204,38 @@
   <main>
     <div class="wrap">
       <div class="work-title">Fox Dream</div>
-
-      <div class="desc-wrap" aria-label="Work description">
+      <div class="desc-wrap">
         <p class="work-desc">
-Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest.
-<br class="pc-br">
-Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises—
-<br class="pc-br">
-only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
+          Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest.
+          <br class="pc-br">
+          Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises—
+          <br class="pc-br">
+          only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
         </p>
-
-        <div class="awards" aria-label="Awards">
+        <div class="awards">
           <div class="award-year">2026</div>
           <div class="award-text">Bologna Children’s Book Fair Finalist</div>
-
           <div class="award-year">2025</div>
           <div class="award-text">The Golden Pinwheel Young Illustrators Competition Finalist</div>
         </div>
       </div>
-
-      <section class="img-stack" id="imgStack" aria-label="Work_A images">
-        </section>
+      <section class="img-stack" id="imgStack"></section>
     </div>
   </main>
 
   <footer>
-    <div class="wrap">
-      <div class="copyright">© Gakion. All rights reserved.</div>
-    </div>
+    <div class="wrap"><div class="copyright">© Gakion. All rights reserved.</div></div>
   </footer>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
-    <div class="lb-backdrop" id="lbBackdrop" aria-hidden="true"></div>
-
-    <div class="lb-frame" id="lbFrame" role="dialog" aria-label="Image viewer">
-      <button class="lb-arrow lb-prev" id="lbPrev" type="button" aria-label="Previous image">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M15 4 L7 12 L15 20" stroke="currentColor" fill="none"/>
-        </svg>
+    <div class="lb-backdrop" id="lbBackdrop"></div>
+    <div class="lb-frame" id="lbFrame">
+      <button class="lb-arrow lb-prev" id="lbPrev" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 4 L7 12 L15 20"/></svg>
       </button>
-
-      <img class="lb-img" id="lbImg" alt="Expanded work image" />
-
-      <button class="lb-arrow lb-next" id="lbNext" type="button" aria-label="Next image">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M9 4 L17 12 L9 20" stroke="currentColor" fill="none"/>
-        </svg>
+      <img class="lb-img" id="lbImg" src="" alt="" />
+      <button class="lb-arrow lb-next" id="lbNext" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 4 L17 12 L9 20"/></svg>
       </button>
     </div>
   </div>
@@ -531,128 +243,81 @@ only to face the rabbit again. A quiet story of how desire changes us, and how s
   <script>
     (function () {
       const body = document.body;
-
-      /* ---------- Mobile dropdown menu ---------- */
       const openBtn = document.getElementById("menuOpenBtn");
       const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
 
-      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
-
-      function openMenu(){
-        body.dataset.menuOpen = "true";
-        openBtn.setAttribute("aria-expanded", "true");
-        drawer.setAttribute("aria-hidden", "false");
-        setOverlayHidden(false);
-        body.style.overflow = "hidden";
-      }
-
-      function closeMenu(){
-        body.dataset.menuOpen = "false";
-        openBtn.setAttribute("aria-expanded", "false");
-        drawer.setAttribute("aria-hidden", "true");
-        body.style.overflow = "";
-        window.setTimeout(() => setOverlayHidden(true), 180);
-      }
+      function openMenu(){ body.dataset.menuOpen = "true"; overlay.hidden = false; body.style.overflow = "hidden"; }
+      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => overlay.hidden = true, 180); }
 
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
 
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
-      });
-
-      body.dataset.menuOpen = "false";
-      setOverlayHidden(true);
-
-      /* ---------- Work_A images (명시적으로 5장 로드) ---------- */
       const stack = document.getElementById("imgStack");
-      const basePath = "images/works/";
-
       const images = [
-        `${basePath}Work_A1.jpg`,
-        `${basePath}Work_A2.jpg`,
-        `${basePath}Work_A3.jpg`,
-        `${basePath}Work_A4.jpg`,
-        `${basePath}Work_A5.jpg`,
+        "images/works/Work_A1.jpg",
+        "images/works/Work_A2.jpg",
+        "images/works/Work_A3.jpg",
+        "images/works/Work_A4.jpg",
+        "images/works/Work_A5.jpg",
       ];
 
-      function buildStack(){
-        if (!stack) return;
+      images.forEach((url, idx) => {
+        const card = document.createElement("div");
+        card.className = "img-card";
+        const btn = document.createElement("button");
+        btn.className = "img-btn";
+        const im = document.createElement("img");
+        im.src = url;
+        btn.appendChild(im);
+        card.appendChild(btn);
+        stack.appendChild(card);
+        btn.addEventListener("click", () => openLightbox(idx));
+      });
 
-        images.forEach((url, idx) => {
-          const card = document.createElement("div");
-          card.className = "img-card";
-
-          const btn = document.createElement("button");
-          btn.className = "img-btn";
-          btn.type = "button";
-          btn.setAttribute("aria-label", `Open image ${idx + 1}`);
-
-          const im = document.createElement("img");
-          im.src = url;
-          im.alt = `Work_A image ${idx + 1}`;
-          im.loading = "lazy";
-          im.draggable = false;
-
-          btn.appendChild(im);
-          card.appendChild(btn);
-          stack.appendChild(card);
-
-          btn.addEventListener("click", () => openLightbox(idx));
-        });
-      }
-
-      /* ---------- Lightbox behavior ---------- */
       const lightbox = document.getElementById("lightbox");
       const lbImg = document.getElementById("lbImg");
       const lbBackdrop = document.getElementById("lbBackdrop");
-      const lbPrev = document.getElementById("lbPrev");
-      const lbNext = document.getElementById("lbNext");
       const lbFrame = document.getElementById("lbFrame");
-
       let current = 0;
-
-      function isMobile(){
-        return window.matchMedia("(max-width: 899px)").matches;
-      }
 
       function setLbImage(idx){
         current = idx;
-        lbImg.src = images[current];
-
-        const showArrows = images.length > 1 && !isMobile();
-        lbPrev.style.display = showArrows ? "flex" : "none";
-        lbNext.style.display = showArrows ? "flex" : "none";
+        lbImg.style.opacity = "0"; // Fade effect for stability
+        setTimeout(() => {
+          lbImg.src = images[current];
+          lbImg.style.opacity = "1";
+        }, 50);
       }
 
       function openLightbox(idx){
-        if (!images.length) return;
         setLbImage(idx);
         lightbox.classList.add("open");
-        lightbox.setAttribute("aria-hidden", "false");
         body.style.overflow = "hidden";
       }
 
       function closeLightbox(){
         lightbox.classList.remove("open");
-        lightbox.setAttribute("aria-hidden", "true");
-        if (body.dataset.menuOpen !== "true") body.style.overflow = "";
+        body.style.overflow = "";
       }
 
-      function prev(){
-        if (images.length < 2) return;
-        setLbImage((current - 1 + images.length) % images.length);
-      }
+      function prev(){ setLbImage((current - 1 + images.length) % images.length); }
+      function next(){ setLbImage((current + 1) % images.length); }
 
-      function next(){
-        if (images.length < 2) return;
-        setLbImage((current + 1) % images.length);
-      }
+      lbBackdrop.addEventListener("click", closeLightbox);
+      document.getElementById("lbPrev").addEventListener("click", (e) => { e.stopPropagation(); prev(); });
+      document.getElementById("lbNext").addEventListener("click", (e) => { e.stopPropagation(); next(); });
 
-      if (lbBackdrop) lbBackdrop.addEventListener("click", closeLightbox);
-      if (lbPrev) lbPrev.addEventListener("click", prev);
-      if (lbNext) lbNext.addEventListener("click", next);
+      // ✅ 모바일 좌우 터치 내비게이션 고정 로직
+      lbFrame.addEventListener("click", (e) => {
+        if (e.target.closest('.lb-arrow')) return;
+        const rect = lbFrame.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const ratio = x / rect.width;
+        if (ratio <= 0.3) prev(); // 좌측 30% 영역
+        else if (ratio >= 0.7) next(); // 우측 70% 영역
+        else closeLightbox(); // 중앙 클릭 시 닫기
+      });
 
       window.addEventListener("keydown", (e) => {
         if (!lightbox.classList.contains("open")) return;
@@ -660,82 +325,6 @@ only to face the rabbit again. A quiet story of how desire changes us, and how s
         if (e.key === "ArrowLeft") prev();
         if (e.key === "ArrowRight") next();
       });
-
-      function edgeTapNavigatePointer(e){
-        if (!lightbox.classList.contains("open")) return;
-
-        const t = e.target;
-        if (t === lbBackdrop) return;
-        if (t === lbPrev || t === lbNext || t.closest?.(".lb-arrow")) return;
-
-        if (!(t === lbImg || t === lbFrame)) return;
-
-        const rect = lbFrame.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const ratio = x / rect.width;
-
-        if (ratio <= 0.25) prev();
-        else if (ratio >= 0.75) next();
-      }
-      if (lbFrame) lbFrame.addEventListener("pointerdown", edgeTapNavigatePointer);
-
-      let touchStartX = 0;
-      let touchStartY = 0;
-      let touchActive = false;
-
-      const SWIPE_MIN_X = 40;
-      const SWIPE_MAX_Y = 60;
-
-      function onTouchStart(e){
-        if (!lightbox.classList.contains("open")) return;
-        const t = e.touches[0];
-        touchStartX = t.clientX;
-        touchStartY = t.clientY;
-        touchActive = true;
-      }
-
-      function onTouchEnd(e){
-        if (!touchActive) return;
-        touchActive = false;
-
-        const t = e.changedTouches[0];
-        const dx = t.clientX - touchStartX;
-        const dy = t.clientY - touchStartY;
-
-        if (Math.abs(dx) >= SWIPE_MIN_X && Math.abs(dy) <= SWIPE_MAX_Y){
-          if (dx < 0) next();
-          else prev();
-        }
-      }
-
-      if (lbImg){
-        lbImg.addEventListener("touchstart", onTouchStart, { passive: true });
-        lbImg.addEventListener("touchend", onTouchEnd, { passive: true });
-      }
-      if (lbFrame){
-        lbFrame.addEventListener("touchstart", onTouchStart, { passive: true });
-        lbFrame.addEventListener("touchend", onTouchEnd, { passive: true });
-      }
-
-      document.addEventListener("contextmenu", function (e) {
-        const t = e.target;
-        if (!t) return;
-        if (t.tagName === "IMG" || t.closest?.(".img-card") || t === lbImg) {
-          e.preventDefault();
-        }
-      });
-
-      document.addEventListener("dragstart", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      }, { passive: false });
-
-      document.addEventListener("selectstart", function (e) {
-        const t = e.target;
-        if (t && t.tagName === "IMG") e.preventDefault();
-      }, { passive: false });
-
-      buildStack();
     })();
   </script>
 </body>
