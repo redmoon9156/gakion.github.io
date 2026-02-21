@@ -131,9 +131,7 @@
       border: 1px solid transparent;
     }
 
-    @media (max-width: 899px) { .thumb-list { display: none; } }
-
-    /* Lightbox 스타일 (Work_A와 동일) */
+    /* Lightbox 스타일 */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -161,15 +159,14 @@
       align-items:center;
       justify-content:center;
       padding: 0 72px;
-      /* 터치/클릭 내비게이션을 위해 추가 */
       pointer-events: auto;
     }
 
     .lb-img {
       max-width: 100%;
       max-height: 96vh;
-      width: auto; /* 정방형 강제 해제 */
-      height: auto; /* 원본 비율 유지 */
+      width: auto;
+      height: auto;
       border-radius: 0;
       box-shadow: var(--shadow);
       display:block;
@@ -217,7 +214,6 @@
     .shop-info{ padding: 0; }
     .shop-title{ margin: 0 0 10px; font-weight: 700; font-size: 18px; }
 
-    /* 텍스트 스타일/크기 통일 및 간격 조정 */
     .shop-desc{ margin: 0; white-space: pre-line; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
     .awards-container { margin-top: 4px; }
     .award-item{ display: block; font-weight: 400; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
@@ -330,8 +326,6 @@
       const lbFrame = document.getElementById('lbFrame');
       let autoSlideInterval;
 
-      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-
       function updateGallery(index) {
         currentIdx = index;
         mainImg.src = images[currentIdx];
@@ -349,6 +343,7 @@
 
       updateGallery(0);
 
+      // 자동 슬라이드 로직 제거
       function startAutoSlide() {
         stopAutoSlide();
         autoSlideInterval = setInterval(() => {
@@ -356,15 +351,15 @@
           updateGallery(currentIdx);
         }, 2500);
       }
-
       function stopAutoSlide() { clearInterval(autoSlideInterval); }
 
+      // 호버 시에만 슬라이드 작동 (데스크톱 전용)
+      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
       if (!isMobile) {
         mainImg.parentElement.addEventListener('mouseenter', startAutoSlide);
         mainImg.parentElement.addEventListener('mouseleave', stopAutoSlide);
-      } else {
-        startAutoSlide();
       }
+      // 모바일에서의 무조건적인 자동 실행은 제거되었습니다.
 
       mainImg.onclick = () => {
         stopAutoSlide();
@@ -376,7 +371,6 @@
       const closeLightbox = () => {
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
-        if(isMobile) startAutoSlide();
       };
 
       lbBackdrop.onclick = closeLightbox;
@@ -396,15 +390,11 @@
       document.getElementById('prevBtn').onclick = (e) => { e.stopPropagation(); goPrev(); };
       document.getElementById('nextBtn').onclick = (e) => { e.stopPropagation(); goNext(); };
 
-      // Work_A 스타일 내비게이션 (이미지 좌우 클릭 시 전환)
       lbFrame.onclick = (e) => {
-        // 버튼 자체 클릭 시 중복 작동 방지
         if (e.target.closest('.lb-arrow')) return;
-
         const rect = lbFrame.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const ratio = x / rect.width;
-
         if (ratio <= 0.25) goPrev();
         else if (ratio >= 0.75) goNext();
       };
