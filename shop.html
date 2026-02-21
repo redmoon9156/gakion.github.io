@@ -6,12 +6,10 @@
   <title>Shop — Gakion</title>
   <meta name="description" content="Shop — Gakion" />
 
-  <!-- Montserrat (brand + menu) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Pretendard (everything else) -->
   <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 
@@ -23,9 +21,7 @@
       --max:1060px;
       --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-
-      /* ✅ mobile dropdown menu */
-      --menu-bg: rgba(245,245,245,.98); /* 밝은 회색빛 흰 배경 */
+      --menu-bg: rgba(245,245,245,.98);
       --menu-dur: 360ms;
       --menu-ease: cubic-bezier(.22, 1, .36, 1);
     }
@@ -37,18 +33,12 @@
       margin:0;
       background:var(--bg);
       color:var(--fg);
-
-      /* ✅ Pretendard: 본문/푸터 포함 전부 */
-      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
-                   "Segoe UI", Roboto, "Apple SD Gothic Neo",
-                   "Noto Sans KR", "Malgun Gothic", sans-serif;
-
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
       -webkit-font-smoothing:antialiased;
       -moz-osx-font-smoothing:grayscale;
-
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -80,7 +70,6 @@
       padding:16px 0;
     }
 
-    /* ✅ Brand: Montserrat (index와 동일하게: 이미지 + 텍스트) */
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size:22.5px;
@@ -88,13 +77,11 @@
       letter-spacing:.35px;
       line-height:1.1;
       min-width:160px;
-
       display:inline-flex;
       align-items:center;
       gap:10px;
     }
 
-    /* ✅ 브랜드 아이콘: 글자 높이에 맞춰 자동 스케일 */
     .brand-mark{
       height:1em;
       width:auto;
@@ -113,7 +100,6 @@
       white-space:nowrap;
     }
 
-    /* ✅ Desktop menu: Montserrat */
     nav.desktop a{
       font-family:"Montserrat", sans-serif;
       font-weight:600;
@@ -122,7 +108,6 @@
     }
     nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
-    /* Mobile menu button */
     .menu-btn{
       display:inline-flex;
       align-items:center;
@@ -134,103 +119,25 @@
       background: transparent;
       cursor:pointer;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
-    .menu-icon{
-      width: 18px; height: 12px;
-      position: relative;
-    }
-    .menu-icon span{
-      position:absolute;
-      left:0; right:0;
-      height:1px;
-      background: rgba(0,0,0,.82);
-    }
+    .menu-icon{ width: 18px; height: 12px; position: relative; }
+    .menu-icon span{ position:absolute; left:0; right:0; height:1px; background: rgba(0,0,0,.82); }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    /* ✅ Overlay (click to close) */
-    .drawer-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.32);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .22s ease;
-      z-index: 1000;
-    }
+    .drawer-overlay{ position: fixed; inset: 0; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 1000; }
+    .drawer{ position: fixed; left: 0; right: 0; top: 0; height: 50vh; background: var(--menu-bg); backdrop-filter: blur(10px); box-shadow: var(--shadow); transform: translateY(-105%); transition: transform var(--menu-dur) var(--menu-ease); z-index: 1001; display:flex; align-items:center; justify-content:center; padding: 18px var(--pad); }
+    .drawer-nav{ width:100%; max-width:520px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; }
+    .drawer-nav a{ font-family:"Montserrat", sans-serif; font-weight:600; font-size:16px; letter-spacing:.6px; padding:12px; border-radius:14px; color: rgba(0,0,0,.86); width:100%; max-width:320px; }
 
-    /* ✅ Mobile dropdown panel (top -> down, 50vh) */
-    .drawer{
-      position: fixed;
-      left: 0; right: 0;
-      top: 0;
-      height: 50vh;
-      background: var(--menu-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      transform: translateY(-105%);
-      transition: transform var(--menu-dur) var(--menu-ease);
-      z-index: 1001;
+    body[data-menu-open="true"] .drawer-overlay{ opacity: 1; pointer-events: auto; }
+    body[data-menu-open="true"] .drawer{ transform: translateY(0); }
 
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 18px var(--pad);
-    }
+    main{ padding: 26px 0 80px; flex: 1; }
+    .page-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin: 14px 0 22px; text-align: center; }
 
-    /* ✅ Centered menu */
-    .drawer-nav{
-      width:100%;
-      max-width:520px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      text-align:center;
-    }
-
-    /* ✅ Mobile menu: Montserrat */
-    .drawer-nav a{
-      font-family:"Montserrat", sans-serif;
-      font-weight:600;
-      font-size:16px;
-      letter-spacing:.6px;
-      padding:12px 12px;
-      border-radius:14px;
-      color: rgba(0,0,0,.86);
-      width:100%;
-      max-width:320px;
-    }
-    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
-
-    body[data-menu-open="true"] .drawer-overlay{
-      opacity: 1;
-      pointer-events: auto;
-    }
-    body[data-menu-open="true"] .drawer{
-      transform: translateY(0);
-    }
-
-    /* Main */
-    main{
-      padding: 26px 0 80px;
-      flex: 1;
-    }
-
-    /* ✅ Title: Montserrat (요청사항 반영) */
-    .page-title{
-      font-family:"Montserrat", sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      margin: 14px 0 22px;
-      text-align: center;
-    }
-
-    /* 작품 1개: 가운데 정렬 */
+    /* 작품 그리드 */
     .shop-grid{
       display:grid;
       grid-template-columns: min(420px, 100%);
@@ -241,21 +148,15 @@
     .shop-card{
       position: relative;
       display:block;
-      border: 0;
-      border-radius: 0;
-      overflow: visible;
-      background: transparent;
-      -webkit-tap-highlight-color: transparent;
       cursor: pointer;
-      touch-action: manipulation;
     }
 
     .thumb{
       width:100%;
       aspect-ratio: 3 / 4;
       overflow:hidden;
-      border-radius: 0;
       background:#f5f5f5;
+      line-height: 0; /* 이미지 하단 미세 공백 제거 */
     }
 
     .thumb img{
@@ -264,12 +165,6 @@
       object-fit: cover;
       display:block;
       transition: filter .18s ease, transform .18s ease;
-
-      user-select:none;
-      -webkit-user-select:none;
-      -webkit-user-drag:none;
-      -webkit-touch-callout:none;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .overlay{
@@ -285,93 +180,28 @@
       pointer-events: none;
     }
 
-    /* ✅ 오버레이 텍스트도 Pretendard (메뉴/브랜드 아님) */
-    .overlay .ov-text{
-      text-align:center;
-      color:#fff;
-      letter-spacing:.4px;
-      line-height:1.25;
-      pointer-events: auto;
-    }
-    .overlay .ov-text .t1{
-      font-weight:700;
-      font-size: 20px;
-    }
-    .overlay .ov-text .t2,
-    .overlay .ov-text .t3{
-      font-weight:600;
-      font-size: 16px;
-      opacity: .95;
-      margin-top: 8px;
-    }
+    .overlay .ov-text{ text-align:center; color:#fff; }
+    .overlay .ov-text .t1{ font-weight:700; font-size: 20px; }
+    .overlay .ov-text .t2, .overlay .ov-text .t3{ font-weight:600; font-size: 16px; margin-top: 8px; opacity: .95; }
 
-    .overlay-link{
-      display:inline-block;
-      color:#fff;
-      text-decoration:none;
-    }
-    .overlay-link:active{ opacity:.92; }
+    .overlay-link{ display:inline-block; color:#fff; }
 
-    /* PC hover/focus */
-    .shop-card:hover .thumb img,
-    .shop-card:focus-visible .thumb img{
-      filter: blur(2.2px) brightness(.92);
-      transform: scale(1.01);
-    }
-    .shop-card:hover .overlay,
-    .shop-card:focus-visible .overlay{
-      opacity: 1;
-      pointer-events: auto;
-    }
+    /* Hover & Active */
+    .shop-card:hover .thumb img, .shop-card.is-active .thumb img{ filter: blur(2.2px) brightness(.92); transform: scale(1.01); }
+    .shop-card:hover .overlay, .shop-card.is-active .overlay{ opacity: 1; pointer-events: auto; }
 
-    /* ✅ 모바일 active 상태 */
-    .shop-card.is-active .thumb img{
-      filter: blur(2.2px) brightness(.92);
-      transform: scale(1.01);
-    }
-    .shop-card.is-active .overlay{
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    /* ✅ 모바일에서 이미지(카드) 크기 60%로 축소 */
     @media (max-width: 520px){
-      .shop-grid{
-        grid-template-columns: min(252px, 92vw); /* 420px의 60% = 252px */
-      }
-      .page-title{ margin-bottom: 18px; }
+      .shop-grid{ grid-template-columns: min(252px, 92vw); }
     }
 
-    /* Footer */
     footer{ padding: 24px 0 34px; }
-    .copyright{
-      display:block;
-      width:100%;
-      text-align:center;
-      color: rgba(0,0,0,.56);
-      font-size: 12.5px;
-      letter-spacing: .2px;
-    }
+    .copyright{ display:block; width:100%; text-align:center; color: rgba(0,0,0,.56); font-size: 12.5px; }
 
-    /* Desktop */
     @media (min-width: 900px){
-      :root{ --pad:22px; }
       nav.desktop{ display:flex; }
       .menu-btn{ display:none; }
-
-      /* desktop에서는 모바일 드롭다운 사용 안 함 */
-      .drawer, .drawer-overlay{ display:none; }
-
       main{ padding: 34px 0 90px; }
-      .page-title{ font-size: 32px; margin: 18px 0 26px; }
-
-      .overlay .ov-text .t1{ font-size: 22px; }
-      .overlay .ov-text .t2,
-      .overlay .ov-text .t3{ font-size: 16.5px; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      *{ transition:none !important; }
+      .page-title{ font-size: 32px; }
     }
   </style>
 </head>
@@ -380,52 +210,45 @@
   <header>
     <div class="wrap">
       <div class="topbar">
-        <a class="brand" href="index.html" aria-label="Go to Index">
-          <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" draggable="false" />
+        <a class="brand" href="index.html">
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="Logo" />
           <span>Gakion</span>
         </a>
-
-        <nav class="desktop" aria-label="Primary">
+        <nav class="desktop">
           <a href="cv.html">CV</a>
           <a href="works.html">Works</a>
           <a href="contact.html">Contact</a>
-          <a href="shop.html" aria-current="page">Shop</a>
+          <a href="shop.html">Shop</a>
         </nav>
-
-        <button class="menu-btn" type="button" id="menuOpenBtn" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-          <div class="menu-icon" aria-hidden="true">
-            <span></span><span></span><span></span>
-          </div>
+        <button class="menu-btn" type="button" id="menuOpenBtn">
+          <div class="menu-icon"><span></span><span></span><span></span></div>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile dropdown menu -->
   <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
-    <nav class="drawer-nav" aria-label="Primary (mobile)">
+  <aside class="drawer" id="drawer">
+    <nav class="drawer-nav">
       <a href="cv.html">CV</a>
       <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
-      <a href="shop.html" aria-current="page">Shop</a>
+      <a href="shop.html">Shop</a>
     </nav>
   </aside>
 
   <main>
     <div class="wrap">
       <div class="page-title">Available Books</div>
-
-      <section class="shop-grid" aria-label="Available books">
-
-        <div class="shop-card" role="button" tabindex="0" aria-label="Open Fox Dream details overlay">
+      <section class="shop-grid">
+        
+        <div class="shop-card" id="shopCardA">
           <div class="thumb">
-            <img src="images/shop/shop_work_A1.PNG" alt="Fox Dream cover" loading="lazy" decoding="async" draggable="false">
+            <img src="images/shop/shop_work_A1.PNG" alt="Fox Dream cover" draggable="false">
           </div>
-
-          <div class="overlay" aria-hidden="true">
+          <div class="overlay">
             <div class="ov-text">
-              <a class="overlay-link" href="shop_work_A.html" aria-label="Go to Fox Dream page">
+              <a class="overlay-link" href="shop_work_A.html">
                 <div class="t1">Fox Dream</div>
                 <div class="t2">Somebooks</div>
                 <div class="t3">2026</div>
@@ -446,168 +269,28 @@
 
   <script>
     (function () {
-      /* ---------- Mobile dropdown menu ---------- */
+      /* Mobile Menu */
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
-      const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
-
       function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
-
-      function openMenu(){
-        body.dataset.menuOpen = "true";
-        openBtn.setAttribute("aria-expanded", "true");
-        drawer.setAttribute("aria-hidden", "false");
-        setOverlayHidden(false);
-        body.style.overflow = "hidden";
-      }
-
-      function closeMenu(){
-        body.dataset.menuOpen = "false";
-        openBtn.setAttribute("aria-expanded", "false");
-        drawer.setAttribute("aria-hidden", "true");
-        body.style.overflow = "";
-        window.setTimeout(() => setOverlayHidden(true), 180);
-      }
-
+      function openMenu(){ body.dataset.menuOpen = "true"; setOverlayHidden(false); body.style.overflow = "hidden"; }
+      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; window.setTimeout(() => setOverlayHidden(true), 180); }
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
 
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
-      });
-
-      body.dataset.menuOpen = "false";
-      setOverlayHidden(true);
-
-      /* ---------- Shop overlay behavior (원본 로직 유지) ---------- */
-      const cards = Array.from(document.querySelectorAll(".shop-card"));
-      const isTouch = (("ontouchstart" in window) || (navigator.maxTouchPoints > 0));
-
-      function deactivateAll(){ cards.forEach(c => c.classList.remove("is-active")); }
-
-      const TAP_MOVE_PX = 10;
-
-      cards.forEach((card) => {
-        const ov = card.querySelector(".overlay");
-
-        let sx = 0, sy = 0, moved = false;
-
-        function onStart(e){
-          const t = e.touches ? e.touches[0] : e;
-          sx = t.clientX; sy = t.clientY;
-          moved = false;
-        }
-        function onMove(e){
-          const t = e.touches ? e.touches[0] : e;
-          const dx = Math.abs(t.clientX - sx);
-          const dy = Math.abs(t.clientY - sy);
-          if(dx > TAP_MOVE_PX || dy > TAP_MOVE_PX) moved = true;
-        }
-        function onEnd(e){
-          const target = e.target;
-          if (target && target.closest && target.closest(".ov-text")) return;
-          if(moved) return;
-
-          if(card.classList.contains("is-active")){
-            return;
+      /* Shop Card Interaction */
+      const card = document.getElementById("shopCardA");
+      if(card) {
+        card.addEventListener("click", function(e) {
+          if(!e.target.closest(".ov-text")) {
+            this.classList.toggle("is-active");
           }
-          deactivateAll();
-          card.classList.add("is-active");
-        }
+        });
+      }
 
-        if(isTouch){
-          card.addEventListener("touchstart", onStart, { passive: true });
-          card.addEventListener("touchmove", onMove, { passive: true });
-          card.addEventListener("touchend", onEnd, { passive: true });
-
-          if(ov){
-            let osx=0, osy=0, omoved=false;
-
-            ov.addEventListener("touchstart", (e)=>{
-              if(e.target.closest && e.target.closest(".ov-text")) return;
-              const t=e.touches[0];
-              osx=t.clientX; osy=t.clientY; omoved=false;
-            }, { passive:true });
-
-            ov.addEventListener("touchmove", (e)=>{
-              if(e.target.closest && e.target.closest(".ov-text")) return;
-              const t=e.touches[0];
-              const dx=Math.abs(t.clientX-osx);
-              const dy=Math.abs(t.clientY-osy);
-              if(dx>TAP_MOVE_PX || dy>TAP_MOVE_PX) omoved=true;
-            }, { passive:true });
-
-            ov.addEventListener("touchend", (e)=>{
-              if(e.target.closest && e.target.closest(".ov-text")) return;
-              if(omoved) return;
-              card.classList.remove("is-active");
-            }, { passive:true });
-          }
-
-          document.addEventListener("touchend", (e)=>{
-            const tappedCard = e.target.closest?.(".shop-card");
-            if(!tappedCard){
-              if(cards.some(c=>c.classList.contains("is-active"))){
-                deactivateAll();
-              }
-            }
-          }, { passive:true });
-
-        } else {
-          card.addEventListener("click", (e)=>{
-            if(e.target.closest && e.target.closest(".ov-text")) return;
-            e.preventDefault();
-            if(card.classList.contains("is-active")) card.classList.remove("is-active");
-            else { deactivateAll(); card.classList.add("is-active"); }
-          });
-
-          if(ov){
-            ov.addEventListener("click", (e)=>{
-              if(e.target.closest && e.target.closest(".ov-text")) return;
-              e.preventDefault();
-              card.classList.remove("is-active");
-            });
-          }
-
-          card.addEventListener("keydown", (e)=>{
-            if(e.key==="Enter" || e.key===" "){
-              if(document.activeElement===card){
-                e.preventDefault();
-                if(card.classList.contains("is-active")) card.classList.remove("is-active");
-                else { deactivateAll(); card.classList.add("is-active"); }
-              }
-            }
-          });
-        }
-      });
-
-      /* ---------- Make image copy annoying (right click / drag / select) ---------- */
-      document.addEventListener("contextmenu", function (e) {
-        const t = e.target;
-        if (!t) return;
-        if (t.tagName === "IMG" || t.closest?.(".shop-card") || t.closest?.(".thumb")) {
-          e.preventDefault();
-        }
-      });
-
-      document.addEventListener("dragstart", function (e) {
-        const t = e.target;
-        if (t && (t.tagName === "IMG" || t.closest?.(".shop-card"))) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      document.addEventListener("selectstart", function (e) {
-        const t = e.target;
-        if (t && (t.tagName === "IMG" || t.closest?.(".shop-card"))) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      document.querySelectorAll(".thumb img").forEach((img) => {
-        img.setAttribute("draggable", "false");
-      });
+      /* 이미지 우클릭 방지 */
+      document.addEventListener("contextmenu", (e) => { if(e.target.tagName === "IMG") e.preventDefault(); });
     })();
   </script>
 </body>
