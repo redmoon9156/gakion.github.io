@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Shop — Work A</title>
   <meta name="description" content="Shop — Work A (fixture book)." />
 
@@ -94,126 +94,80 @@
       main{ padding: 36px 0 80px; }
     }
 
-    /* =========================
-        Gallery Style
-       ========================= */
+    /* Gallery */
     .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
-
-    @media (min-width: 900px){
-      .shop-grid{ grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-    }
+    @media (min-width: 900px){ .shop-grid{ grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; } }
 
     .shop-media { display: flex; flex-direction: column; gap: 12px; }
-
-    .main-viewer {
-      width: 100%;
-      cursor: zoom-in;
-      overflow: hidden;
-      background: #f9f9f9;
-      line-height: 0;
-    }
-
-    .main-viewer img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 0 !important;
-    }
+    .main-viewer { width: 100%; cursor: zoom-in; overflow: hidden; background: #f9f9f9; line-height: 0; }
+    .main-viewer img { width: 100%; height: auto; display: block; border-radius: 0 !important; }
 
     .thumb-list { display: flex; gap: 10px; }
+    .thumb-img { width: calc(25% - 7.5px); cursor: pointer; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0 !important; border: 1px solid transparent; }
 
-    .thumb-img {
-      width: calc(25% - 7.5px);
-      cursor: pointer;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      border-radius: 0 !important;
-      border: 1px solid transparent;
-    }
-
-    /* Lightbox 스타일 */
+    /* ✅ Lightbox - Fixed height and width to prevent layout shift */
     .lightbox {
       position: fixed;
       inset: 0;
       display:none;
       align-items:center;
       justify-content:center;
-      padding: 10px;
       z-index: 2000;
     }
     .lightbox.open { display: flex; }
-
-    .lb-backdrop {
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(6px);
-    }
+    .lb-backdrop { position:absolute; inset:0; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); }
 
     .lb-frame {
       position: relative;
-      width: min(98vw, 1400px);
-      max-height: 96vh;
+      width: 100vw;
+      height: 100vh;
       z-index: 1;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 0 72px;
-      pointer-events: auto;
+      overflow: hidden; /* 영역 고정 */
     }
 
     .lb-img {
       max-width: 100%;
-      max-height: 96vh;
+      max-height: 92vh;
       width: auto;
       height: auto;
-      border-radius: 0;
-      box-shadow: var(--shadow);
-      display:block;
+      object-fit: contain;
       user-select:none;
-      -webkit-user-select:none;
-      -webkit-user-drag:none;
       pointer-events: auto;
+      /* Smooth transition between same-sized images */
+      transition: opacity 0.15s ease-in-out;
     }
 
     .lb-arrow {
       position:absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 56px;
-      height: 56px;
+      top: 0;
+      bottom: 0;
+      width: 15%; /* 내비게이션 영역 확장 */
       border: 0;
       background: transparent;
-      color: rgba(210,210,210,.95);
+      color: rgba(255,255,255,.8);
       cursor:pointer;
       display:flex;
       align-items:center;
       justify-content:center;
-      transition: transform .12s ease, opacity .12s ease;
-      opacity: .95;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,.55));
-      z-index: 2;
+      z-index: 10;
     }
-    .lb-arrow:hover { opacity: 1; transform: translateY(-50%) scale(1.06); }
-    .lb-arrow:active { transform: translateY(-50%) scale(0.96); }
-    .lb-prev { left: 12px; }
-    .lb-next { right: 12px; }
-    .lb-arrow svg { width: 34px; height: 34px; }
-    .lb-arrow svg path {
-      stroke-width: 3.2;
-      stroke-linecap: square;
-      stroke-linejoin: miter;
-    }
+    .lb-prev { left: 0; }
+    .lb-next { right: 0; }
+    .lb-arrow svg { width: 34px; height: 34px; filter: drop-shadow(0 0 4px rgba(0,0,0,0.5)); }
 
     @media (max-width: 899px) {
       .lb-arrow { display:none !important; }
       .lb-frame { padding: 0; }
+      /* ✅ 모바일 가로 꽉 채움 유지 */
+      .lb-img { max-width: 100vw; }
     }
 
     /* Info */
     .shop-info{ padding: 0; }
     .shop-title{ margin: 0 0 10px; font-weight: 700; font-size: 18px; }
-
     .shop-desc{ margin: 0; white-space: pre-line; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
     .awards-container { margin-top: 4px; }
     .award-item{ display: block; font-weight: 400; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
@@ -283,11 +237,11 @@
     <div class="lb-backdrop" id="lbBackdrop"></div>
     <div class="lb-frame" id="lbFrame">
       <button class="lb-arrow lb-prev" id="prevBtn" type="button">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M15 4 L7 12 L15 20" stroke="currentColor" fill="none"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 4 L7 12 L15 20"/></svg>
       </button>
       <img id="lightboxImg" class="lb-img" src="">
       <button class="lb-arrow lb-next" id="nextBtn" type="button">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M9 4 L17 12 L9 20" stroke="currentColor" fill="none"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 4 L17 12 L9 20"/></svg>
       </button>
     </div>
   </div>
@@ -303,12 +257,10 @@
       const overlay = document.getElementById("drawerOverlay");
       function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
       function openMenu(){ body.dataset.menuOpen = "true"; setOverlayHidden(false); body.style.overflow = "hidden"; }
-      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; window.setTimeout(() => setOverlayHidden(true), 180); }
+      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => setOverlayHidden(true), 180); }
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
-    })();
 
-    (function () {
       const images = [
         "images/shop/shop_work_A1.PNG",
         "images/shop/shop_work_A2.PNG",
@@ -322,9 +274,7 @@
       const thumbList = document.getElementById('thumbList');
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightboxImg');
-      const lbBackdrop = document.getElementById('lbBackdrop');
       const lbFrame = document.getElementById('lbFrame');
-      let autoSlideInterval;
 
       function updateGallery(index) {
         currentIdx = index;
@@ -343,23 +293,7 @@
 
       updateGallery(0);
 
-      function startAutoSlide() {
-        stopAutoSlide();
-        autoSlideInterval = setInterval(() => {
-          currentIdx = (currentIdx + 1) % images.length;
-          updateGallery(currentIdx);
-        }, 2500);
-      }
-      function stopAutoSlide() { clearInterval(autoSlideInterval); }
-
-      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-      if (!isMobile) {
-        mainImg.parentElement.addEventListener('mouseenter', startAutoSlide);
-        mainImg.parentElement.addEventListener('mouseleave', stopAutoSlide);
-      }
-
       mainImg.onclick = () => {
-        stopAutoSlide();
         lightbox.classList.add('open');
         lightboxImg.src = images[currentIdx];
         document.body.style.overflow = 'hidden';
@@ -370,30 +304,40 @@
         document.body.style.overflow = '';
       };
 
-      lbBackdrop.onclick = closeLightbox;
+      document.getElementById('lbBackdrop').onclick = closeLightbox;
 
       const goPrev = () => {
         currentIdx = (currentIdx - 1 + images.length) % images.length;
-        lightboxImg.src = images[currentIdx];
-        updateGallery(currentIdx);
+        lightboxImg.style.opacity = '0'; // 로딩 중 떨림 방지
+        setTimeout(() => {
+          lightboxImg.src = images[currentIdx];
+          lightboxImg.style.opacity = '1';
+          updateGallery(currentIdx);
+        }, 50);
       };
 
       const goNext = () => {
         currentIdx = (currentIdx + 1) % images.length;
-        lightboxImg.src = images[currentIdx];
-        updateGallery(currentIdx);
+        lightboxImg.style.opacity = '0';
+        setTimeout(() => {
+          lightboxImg.src = images[currentIdx];
+          lightboxImg.style.opacity = '1';
+          updateGallery(currentIdx);
+        }, 50);
       };
 
       document.getElementById('prevBtn').onclick = (e) => { e.stopPropagation(); goPrev(); };
       document.getElementById('nextBtn').onclick = (e) => { e.stopPropagation(); goNext(); };
 
+      // ✅ 고정된 좌우 클릭 영역 내비게이션
       lbFrame.onclick = (e) => {
         if (e.target.closest('.lb-arrow')) return;
         const rect = lbFrame.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const ratio = x / rect.width;
-        if (ratio <= 0.25) goPrev();
-        else if (ratio >= 0.75) goNext();
+        if (ratio <= 0.3) goPrev(); // 좌측 30%
+        else if (ratio >= 0.7) goNext(); // 우측 30%
+        else closeLightbox(); // 중앙 클릭 시 닫기
       };
 
       document.addEventListener("contextmenu", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
