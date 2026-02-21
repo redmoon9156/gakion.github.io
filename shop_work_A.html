@@ -343,7 +343,6 @@
 
       updateGallery(0);
 
-      // 자동 슬라이드 로직 제거
       function startAutoSlide() {
         stopAutoSlide();
         autoSlideInterval = setInterval(() => {
@@ -353,13 +352,11 @@
       }
       function stopAutoSlide() { clearInterval(autoSlideInterval); }
 
-      // 호버 시에만 슬라이드 작동 (데스크톱 전용)
       const isMobile = /Mobi|Android/i.test(navigator.userAgent);
       if (!isMobile) {
         mainImg.parentElement.addEventListener('mouseenter', startAutoSlide);
         mainImg.parentElement.addEventListener('mouseleave', stopAutoSlide);
       }
-      // 모바일에서의 무조건적인 자동 실행은 제거되었습니다.
 
       mainImg.onclick = () => {
         stopAutoSlide();
