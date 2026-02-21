@@ -95,7 +95,7 @@
     }
 
     /* =========================
-       SmartStore Style Gallery
+        SmartStore Style Gallery
        ========================= */
     .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
 
@@ -121,7 +121,7 @@
       width: 100%;
       height: auto;
       display: block;
-      border-radius: 0 !important; /* 라운드 제거 */
+      border-radius: 0 !important;
     }
 
     .thumb-list {
@@ -134,62 +134,99 @@
       cursor: pointer;
       aspect-ratio: 1 / 1;
       object-fit: cover;
-      border-radius: 0 !important; /* 라운드 제거 */
+      border-radius: 0 !important;
       border: 1px solid transparent;
     }
 
     @media (max-width: 899px) {
-      .thumb-list { display: none; } /* 모바일은 썸네일 숨김 */
+      .thumb-list { display: none; }
     }
 
-    /* Lightbox (확대창) */
+    /* 2. 요청반영: Lightbox 스타일을 기존 Work_A와 동일하게 수정 */
     .lightbox {
-      display: none;
       position: fixed;
-      z-index: 3000;
       inset: 0;
-      background: rgba(0,0,0,0.9);
-      align-items: center;
-      justify-content: center;
-      user-select: none;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 10px;
+      z-index: 2000;
+    }
+    .lightbox.open { display: flex; }
+
+    .lb-backdrop {
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
     }
 
-    .lightbox img {
-      max-width: 95%;
-      max-height: 95%;
-      object-fit: contain;
+    .lb-frame {
+      position: relative;
+      width: min(98vw, 1400px);
+      max-height: 96vh;
+      z-index: 1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0 72px;
     }
 
-    .lightbox-nav {
-      position: absolute;
+    .lb-img {
+      max-width: 100%;
+      max-height: 96vh;
+      border-radius: 0;
+      box-shadow: var(--shadow);
+      display:block;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-user-drag:none;
+      pointer-events: auto;
+    }
+
+    .lb-arrow {
+      position:absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: white;
-      font-size: 3rem;
-      cursor: pointer;
-      padding: 20px;
-      z-index: 3001;
+      width: 56px;
+      height: 56px;
+      border: 0;
+      background: transparent;
+      color: rgba(210,210,210,.95);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition: transform .12s ease, opacity .12s ease;
+      opacity: .95;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.55));
+      z-index: 2;
     }
-    .ln-prev { left: 10px; }
-    .ln-next { right: 10px; }
-    .ln-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      color: white;
-      font-size: 2.5rem;
-      cursor: pointer;
-      line-height: 1;
+    .lb-arrow:hover { opacity: 1; transform: translateY(-50%) scale(1.06); }
+    .lb-arrow:active { transform: translateY(-50%) scale(0.96); }
+    .lb-prev { left: 12px; }
+    .lb-next { right: 12px; }
+    .lb-arrow svg { width: 34px; height: 34px; }
+    .lb-arrow svg path {
+      stroke-width: 3.2;
+      stroke-linecap: square;
+      stroke-linejoin: miter;
+    }
+
+    @media (max-width: 899px) {
+      .lb-arrow { display:none !important; }
+      .lb-frame { padding: 0; }
     }
 
     /* Info */
     .shop-info{ padding: 0; }
     .shop-title{ margin: 0 0 10px; font-weight: 700; font-size: 18px; }
-    .shop-desc{ margin: 0 0 14px; white-space: pre-line; color: rgba(0,0,0,.9); }
-    .award-item{ display: block; font-weight: 400; margin-top: 8px; font-size: 13px; color: var(--muted); }
-    .shop-buy{ display: inline-block; font-weight: 600; font-size: 13px; color: #000; padding: 10px 0; text-decoration: underline; margin-top: 10px; }
+
+    /* 1. 요청반영: 텍스트 스타일/크기 통일 및 간격 조정 */
+    .shop-desc{ margin: 0; white-space: pre-line; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
+    .awards-container { margin-top: 4px; } /* 엔터 대신 적절한 마진 사용 */
+    .award-item{ display: block; font-weight: 400; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
+    .shop-buy{ display: inline-block; font-weight: 600; font-size: 13px; color: #000; padding: 4px 0; text-decoration: underline; margin-top: 10px; }
 
     img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   </style>
@@ -233,17 +270,17 @@
           <div class="main-viewer" id="mainViewer">
             <img src="images/shop/shop_work_A1.PNG" id="currentMainImg" alt="Main Product">
           </div>
-          <div class="thumb-list" id="thumbList">
-            </div>
+          <div class="thumb-list" id="thumbList"></div>
         </div>
 
         <div class="shop-info">
           <h1 class="shop-title">Fox Dream</h1>
           <div class="shop-desc">
             Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
-
-            <span class="award-item">The Golden Pinwheel Young Illustrators Competition Finalist, 2025</span>
-            <span class="award-item">Bologna Children’s Book Fair Finalist, 2026</span>
+            <div class="awards-container">
+              <span class="award-item">Bologna Children’s Book Fair Finalist, 2026</span>
+              <span class="award-item">The Golden Pinwheel Young Illustrators Competition Finalist, 2025</span>
+            </div>
           </div>
           <a class="shop-buy" href="https://example.com" target="_blank" rel="noopener">Purchase to this link</a>
         </div>
@@ -252,10 +289,16 @@
   </main>
 
   <div id="lightbox" class="lightbox">
-    <span class="ln-close" id="closeLightbox">&times;</span>
-    <button class="lightbox-nav ln-prev" id="prevBtn">&#10094;</button>
-    <img id="lightboxImg" src="">
-    <button class="lightbox-nav ln-next" id="nextBtn">&#10095;</button>
+    <div class="lb-backdrop" id="lbBackdrop"></div>
+    <div class="lb-frame">
+      <button class="lb-arrow lb-prev" id="prevBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M15 4 L7 12 L15 20" stroke="currentColor" fill="none"/></svg>
+      </button>
+      <img id="lightboxImg" class="lb-img" src="">
+      <button class="lb-arrow lb-next" id="nextBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 4 L17 12 L9 20" stroke="currentColor" fill="none"/></svg>
+      </button>
+    </div>
   </div>
 
   <footer>
@@ -263,7 +306,6 @@
   </footer>
 
   <script>
-    /* 1. 기본 모바일 메뉴 스크립트 */
     (function () {
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
@@ -275,7 +317,6 @@
       if (overlay) overlay.addEventListener("click", closeMenu);
     })();
 
-    /* 2. 스마트스토어 스타일 이미지 갤러리 스크립트 */
     (function () {
       const images = [
         "images/shop/shop_work_A1.PNG",
@@ -290,16 +331,14 @@
       const thumbList = document.getElementById('thumbList');
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightboxImg');
+      const lbBackdrop = document.getElementById('lbBackdrop');
       let autoSlideInterval;
 
       const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-      // 갤러리 업데이트 및 썸네일 재정렬
       function updateGallery(index) {
         currentIdx = index;
         mainImg.src = images[currentIdx];
-        
-        // 썸네일 재배치: 현재 메인을 제외한 나머지를 번호순(배열순)으로 나열
         thumbList.innerHTML = '';
         images.forEach((src, idx) => {
           if (idx !== currentIdx) {
@@ -312,58 +351,62 @@
         });
       }
 
-      // 초기 썸네일 세팅
       updateGallery(0);
 
-      // 자동 슬라이드 함수
       function startAutoSlide() {
         stopAutoSlide();
         autoSlideInterval = setInterval(() => {
           currentIdx = (currentIdx + 1) % images.length;
           updateGallery(currentIdx);
-        }, 2500); // 2.5초 간격
+        }, 2500);
       }
 
-      function stopAutoSlide() {
-        clearInterval(autoSlideInterval);
-      }
+      function stopAutoSlide() { clearInterval(autoSlideInterval); }
 
-      // 데스크톱: 마우스 호버 시 다음 이미지로 전환
       if (!isMobile) {
         mainImg.parentElement.addEventListener('mouseenter', startAutoSlide);
         mainImg.parentElement.addEventListener('mouseleave', stopAutoSlide);
       } else {
-        // 모바일: 마우스가 없으므로 항상 자동 슬라이드
         startAutoSlide();
       }
 
-      // 확대 보기 (클릭)
       mainImg.onclick = () => {
         stopAutoSlide();
-        lightbox.style.display = 'flex';
+        lightbox.classList.add('open');
         lightboxImg.src = images[currentIdx];
+        document.body.style.overflow = 'hidden';
       };
 
-      // 라이트박스 조작
-      document.getElementById('closeLightbox').onclick = () => {
-        lightbox.style.display = 'none';
+      const closeLightbox = () => {
+        lightbox.classList.remove('open');
+        document.body.style.overflow = '';
         if(isMobile) startAutoSlide();
       };
 
+      lbBackdrop.onclick = closeLightbox;
+
       document.getElementById('prevBtn').onclick = (e) => {
+        e.stopPropagation();
         currentIdx = (currentIdx - 1 + images.length) % images.length;
         lightboxImg.src = images[currentIdx];
         updateGallery(currentIdx);
       };
 
       document.getElementById('nextBtn').onclick = (e) => {
+        e.stopPropagation();
         currentIdx = (currentIdx + 1) % images.length;
         lightboxImg.src = images[currentIdx];
         updateGallery(currentIdx);
       };
 
-      // 이미지 보호 스크립트
       document.addEventListener("contextmenu", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
+      
+      window.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("open")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") document.getElementById('prevBtn').click();
+        if (e.key === "ArrowRight") document.getElementById('nextBtn').click();
+      });
     })();
   </script>
 </body>
