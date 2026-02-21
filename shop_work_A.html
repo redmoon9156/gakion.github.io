@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Shop — Gakion</title>
-  <meta name="description" content="Shop — Gakion" />
+  <title>Shop — Work A</title>
+  <meta name="description" content="Shop — Work A (fixture book)." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,11 +18,10 @@
       --bg:#ffffff;
       --fg:#111111;
       --muted:#666666;
-      --max:1060px;
-      --pad:18px;
+      --max: 1060px;
+      --pad: 18px;
+      --radius: 14px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-
-      /* ✅ mobile dropdown menu */
       --menu-bg: rgba(245,245,245,.98);
       --menu-dur: 360ms;
       --menu-ease: cubic-bezier(.22, 1, .36, 1);
@@ -35,347 +34,164 @@
       margin:0;
       background:var(--bg);
       color:var(--fg);
-      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
-      font-size:14px;
-      line-height:1.6;
-      letter-spacing:.15px;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      min-height:100vh;
+      font-family: Pretendard, sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+      letter-spacing: .15px;
+      -webkit-font-smoothing: antialiased;
       display:flex;
       flex-direction:column;
+      min-height:100vh;
     }
 
     a{ color:inherit; text-decoration:none; }
-    button{ font: inherit; }
 
     .wrap{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:0 var(--pad);
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad);
       width:100%;
     }
 
-    /* Header */
-    header{
-      background:#ffffff;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding:16px 0;
-    }
+    header{ background: #ffffff; position: relative; z-index: 5; }
+    .topbar{ display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
 
     .brand{
-      font-family:"Montserrat", sans-serif;
-      font-size:22.5px;
-      font-weight:700;
-      letter-spacing:.35px;
-      line-height:1.1;
-      min-width:160px;
+      font-family: "Montserrat", sans-serif;
+      font-size: 22.5px;
+      font-weight: 700;
       display:inline-flex;
       align-items:center;
       gap:10px;
     }
 
-    .brand-mark{
-      height:1em;
-      width:auto;
-      display:block;
-      object-fit:contain;
-      flex:0 0 auto;
-      transform: translateY(0.02em);
-    }
+    .brand-mark{ height:1em; width:auto; }
 
-    nav.desktop{
-      display:none;
-      gap:18px;
-      align-items:center;
-      font-size:13px;
-      letter-spacing:.6px;
-      white-space:nowrap;
-    }
+    nav.desktop{ display:none; gap: 18px; font-size: 13px; }
+    nav.desktop a{ font-family: "Montserrat", sans-serif; font-weight: 600; color: rgba(0,0,0,.82); }
 
-    nav.desktop a{
-      font-family:"Montserrat", sans-serif;
-      font-weight:600;
-      padding: 8px 4px;
-      color: rgba(0,0,0,.82);
-    }
-    nav.desktop a:hover{ color: rgba(0,0,0,1); }
-
-    .menu-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width: 42px;
-      height: 42px;
-      border: 0;
-      border-radius: 12px;
-      background: transparent;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
+    .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width: 42px; height: 42px; border: 0; background: transparent; cursor:pointer; }
     .menu-icon{ width: 18px; height: 12px; position: relative; }
-    .menu-icon span{
-      position:absolute; left:0; right:0;
-      height:1px;
-      background: rgba(0,0,0,.82);
-    }
+    .menu-icon span{ position:absolute; left:0; right:0; height:1px; background: rgba(0,0,0,.82); }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
 
-    .drawer-overlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.32);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .22s ease;
-      z-index: 1000;
-    }
-
-    .drawer{
-      position: fixed;
-      left: 0; right: 0;
-      top: 0;
-      height: 50vh;
-      background: var(--menu-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: var(--shadow);
-      transform: translateY(-105%);
-      transition: transform var(--menu-dur) var(--menu-ease);
-      z-index: 1001;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 18px var(--pad);
-    }
-
-    .drawer-nav{
-      width:100%;
-      max-width:520px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      text-align:center;
-    }
-
-    .drawer-nav a{
-      font-family:"Montserrat", sans-serif;
-      font-weight:600;
-      font-size:16px;
-      letter-spacing:.6px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      color: rgba(0,0,0,.86);
-      width: 100%;
-      max-width: 320px;
-    }
-    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
+    .drawer-overlay{ position: fixed; inset: 0; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 1000; }
+    .drawer{ position: fixed; left: 0; right: 0; top: 0; height: 50vh; background: var(--menu-bg); transform: translateY(-105%); transition: transform var(--menu-dur) var(--menu-ease); z-index: 1001; display:flex; align-items:center; justify-content:center; }
+    .drawer-nav{ display:flex; flex-direction:column; align-items:center; gap:10px; }
+    .drawer-nav a{ font-family: "Montserrat", sans-serif; font-weight: 600; font-size: 16px; padding: 12px; }
 
     body[data-menu-open="true"] .drawer-overlay{ opacity: 1; pointer-events: auto; }
     body[data-menu-open="true"] .drawer{ transform: translateY(0); }
 
-    /* Main */
-    main{ padding: 24px 0 90px; flex:1; }
+    main{ padding: 28px 0 60px; flex: 1; }
+    footer{ padding: 18px 0 28px; color: var(--muted); font-size: 12px; text-align: center; }
 
-    .shop-title{
-      font-family:"Montserrat", sans-serif;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: .2px;
-      margin: 14px 0 12px;
-      text-align: center;
+    @media (min-width: 900px){
+      nav.desktop{ display:flex; }
+      .menu-btn{ display:none; }
+      main{ padding: 36px 0 80px; }
     }
 
-    .desc-wrap{
-      width:100%;
-      margin: 0 auto 26px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 14px; 
+    /* =========================
+       SmartStore Style Gallery
+       ========================= */
+    .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
+
+    @media (min-width: 900px){
+      .shop-grid{ grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
     }
 
-    .shop-desc{
-      font-size: 1rem;
-      line-height: 1.75;
-      letter-spacing: -0.01em;
-      color: rgba(0,0,0,.86);
-      text-align:center;
-      white-space: normal;
-      word-break: keep-all;
-      max-width: min(980px, 92vw);
-      margin: 0;
-    }
-
-    .awards{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap: 4px;
-      width:100%;
-    }
-
-    /* 폰트 스타일 통일 */
-    .award-item{
-      font-size: 1rem;
-      line-height: 1.5;
-      letter-spacing: -0.01em;
-      color: rgba(0,0,0,.86);
-      text-align:center;
-      margin: 0;
-      font-weight: 400;
-    }
-
-    .shop-buy-link{
-      display: inline-block;
-      margin-top: 10px; /* 간격 축소 */
-      font-weight: 600;
-      text-decoration: underline;
-      color: rgba(0,0,0,.86);
-    }
-
-    /* Image Grid 스타일 */
-    .shop-grid {
+    .shop-media {
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 12px;
     }
 
-    .img-card {
+    .main-viewer {
       width: 100%;
-      background: transparent;
-    }
-
-    .img-btn {
-      display: block;
-      width: 100%;
-      border: 0;
-      padding: 0;
-      background: transparent;
       cursor: zoom-in;
-      user-select: none;
+      overflow: hidden;
+      background: #f9f9f9;
+      line-height: 0;
     }
 
-    .img-btn img {
+    .main-viewer img {
       width: 100%;
       height: auto;
       display: block;
-      transition: transform .22s cubic-bezier(.2,.8,.2,1), filter .22s ease;
-      border-radius: 0;
+      border-radius: 0 !important; /* 라운드 제거 */
     }
 
-    .img-btn:active img {
-      transform: scale(1.01);
+    .thumb-list {
+      display: flex;
+      gap: 10px;
     }
 
-    /* Lightbox 스타일 (제공해주신 코드와 동일하게 적용) */
-    .lightbox{
+    .thumb-img {
+      width: calc(25% - 7.5px);
+      cursor: pointer;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 0 !important; /* 라운드 제거 */
+      border: 1px solid transparent;
+    }
+
+    @media (max-width: 899px) {
+      .thumb-list { display: none; } /* 모바일은 썸네일 숨김 */
+    }
+
+    /* Lightbox (확대창) */
+    .lightbox {
+      display: none;
       position: fixed;
+      z-index: 3000;
       inset: 0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 10px;
-      z-index: 2000;
-    }
-    .lightbox.open{ display:flex; }
-
-    .lb-backdrop{
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.55);
-      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.9);
+      align-items: center;
+      justify-content: center;
+      user-select: none;
     }
 
-    .lb-frame{
-      position: relative;
-      width: min(98vw, 1400px);
-      max-height: 96vh;
-      z-index: 1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 0 72px;
+    .lightbox img {
+      max-width: 95%;
+      max-height: 95%;
+      object-fit: contain;
     }
 
-    .lb-img{
-      max-width: 100%;
-      max-height: 96vh;
-      border-radius: 0;
-      box-shadow: var(--shadow);
-      display:block;
-      user-select:none;
-      pointer-events: auto;
-    }
-
-    .lb-arrow{
-      position:absolute;
+    .lightbox-nav {
+      position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 56px;
-      height: 56px;
-      border: 0;
-      background: transparent;
-      color: rgba(210,210,210,.95);
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition: transform .12s ease, opacity .12s ease;
-      opacity: .95;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,.55));
+      background: none;
+      border: none;
+      color: white;
+      font-size: 3rem;
+      cursor: pointer;
+      padding: 20px;
+      z-index: 3001;
     }
-    .lb-arrow:hover{ opacity: 1; transform: translateY(-50%) scale(1.06); }
-    .lb-arrow:active{ transform: translateY(-50%) scale(0.96); }
-    .lb-prev{ left: 12px; }
-    .lb-next{ right: 12px; }
-    .lb-arrow svg{ width: 34px; height: 34px; }
-    .lb-arrow svg path{
-      stroke-width: 3.2;
-      stroke-linecap: square;
-      stroke-linejoin: miter;
+    .ln-prev { left: 10px; }
+    .ln-next { right: 10px; }
+    .ln-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: white;
+      font-size: 2.5rem;
+      cursor: pointer;
+      line-height: 1;
     }
 
-    @media (max-width: 899px){
-      .lb-arrow{ display:none !important; }
-      .lb-frame{ padding: 0; }
-    }
+    /* Info */
+    .shop-info{ padding: 0; }
+    .shop-title{ margin: 0 0 10px; font-weight: 700; font-size: 18px; }
+    .shop-desc{ margin: 0 0 14px; white-space: pre-line; color: rgba(0,0,0,.9); }
+    .award-item{ display: block; font-weight: 400; margin-top: 8px; font-size: 13px; color: var(--muted); }
+    .shop-buy{ display: inline-block; font-weight: 600; font-size: 13px; color: #000; padding: 10px 0; text-decoration: underline; margin-top: 10px; }
 
-    footer{ padding: 24px 0 34px; }
-    .copyright{
-      display:block;
-      width:100%;
-      text-align:center;
-      color: rgba(0,0,0,.56);
-      font-size: 12.5px;
-    }
-
-    @media (min-width: 900px){
-      :root{ --pad:22px; }
-      nav.desktop{ display:flex; }
-      .menu-btn{ display:none; }
-      main{ padding: 30px 0 100px; }
-      .shop-title{ font-size: 32px; }
-    }
-
-    img{
-      -webkit-user-drag: none;
-      user-select: none;
-      -webkit-touch-callout: none;
-    }
+    img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   </style>
 </head>
 
@@ -384,7 +200,7 @@
     <div class="wrap">
       <div class="topbar">
         <a class="brand" href="index.html">
-          <img class="brand-mark" src="images/home/late_autumn.png" alt="" />
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="Logo" />
           <span>Gakion</span>
         </a>
         <nav class="desktop">
@@ -412,69 +228,55 @@
 
   <main>
     <div class="wrap">
-      <div class="shop-title">Fox Dream</div>
-
-      <div class="desc-wrap">
-        <p class="shop-desc">
-          Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
-        </p>
-
-        <div class="awards">
-          <div class="award-item">Bologna Children’s Book Fair Finalist, 2026</div>
-          <div class="award-item">The Golden Pinwheel Young Illustrators Competition Finalist, 2025</div>
+      <section class="shop-grid">
+        <div class="shop-media">
+          <div class="main-viewer" id="mainViewer">
+            <img src="images/shop/shop_work_A1.PNG" id="currentMainImg" alt="Main Product">
+          </div>
+          <div class="thumb-list" id="thumbList">
+            </div>
         </div>
 
-        <a href="https://example.com" class="shop-buy-link" target="_blank">Purchase to this link</a>
-      </div>
+        <div class="shop-info">
+          <h1 class="shop-title">Fox Dream</h1>
+          <div class="shop-desc">
+            Fox Dream is a silent visual tale of a white fox chasing a red-eyed rabbit in a snowy forest. Mistaking red things for its eyes, it dives into illusions. Red marks grow. Immersed in longing, it rises— only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
 
-      <section class="shop-grid" id="shopGrid">
-        </section>
+            <span class="award-item">The Golden Pinwheel Young Illustrators Competition Finalist, 2025</span>
+            <span class="award-item">Bologna Children’s Book Fair Finalist, 2026</span>
+          </div>
+          <a class="shop-buy" href="https://example.com" target="_blank" rel="noopener">Purchase to this link</a>
+        </div>
+      </section>
     </div>
   </main>
 
-  <footer>
-    <div class="wrap">
-      <div class="copyright">© Gakion. All rights reserved.</div>
-    </div>
-  </footer>
-
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <div class="lb-backdrop" id="lbBackdrop"></div>
-    <div class="lb-frame" id="lbFrame">
-      <button class="lb-arrow lb-prev" id="lbPrev" type="button">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M15 4 L7 12 L15 20" stroke="currentColor"/></svg>
-      </button>
-      <img class="lb-img" id="lbImg" alt="Expanded image" />
-      <button class="lb-arrow lb-next" id="lbNext" type="button">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M9 4 L17 12 L9 20" stroke="currentColor"/></svg>
-      </button>
-    </div>
+  <div id="lightbox" class="lightbox">
+    <span class="ln-close" id="closeLightbox">&times;</span>
+    <button class="lightbox-nav ln-prev" id="prevBtn">&#10094;</button>
+    <img id="lightboxImg" src="">
+    <button class="lightbox-nav ln-next" id="nextBtn">&#10095;</button>
   </div>
 
+  <footer>
+    <div class="wrap">© Gakion. All rights reserved.</div>
+  </footer>
+
   <script>
+    /* 1. 기본 모바일 메뉴 스크립트 */
     (function () {
       const body = document.body;
-
-      /* Mobile Menu */
       const openBtn = document.getElementById("menuOpenBtn");
-      const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
-
-      function openMenu(){
-        body.dataset.menuOpen = "true";
-        overlay.hidden = false;
-        body.style.overflow = "hidden";
-      }
-      function closeMenu(){
-        body.dataset.menuOpen = "false";
-        body.style.overflow = "";
-        setTimeout(() => { overlay.hidden = true; }, 180);
-      }
+      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
+      function openMenu(){ body.dataset.menuOpen = "true"; setOverlayHidden(false); body.style.overflow = "hidden"; }
+      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; window.setTimeout(() => setOverlayHidden(true), 180); }
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
+    })();
 
-      /* 이미지 5장 로드 로직 (PNG 대소문자 주의) */
-      const grid = document.getElementById("shopGrid");
+    /* 2. 스마트스토어 스타일 이미지 갤러리 스크립트 */
+    (function () {
       const images = [
         "images/shop/shop_work_A1.PNG",
         "images/shop/shop_work_A2.PNG",
@@ -482,64 +284,86 @@
         "images/shop/shop_work_A4.PNG",
         "images/shop/shop_work_A5.PNG"
       ];
+      
+      let currentIdx = 0;
+      const mainImg = document.getElementById('currentMainImg');
+      const thumbList = document.getElementById('thumbList');
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      let autoSlideInterval;
 
-      images.forEach((url, idx) => {
-        const card = document.createElement("div");
-        card.className = "img-card";
-        const btn = document.createElement("button");
-        btn.className = "img-btn";
-        const im = document.createElement("img");
-        im.src = url;
-        im.draggable = false;
-        im.loading = "lazy";
+      const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+      // 갤러리 업데이트 및 썸네일 재정렬
+      function updateGallery(index) {
+        currentIdx = index;
+        mainImg.src = images[currentIdx];
         
-        btn.appendChild(im);
-        card.appendChild(btn);
-        grid.appendChild(card);
-
-        btn.addEventListener("click", () => openLightbox(idx));
-      });
-
-      /* Lightbox 로직 */
-      const lightbox = document.getElementById("lightbox");
-      const lbImg = document.getElementById("lbImg");
-      const lbPrev = document.getElementById("lbPrev");
-      const lbNext = document.getElementById("lbNext");
-      const lbBackdrop = document.getElementById("lbBackdrop");
-      let current = 0;
-
-      function setLbImage(idx){
-        current = idx;
-        lbImg.src = images[current];
+        // 썸네일 재배치: 현재 메인을 제외한 나머지를 번호순(배열순)으로 나열
+        thumbList.innerHTML = '';
+        images.forEach((src, idx) => {
+          if (idx !== currentIdx) {
+            const img = document.createElement('img');
+            img.src = src;
+            img.className = 'thumb-img';
+            img.onclick = () => updateGallery(idx);
+            thumbList.appendChild(img);
+          }
+        });
       }
 
-      function openLightbox(idx){
-        setLbImage(idx);
-        lightbox.classList.add("open");
-        body.style.overflow = "hidden";
+      // 초기 썸네일 세팅
+      updateGallery(0);
+
+      // 자동 슬라이드 함수
+      function startAutoSlide() {
+        stopAutoSlide();
+        autoSlideInterval = setInterval(() => {
+          currentIdx = (currentIdx + 1) % images.length;
+          updateGallery(currentIdx);
+        }, 2500); // 2.5초 간격
       }
 
-      function closeLightbox(){
-        lightbox.classList.remove("open");
-        body.style.overflow = "";
+      function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
       }
 
-      function prev(){ setLbImage((current - 1 + images.length) % images.length); }
-      function next(){ setLbImage((current + 1) % images.length); }
+      // 데스크톱: 마우스 호버 시 다음 이미지로 전환
+      if (!isMobile) {
+        mainImg.parentElement.addEventListener('mouseenter', startAutoSlide);
+        mainImg.parentElement.addEventListener('mouseleave', stopAutoSlide);
+      } else {
+        // 모바일: 마우스가 없으므로 항상 자동 슬라이드
+        startAutoSlide();
+      }
 
-      lbBackdrop.addEventListener("click", closeLightbox);
-      lbPrev.addEventListener("click", (e) => { e.stopPropagation(); prev(); });
-      lbNext.addEventListener("click", (e) => { e.stopPropagation(); next(); });
+      // 확대 보기 (클릭)
+      mainImg.onclick = () => {
+        stopAutoSlide();
+        lightbox.style.display = 'flex';
+        lightboxImg.src = images[currentIdx];
+      };
 
-      window.addEventListener("keydown", (e) => {
-        if (!lightbox.classList.contains("open")) return;
-        if (e.key === "Escape") closeLightbox();
-        if (e.key === "ArrowLeft") prev();
-        if (e.key === "ArrowRight") next();
-      });
+      // 라이트박스 조작
+      document.getElementById('closeLightbox').onclick = () => {
+        lightbox.style.display = 'none';
+        if(isMobile) startAutoSlide();
+      };
 
-      // 이미지 보호
-      document.addEventListener("contextmenu", e => { if(e.target.tagName === "IMG") e.preventDefault(); });
+      document.getElementById('prevBtn').onclick = (e) => {
+        currentIdx = (currentIdx - 1 + images.length) % images.length;
+        lightboxImg.src = images[currentIdx];
+        updateGallery(currentIdx);
+      };
+
+      document.getElementById('nextBtn').onclick = (e) => {
+        currentIdx = (currentIdx + 1) % images.length;
+        lightboxImg.src = images[currentIdx];
+        updateGallery(currentIdx);
+      };
+
+      // 이미지 보호 스크립트
+      document.addEventListener("contextmenu", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
     })();
   </script>
 </body>
