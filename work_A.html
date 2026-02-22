@@ -283,7 +283,7 @@
       border-radius: 0;
     }
 
-    /* Lightbox - 요동침 방지를 위한 고정 높이 틀 */
+    /* Lightbox */
     .lightbox{
       position: fixed;
       inset: 0;
@@ -299,31 +299,33 @@
       inset:0;
       background: rgba(0,0,0,.6);
       backdrop-filter: blur(6px);
+      cursor: pointer;
     }
 
     .lb-frame{
       position: relative;
       width: 100vw;
-      height: 100vh; /* 전체 화면 고정 */
+      height: 100vh;
       z-index: 1;
       display:flex;
       align-items:center;
       justify-content:center;
       overflow: hidden;
       touch-action: none;
+      pointer-events: none; /* 프레임 자체는 클릭 통과 */
     }
 
     .lb-img{
-      /* ✅ 모바일 가로 꽉 채움 및 크기 요동 방지 고정 설정 */
       max-width: 100%;
-      max-height: 85vh; /* 상하 여백 확보하여 안정성 유지 */
+      max-height: 85vh;
       width: auto;
       height: auto;
       object-fit: contain;
       display:block;
       user-select:none;
-      pointer-events: auto;
-      transition: opacity 0.15s ease-in-out; /* 전환 시 부드럽게 */
+      pointer-events: auto; /* 이미지 위에서만 클릭 감지 */
+      transition: opacity 0.15s ease-in-out;
+      cursor: auto;
     }
 
     .lb-arrow{
@@ -338,6 +340,7 @@
       align-items:center;
       justify-content:center;
       z-index: 10;
+      pointer-events: auto; /* 화살표 클릭 가능 */
     }
     .lb-prev{ left: 0; }
     .lb-next{ right: 0; }
@@ -345,7 +348,7 @@
 
     @media (max-width: 899px){
       .lb-arrow{ display:none !important; }
-      .lb-img { max-width: 100vw; } /* 모바일에서는 가로를 화면에 맞춤 */
+      .lb-img { max-width: 100vw; }
     }
 
     footer{ padding: 24px 0 34px; }
@@ -439,6 +442,7 @@
     (function () {
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
+      const drawer = document.getElementById("drawer");
       const overlay = document.getElementById("drawerOverlay");
 
       function openMenu(){ body.dataset.menuOpen = "true"; overlay.hidden = false; body.style.overflow = "hidden"; }
@@ -466,12 +470,12 @@
 
       const lightbox = document.getElementById("lightbox");
       const lbImg = document.getElementById("lbImg");
-      const lbFrame = document.getElementById("lbFrame");
+      const lbBackdrop = document.getElementById("lbBackdrop");
       let current = 0;
 
       function setLbImage(idx){
         current = idx;
-        lbImg.style.opacity = "0"; // 전환 깜빡임 방지
+        lbImg.style.opacity = "0";
         setTimeout(() => {
           lbImg.src = images[current];
           lbImg.onload = () => { lbImg.style.opacity = "1"; };
@@ -484,18 +488,20 @@
       function prev(){ setLbImage((current - 1 + images.length) % images.length); }
       function next(){ setLbImage((current + 1) % images.length); }
 
-      document.getElementById("lbBackdrop").addEventListener("click", closeLightbox);
+      lbBackdrop.addEventListener("click", closeLightbox);
       document.getElementById("lbPrev").addEventListener("click", (e) => { e.stopPropagation(); prev(); });
       document.getElementById("lbNext").addEventListener("click", (e) => { e.stopPropagation(); next(); });
 
-      // ✅ 고정된 좌우 클릭 영역 터치/클릭 내비게이션
-      lbFrame.addEventListener("click", (e) => {
-        if (e.target.closest('.lb-arrow')) return;
-        const width = window.innerWidth;
-        const x = e.clientX;
-        if (x < width * 0.3) prev(); // 좌측 30%
-        else if (x > width * 0.7) next(); // 우측 70%
-        else closeLightbox(); // 중앙 클릭 시 닫기
+      /* ✅ 이미지 클릭 영역 내비게이션 수정 */
+      lbImg.addEventListener("click", (e) => {
+        e.stopPropagation(); // 배경 클릭 이벤트로 번지는 것 차단
+        const rect = lbImg.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const ratio = x / rect.width;
+
+        if (ratio <= 0.25) prev(); // 이미지 내 좌측 25%
+        else if (ratio >= 0.75) next(); // 이미지 내 우측 25%
+        // 이미지 내 중앙(25~75%) 클릭 시에는 아무 일도 일어나지 않음
       });
 
       window.addEventListener("keydown", (e) => {
