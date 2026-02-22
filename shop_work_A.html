@@ -72,7 +72,11 @@
 
     .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width: 42px; height: 42px; border: 0; background: transparent; cursor:pointer; }
     .menu-icon{ width: 18px; height: 12px; position: relative; }
-    .menu-icon span{ position:absolute; left:0; right:0; height:1px; background: rgba(0,0,0,.82); }
+    .menu-icon span{
+      position:absolute; left:0; right:0;
+      height:1px;
+      background: rgba(0,0,0,.82);
+    }
     .menu-icon span:nth-child(1){ top:0; }
     .menu-icon span:nth-child(2){ top:5.5px; }
     .menu-icon span:nth-child(3){ top:11px; }
@@ -94,7 +98,7 @@
       main{ padding: 36px 0 80px; }
     }
 
-    /* Gallery */
+    /* Gallery Style */
     .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
     @media (min-width: 900px){ .shop-grid{ grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; } }
 
@@ -105,7 +109,7 @@
     .thumb-list { display: flex; gap: 10px; }
     .thumb-img { width: calc(25% - 7.5px); cursor: pointer; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0 !important; border: 1px solid transparent; }
 
-    /* ✅ Lightbox - Fixed height and width to prevent layout shift */
+    /* Lightbox */
     .lightbox {
       position: fixed;
       inset: 0;
@@ -115,7 +119,14 @@
       z-index: 2000;
     }
     .lightbox.open { display: flex; }
-    .lb-backdrop { position:absolute; inset:0; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); }
+
+    .lb-backdrop {
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(8px);
+      cursor: pointer; /* 배경은 클릭 가능하다는 표시 */
+    }
 
     .lb-frame {
       position: relative;
@@ -125,7 +136,8 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      overflow: hidden; /* 영역 고정 */
+      overflow: hidden;
+      pointer-events: none; /* 프레임은 통과 */
     }
 
     .lb-img {
@@ -135,16 +147,14 @@
       height: auto;
       object-fit: contain;
       user-select:none;
-      pointer-events: auto;
-      /* Smooth transition between same-sized images */
+      pointer-events: auto; /* 이미지 위에서만 내비게이션 클릭 감지 */
       transition: opacity 0.15s ease-in-out;
     }
 
     .lb-arrow {
       position:absolute;
-      top: 0;
-      bottom: 0;
-      width: 15%; /* 내비게이션 영역 확장 */
+      top: 0; bottom: 0;
+      width: 60px;
       border: 0;
       background: transparent;
       color: rgba(255,255,255,.8);
@@ -153,6 +163,7 @@
       align-items:center;
       justify-content:center;
       z-index: 10;
+      pointer-events: auto;
     }
     .lb-prev { left: 0; }
     .lb-next { right: 0; }
@@ -161,7 +172,6 @@
     @media (max-width: 899px) {
       .lb-arrow { display:none !important; }
       .lb-frame { padding: 0; }
-      /* ✅ 모바일 가로 꽉 채움 유지 */
       .lb-img { max-width: 100vw; }
     }
 
@@ -255,9 +265,8 @@
       const body = document.body;
       const openBtn = document.getElementById("menuOpenBtn");
       const overlay = document.getElementById("drawerOverlay");
-      function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
-      function openMenu(){ body.dataset.menuOpen = "true"; setOverlayHidden(false); body.style.overflow = "hidden"; }
-      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => setOverlayHidden(true), 180); }
+      function openMenu(){ body.dataset.menuOpen = "true"; overlay.hidden = false; body.style.overflow = "hidden"; }
+      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => { overlay.hidden = true; }, 180); }
       if (openBtn) openBtn.addEventListener("click", openMenu);
       if (overlay) overlay.addEventListener("click", closeMenu);
 
@@ -274,7 +283,6 @@
       const thumbList = document.getElementById('thumbList');
       const lightbox = document.getElementById('lightbox');
       const lightboxImg = document.getElementById('lightboxImg');
-      const lbFrame = document.getElementById('lbFrame');
 
       function updateGallery(index) {
         currentIdx = index;
@@ -308,10 +316,10 @@
 
       const goPrev = () => {
         currentIdx = (currentIdx - 1 + images.length) % images.length;
-        lightboxImg.style.opacity = '0'; // 로딩 중 떨림 방지
+        lightboxImg.style.opacity = '0';
         setTimeout(() => {
           lightboxImg.src = images[currentIdx];
-          lightboxImg.style.opacity = '1';
+          lightboxImg.onload = () => { lightboxImg.style.opacity = '1'; };
           updateGallery(currentIdx);
         }, 50);
       };
@@ -321,7 +329,7 @@
         lightboxImg.style.opacity = '0';
         setTimeout(() => {
           lightboxImg.src = images[currentIdx];
-          lightboxImg.style.opacity = '1';
+          lightboxImg.onload = () => { lightboxImg.style.opacity = '1'; };
           updateGallery(currentIdx);
         }, 50);
       };
@@ -329,25 +337,25 @@
       document.getElementById('prevBtn').onclick = (e) => { e.stopPropagation(); goPrev(); };
       document.getElementById('nextBtn').onclick = (e) => { e.stopPropagation(); goNext(); };
 
-      // ✅ 고정된 좌우 클릭 영역 내비게이션
-      lbFrame.onclick = (e) => {
-        if (e.target.closest('.lb-arrow')) return;
-        const rect = lbFrame.getBoundingClientRect();
+      /* ✅ 이미지 클릭 내비게이션 수정 */
+      lightboxImg.addEventListener("click", (e) => {
+        e.stopPropagation(); // 배경 클릭(종료) 방지
+        const rect = lightboxImg.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const ratio = x / rect.width;
-        if (ratio <= 0.3) goPrev(); // 좌측 30%
-        else if (ratio >= 0.7) goNext(); // 우측 30%
-        else closeLightbox(); // 중앙 클릭 시 닫기
-      };
 
-      document.addEventListener("contextmenu", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
-      
+        if (ratio <= 0.25) goPrev(); // 이미지 내 좌측 25%
+        else if (ratio >= 0.75) goNext(); // 이미지 내 우측 25%
+      });
+
       window.addEventListener("keydown", (e) => {
         if (!lightbox.classList.contains("open")) return;
         if (e.key === "Escape") closeLightbox();
         if (e.key === "ArrowLeft") goPrev();
         if (e.key === "ArrowRight") goNext();
       });
+
+      document.addEventListener("contextmenu", (e) => { if (e.target.tagName === "IMG") e.preventDefault(); });
     })();
   </script>
 </body>
