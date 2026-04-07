@@ -51,20 +51,25 @@
       width: 100%;
     }
 
-    /* [Header] 봉금 스타일: 메뉴보다 높은 z-index */
+    /* [Header] 고정 레이어 및 정렬 수정 */
     header{
       background:#ffffff;
       position: fixed;
       top: 0;
-      width: 100%;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      left: 0;
+      width: 100%; /* 전체 너비 확보 */
+      padding: 16px 0; /* 내부 wrap에서 좌우 패딩을 잡으므로 0 */
       z-index: 2000;
     }
 
-    /* 브랜드 폰트 스타일 유지 */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between; /* 양끝 정렬 유지 */
+      gap:14px;
+      width: 100%;
+    }
+
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size: 22.5px;
@@ -102,7 +107,6 @@
     }
     nav.desktop a:hover{ color:rgba(0,0,0,1); }
 
-    /* [Menu Trigger] 봉금 스타일 햄버거 버튼 */
     .menu-btn{
       cursor: pointer;
       width: 24px;
@@ -123,7 +127,6 @@
       transition: 0.3s var(--menu-ease);
     }
 
-    /* [Nav Overlay] 봉금 스타일 동작 방식 */
     .nav-overlay {
       position: fixed;
       top: -100%;
@@ -144,7 +147,6 @@
       top: 0;
     }
 
-    /* 햄버거 -> X 변형 */
     body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
     body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
     body[data-menu-open="true"] .menu-btn span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
@@ -166,12 +168,12 @@
       width: 100%;
     }
 
-    /* Main - 기존 레이아웃 유지 */
+    /* Main */
     main{
       flex:1;
       display:flex;
       flex-direction:column;
-      padding:28px 0 60px;
+      padding: 140px 0 60px; /* 헤더 고정에 따른 상단 여백 추가 */
     }
 
     .hero{
@@ -179,8 +181,8 @@
       display:flex;
       flex-direction:column;
     }
-    .hero::before{ content:""; flex:2; } /* 위 40% */
-    .hero::after{ content:""; flex:3; }  /* 아래 60% */
+    .hero::before{ content:""; flex:2; }
+    .hero::after{ content:""; flex:3; }
 
     .image-card{
       border:0;
@@ -204,7 +206,7 @@
     }
 
     @media (min-width:1024px){
-      header { padding: 60px 80px; position: absolute; }
+      header { padding: 60px 0; position: absolute; }
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
       
@@ -225,7 +227,7 @@
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
 
-      main{ padding:36px 0 80px; }
+      main{ padding: 140px 0 60px; }
     }
 
     img{
