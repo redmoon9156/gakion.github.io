@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
@@ -22,19 +22,16 @@
       --pad: 18px;
       --radius: 14px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-      --menu-bg: rgba(245,245,245,.98);
-      --menu-dur: 360ms;
-      --menu-ease: cubic-bezier(.22, 1, .36, 1);
+      --menu-ease: cubic-bezier(0.77, 0, 0.175, 1);
     }
 
-    *{ box-sizing:border-box; }
+    *{ margin: 0; padding: 0; box-sizing:border-box; }
     html, body{ height:100%; }
 
     body{
-      margin:0;
       background:var(--bg);
       color:var(--fg);
-      font-family: Pretendard, sans-serif;
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, sans-serif;
       font-size: 14px;
       line-height: 1.55;
       letter-spacing: .15px;
@@ -42,9 +39,11 @@
       display:flex;
       flex-direction:column;
       min-height:100vh;
+      overflow-x: hidden;
     }
 
-    a{ color:inherit; text-decoration:none; }
+    a{ color:inherit; text-decoration:none; display: inline-block; }
+    button{ font: inherit; }
 
     .wrap{
       max-width: var(--max);
@@ -53,50 +52,122 @@
       width:100%;
     }
 
-    header{ background: #ffffff; position: relative; z-index: 5; }
-    .topbar{ display:flex; align-items:center; justify-content:space-between; padding: 16px 0; }
+    /* [Header] 봉금 스타일: 메뉴보다 높은 z-index */
+    header{
+      background:#ffffff;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2000;
+    }
 
     .brand{
       font-family: "Montserrat", sans-serif;
       font-size: 22.5px;
       font-weight: 700;
+      letter-spacing: 0.35px;
       display:inline-flex;
       align-items:center;
       gap:10px;
+      line-height: 1.1;
     }
 
-    .brand-mark{ height:1em; width:auto; }
-
-    nav.desktop{ display:none; gap: 18px; font-size: 13px; }
-    nav.desktop a{ font-family: "Montserrat", sans-serif; font-weight: 600; color: rgba(0,0,0,.82); }
-
-    .menu-btn{ display:inline-flex; align-items:center; justify-content:center; width: 42px; height: 42px; border: 0; background: transparent; cursor:pointer; }
-    .menu-icon{ width: 18px; height: 12px; position: relative; }
-    .menu-icon span{
-      position:absolute; left:0; right:0;
-      height:1px;
-      background: rgba(0,0,0,.82);
+    .brand-mark{
+      height:1em;
+      width:auto;
+      display:block;
+      object-fit:contain;
+      flex:0 0 auto;
+      transform: translateY(0.02em);
     }
-    .menu-icon span:nth-child(1){ top:0; }
-    .menu-icon span:nth-child(2){ top:5.5px; }
-    .menu-icon span:nth-child(3){ top:11px; }
 
-    .drawer-overlay{ position: fixed; inset: 0; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .22s ease; z-index: 1000; }
-    .drawer{ position: fixed; left: 0; right: 0; top: 0; height: 50vh; background: var(--menu-bg); transform: translateY(-105%); transition: transform var(--menu-dur) var(--menu-ease); z-index: 1001; display:flex; align-items:center; justify-content:center; }
-    .drawer-nav{ display:flex; flex-direction:column; align-items:center; gap:10px; }
-    .drawer-nav a{ font-family: "Montserrat", sans-serif; font-weight: 600; font-size: 16px; padding: 12px; }
-
-    body[data-menu-open="true"] .drawer-overlay{ opacity: 1; pointer-events: auto; }
-    body[data-menu-open="true"] .drawer{ transform: translateY(0); }
-
-    main{ padding: 28px 0 60px; flex: 1; }
-    footer{ padding: 18px 0 28px; color: var(--muted); font-size: 12px; text-align: center; }
-
-    @media (min-width: 900px){
-      nav.desktop{ display:flex; }
-      .menu-btn{ display:none; }
-      main{ padding: 36px 0 80px; }
+    nav.desktop{
+      display:none;
+      gap: 18px;
+      align-items:center;
+      font-size: 13px;
+      letter-spacing:.6px;
+      white-space:nowrap;
     }
+
+    nav.desktop a{
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+      padding:8px 4px;
+      color: rgba(0,0,0,.82);
+    }
+    nav.desktop a:hover{ color: rgba(0,0,0,1); }
+
+    /* [Menu Trigger] 봉금 스타일 햄버거 버튼 */
+    .menu-btn{
+      cursor: pointer;
+      width: 24px;
+      height: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 0;
+      background: transparent;
+      z-index: 2001;
+    }
+
+    .menu-btn span{
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      transition: 0.3s var(--menu-ease);
+    }
+
+    /* [Nav Overlay] 봉금 스타일 동작 방식 */
+    .nav-overlay {
+      position: fixed;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 58dvh;
+      background-color: #fff;
+      z-index: 1500;
+      transition: top 0.5s var(--menu-ease);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 100px;
+      box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
+    }
+
+    body[data-menu-open="true"] .nav-overlay {
+      top: 0;
+    }
+
+    /* 햄버거 -> X 변형 */
+    body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+    body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
+    body[data-menu-open="true"] .menu-btn span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+
+    .drawer-nav{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+    }
+
+    .drawer-nav a{
+      font-family:"Montserrat", sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      padding: 15px 0;
+      color: rgba(0,0,0,.86);
+      width: 100%;
+    }
+
+    /* Main Content */
+    main{ padding: 140px 0 60px; flex: 1; }
 
     /* Gallery Style */
     .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
@@ -125,7 +196,7 @@
       inset:0;
       background: rgba(0,0,0,.65);
       backdrop-filter: blur(8px);
-      cursor: pointer; /* 배경은 클릭 가능하다는 표시 */
+      cursor: pointer;
     }
 
     .lb-frame {
@@ -137,7 +208,7 @@
       align-items:center;
       justify-content:center;
       overflow: hidden;
-      pointer-events: none; /* 프레임은 통과 */
+      pointer-events: none;
     }
 
     .lb-img {
@@ -147,7 +218,7 @@
       height: auto;
       object-fit: contain;
       user-select:none;
-      pointer-events: auto; /* 이미지 위에서만 내비게이션 클릭 감지 */
+      pointer-events: auto;
       transition: opacity 0.15s ease-in-out;
     }
 
@@ -183,6 +254,30 @@
     .award-item{ display: block; font-weight: 400; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
     .shop-buy{ display: inline-block; font-weight: 600; font-size: 13px; color: #000; padding: 4px 0; text-decoration: underline; margin-top: 10px; }
 
+    @media (min-width:1024px){
+      header { padding: 60px 80px; position: absolute; }
+      nav.desktop { display:flex; }
+      .menu-btn { display:none; }
+      
+      .nav-overlay {
+        top: 0; 
+        left: 100%; 
+        width: 450px; 
+        height: 100vh;
+        transition: left 0.5s var(--menu-ease);
+        border-left: 1px solid #eee;
+        justify-content: flex-start;
+        padding: 180px 0 0 80px;
+        box-shadow: none;
+      }
+      body[data-menu-open="true"] .nav-overlay {
+        left: calc(100% - 450px);
+      }
+      .drawer-nav { text-align: left; align-items: flex-start; }
+      .drawer-nav a { font-size: 1rem; padding: 18px 0; }
+      main { padding: 220px 80px 0; }
+    }
+
     img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   </style>
 </head>
@@ -201,22 +296,23 @@
           <a href="contact.html">Contact</a>
           <a href="shop.html">Shop</a>
         </nav>
-        <button class="menu-btn" type="button" id="menuOpenBtn">
-          <div class="menu-icon"><span></span><span></span><span></span></div>
+        <button class="menu-btn" type="button" id="menuOpenBtn" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
     </div>
   </header>
 
-  <div class="drawer-overlay" id="drawerOverlay" hidden></div>
-  <aside class="drawer" id="drawer">
-    <nav class="drawer-nav">
-      <a href="cv.html">CV</a>
-      <a href="works.html">Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="shop.html">Shop</a>
-    </nav>
-  </aside>
+  <nav class="nav-overlay" id="navOverlay">
+    <div class="drawer-nav">
+      <a href="cv.html" onclick="toggleMenu()">CV</a>
+      <a href="works.html" onclick="toggleMenu()">Works</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+    </div>
+  </nav>
 
   <main>
     <div class="wrap">
@@ -261,15 +357,23 @@
   </footer>
 
   <script>
-    (function () {
+    function toggleMenu() {
       const body = document.body;
-      const openBtn = document.getElementById("menuOpenBtn");
-      const overlay = document.getElementById("drawerOverlay");
-      function openMenu(){ body.dataset.menuOpen = "true"; overlay.hidden = false; body.style.overflow = "hidden"; }
-      function closeMenu(){ body.dataset.menuOpen = "false"; body.style.overflow = ""; setTimeout(() => { overlay.hidden = true; }, 180); }
-      if (openBtn) openBtn.addEventListener("click", openMenu);
-      if (overlay) overlay.addEventListener("click", closeMenu);
+      const isMenuOpen = body.dataset.menuOpen === "true";
+      if (isMenuOpen) {
+        body.dataset.menuOpen = "false";
+        body.style.overflow = "";
+      } else {
+        body.dataset.menuOpen = "true";
+        body.style.overflow = "hidden";
+      }
+    }
 
+    document.getElementById('navOverlay').addEventListener('click', function(e) {
+      if (e.target === this) toggleMenu();
+    });
+
+    (function () {
       const images = [
         "images/shop/shop_work_A1.PNG",
         "images/shop/shop_work_A2.PNG",
@@ -337,15 +441,13 @@
       document.getElementById('prevBtn').onclick = (e) => { e.stopPropagation(); goPrev(); };
       document.getElementById('nextBtn').onclick = (e) => { e.stopPropagation(); goNext(); };
 
-      /* ✅ 이미지 클릭 내비게이션 수정 */
       lightboxImg.addEventListener("click", (e) => {
-        e.stopPropagation(); // 배경 클릭(종료) 방지
+        e.stopPropagation();
         const rect = lightboxImg.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const ratio = x / rect.width;
-
-        if (ratio <= 0.25) goPrev(); // 이미지 내 좌측 25%
-        else if (ratio >= 0.75) goNext(); // 이미지 내 우측 25%
+        if (ratio <= 0.25) goPrev();
+        else if (ratio >= 0.75) goNext();
       });
 
       window.addEventListener("keydown", (e) => {
