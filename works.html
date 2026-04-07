@@ -2,16 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>Works — Gakion</title>
   <meta name="description" content="Works — Gakion" />
 
-  <!-- Montserrat (brand + menu) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Pretendard (everything else) -->
   <link rel="stylesheet" as="style" crossorigin
         href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 
@@ -23,40 +21,30 @@
       --max:1060px;
       --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-
-      /* Classic fade */
       --fade-dur: 1200ms;
       --fade-ease: cubic-bezier(.22, 1, .36, 1);
-
-      /* ✅ mobile dropdown menu */
-      --menu-bg: rgba(245,245,245,.98); /* 밝은 회색빛 흰 배경 */
-      --menu-dur: 360ms;
-      --menu-ease: cubic-bezier(.22, 1, .36, 1);
+      --menu-ease: cubic-bezier(0.77, 0, 0.175, 1);
     }
 
-    *{ box-sizing:border-box; }
+    *{ margin: 0; padding: 0; box-sizing:border-box; }
     html, body{ height:100%; }
 
     body{
-      margin:0;
       background:var(--bg);
       color:var(--fg);
-
-      /* ✅ Pretendard: 본문/푸터 포함 전부 */
-      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, system-ui, -apple-system,
-                   "Segoe UI", Roboto, "Apple SD Gothic Neo",
-                   "Noto Sans KR", "Malgun Gothic", sans-serif;
-
+      font-family: Pretendard, Arial, "Helvetica Neue", Helvetica, sans-serif;
       font-size:14px;
       line-height:1.6;
       letter-spacing:.15px;
-
-      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
       display:flex;
       flex-direction:column;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    a{ color:inherit; text-decoration:none; }
+    a{ color:inherit; text-decoration:none; display: inline-block; }
+    button{ font: inherit; }
 
     .wrap{
       max-width:var(--max);
@@ -65,37 +53,30 @@
       width:100%;
     }
 
-    /* ---------- Header ---------- */
+    /* [Header] 봉금 스타일: 메뉴보다 높은 z-index */
     header{
-      background:#fff;
-      position:sticky;
-      top:0;
-      z-index:50;
+      background:#ffffff;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2000;
     }
 
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:16px 0;
-      gap:14px;
-    }
-
-    /* ✅ brand: Montserrat (index와 동일하게: 이미지 + 텍스트) */
     .brand{
       font-family:"Montserrat", sans-serif;
       font-size:22.5px;
       font-weight:700;
       letter-spacing:.35px;
       line-height:1.1;
-      min-width:160px;
-
       display:inline-flex;
       align-items:center;
       gap:10px;
     }
 
-    /* ✅ 브랜드 아이콘 */
     .brand-mark{
       height:1em;
       width:auto;
@@ -108,13 +89,12 @@
     nav.desktop{
       display:none;
       gap:18px;
+      align-items:center;
       font-size:13px;
       letter-spacing:.6px;
       white-space:nowrap;
-      align-items:center;
     }
 
-    /* ✅ desktop menu: Montserrat */
     nav.desktop a{
       font-family:"Montserrat", sans-serif;
       font-weight:600;
@@ -123,111 +103,82 @@
     }
     nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
+    /* [Menu Trigger] 봉금 스타일 햄버거 버튼 */
     .menu-btn{
-      width:42px;
-      height:42px;
-      background:transparent;
-      border:0;
-      cursor:pointer;
-      border-radius:12px;
-      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+      width: 24px;
+      height: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 0;
+      background: transparent;
+      z-index: 2001;
     }
 
-    .menu-icon{
-      width:18px;
-      height:12px;
-      position:relative;
-      margin:0 auto;
+    .menu-btn span{
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      transition: 0.3s var(--menu-ease);
     }
 
-    .menu-icon span{
-      position:absolute;
-      left:0; right:0;
-      height:1px;
-      background:#000;
-      opacity:.82;
+    /* [Nav Overlay] 봉금 스타일 동작 방식 */
+    .nav-overlay {
+      position: fixed;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 58dvh;
+      background-color: #fff;
+      z-index: 1500;
+      transition: top 0.5s var(--menu-ease);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 100px;
+      box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
-    .menu-icon span:nth-child(1){ top:0; }
-    .menu-icon span:nth-child(2){ top:5.5px; }
-    .menu-icon span:nth-child(3){ top:11px; }
-
-    /* ---------- Mobile dropdown menu (top -> down) ---------- */
-    .drawer-overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.32);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .22s ease;
-      z-index:1000;
+    body[data-menu-open="true"] .nav-overlay {
+      top: 0;
     }
 
-    .drawer{
-      position:fixed;
-      left:0; right:0;
-      top:0;
-      height:50vh;
-      background:var(--menu-bg);
-      backdrop-filter:blur(10px);
-      transform:translateY(-105%);
-      transition:transform var(--menu-dur) var(--menu-ease);
-      box-shadow:var(--shadow);
-      z-index:1001;
-
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px var(--pad);
-    }
-
-    body[data-menu-open="true"] .drawer{
-      transform:translateY(0);
-    }
-
-    body[data-menu-open="true"] .drawer-overlay{
-      opacity:1;
-      pointer-events:auto;
-    }
+    /* 햄버거 -> X 변형 */
+    body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+    body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
+    body[data-menu-open="true"] .menu-btn span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
     .drawer-nav{
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:center;
-      gap:10px;
-      width:100%;
-      max-width:520px;
       text-align:center;
     }
 
-    /* ✅ mobile menu: Montserrat */
     .drawer-nav a{
       font-family:"Montserrat", sans-serif;
-      font-weight:600;
-      font-size:16px;
-      letter-spacing:.6px;
-      padding:12px 12px;
-      width:100%;
-      max-width:320px;
-      border-radius:14px;
-      color:rgba(0,0,0,.86);
+      font-weight: 300;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      padding: 15px 0;
+      color: rgba(0,0,0,.86);
+      width: 100%;
     }
-    .drawer-nav a:hover{ background: rgba(0,0,0,.05); }
 
-    /* ---------- Main ---------- */
+    /* [Main Content] */
     main{
-      padding:26px 0 80px;
+      padding: 140px 0 80px;
       flex:1;
     }
 
-    /* ✅ Works 페이지 타이틀: Montserrat */
     .page-title{
       font-family:"Montserrat", sans-serif;
       font-size:28px;
       font-weight:700;
       text-align:center;
-      margin:14px 0 22px;
+      margin-bottom: 22px;
       letter-spacing:.2px;
     }
 
@@ -237,9 +188,9 @@
 
     .work-card{
       display:block;
+      width: 100%;
     }
 
-    /* ---------- Slider (Fade) ---------- */
     .work-slider{
       position:relative;
       overflow:hidden;
@@ -263,17 +214,12 @@
       object-fit:cover;
       opacity:0;
       transition:opacity var(--fade-dur) var(--fade-ease);
-      -webkit-user-drag:none;
-      user-select:none;
-      -webkit-user-select:none;
-      -webkit-touch-callout:none;
     }
 
     .work-thumb.is-active{
       opacity:1;
     }
 
-    /* ✅ 캡션(작품명): Montserrat */
     .work-caption{
       font-family:"Montserrat", sans-serif;
       display:block;
@@ -281,10 +227,8 @@
       text-align:center;
       font-size:16px;
       letter-spacing:.3px;
-      cursor:pointer;
     }
 
-    /* ---------- Footer ---------- */
     footer{
       padding:24px 0 34px;
     }
@@ -296,20 +240,42 @@
       letter-spacing:.2px;
     }
 
-    @media (min-width:900px){
-      :root{ --pad:22px; }
-      nav.desktop{ display:flex; }
-      .menu-btn{ display:none; }
+    @media (min-width:1024px){
+      header { padding: 60px 80px; position: absolute; }
+      nav.desktop { display:flex; }
+      .menu-btn { display:none; }
+      
+      .nav-overlay {
+        top: 0; 
+        left: 100%; 
+        width: 450px; 
+        height: 100vh;
+        transition: left 0.5s var(--menu-ease);
+        border-left: 1px solid #eee;
+        justify-content: flex-start;
+        padding: 180px 0 0 80px;
+        box-shadow: none;
+      }
+      body[data-menu-open="true"] .nav-overlay {
+        left: calc(100% - 450px);
+      }
+      .drawer-nav { text-align: left; align-items: flex-start; }
+      .drawer-nav a { font-size: 1rem; padding: 18px 0; }
 
-      /* desktop에서는 모바일 드롭다운 사용 안 함 */
-      .drawer, .drawer-overlay{ display:none; }
-
-      .page-title{ font-size:32px; }
-      .work-caption{ font-size:17px; }
+      main { padding: 220px 0 80px; }
+      .page-title { font-size:32px; }
+      .work-caption { font-size:17px; }
     }
 
     @media (prefers-reduced-motion: reduce){
       *{ transition:none !important; }
+    }
+
+    img{
+      -webkit-user-drag:none;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
   </style>
 </head>
@@ -319,35 +285,34 @@
   <div class="wrap">
     <div class="topbar">
       <a class="brand" href="index.html" aria-label="Go to Index">
-        <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" draggable="false" />
+        <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" />
         <span>Gakion</span>
       </a>
 
-      <nav class="desktop" aria-label="Primary">
+      <nav class="desktop">
         <a href="cv.html">CV</a>
         <a href="works.html" aria-current="page">Works</a>
         <a href="contact.html">Contact</a>
         <a href="shop.html">Shop</a>
       </nav>
 
-      <button class="menu-btn" id="menuOpenBtn" type="button" aria-label="Open menu" aria-controls="drawer" aria-expanded="false">
-        <div class="menu-icon" aria-hidden="true">
-          <span></span><span></span><span></span>
-        </div>
+      <button class="menu-btn" id="menuOpenBtn" type="button" aria-label="Toggle menu" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
     </div>
   </div>
 </header>
 
-<div class="drawer-overlay" id="drawerOverlay" hidden></div>
-<aside class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
-  <nav class="drawer-nav" aria-label="Primary (mobile)">
-    <a href="cv.html">CV</a>
-    <a href="works.html" aria-current="page">Works</a>
-    <a href="contact.html">Contact</a>
-    <a href="shop.html">Shop</a>
-  </nav>
-</aside>
+<nav class="nav-overlay" id="navOverlay">
+  <div class="drawer-nav">
+    <a href="cv.html" onclick="toggleMenu()">CV</a>
+    <a href="works.html" onclick="toggleMenu()">Works</a>
+    <a href="contact.html" onclick="toggleMenu()">Contact</a>
+    <a href="shop.html" onclick="toggleMenu()">Shop</a>
+  </div>
+</nav>
 
 <main>
   <div class="wrap">
@@ -358,16 +323,14 @@
         <div class="work-slider" data-interval="3600">
           <div class="work-track">
             <div class="ratio-box"></div>
-
-            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="Work A image 1">
-            <img class="work-thumb" src="images/works/Work_A2.jpg" alt="Work A image 2">
-            <img class="work-thumb" src="images/works/Work_A3.jpg" alt="Work A image 3">
-            <img class="work-thumb" src="images/works/Work_A4.jpg" alt="Work A image 4">
-            <img class="work-thumb" src="images/works/Work_A5.jpg" alt="Work A image 5">
+            <img class="work-thumb" src="images/works/Work_A1.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A2.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A3.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A4.jpg" alt="">
+            <img class="work-thumb" src="images/works/Work_A5.jpg" alt="">
           </div>
         </div>
       </a>
-
       <a class="work-caption" href="work_A.html">Fox Dream</a>
     </div>
   </div>
@@ -380,70 +343,39 @@
 </footer>
 
 <script>
-/* Mobile dropdown menu */
-(function(){
+function toggleMenu() {
   const body = document.body;
-  const openBtn = document.getElementById("menuOpenBtn");
-  const drawer = document.getElementById("drawer");
-  const overlay = document.getElementById("drawerOverlay");
-
-  function setOverlayHidden(isHidden){ overlay.hidden = isHidden; }
-
-  function openMenu(){
+  const isMenuOpen = body.dataset.menuOpen === "true";
+  if (isMenuOpen) {
+    body.dataset.menuOpen = "false";
+    body.style.overflow = "";
+  } else {
     body.dataset.menuOpen = "true";
-    openBtn.setAttribute("aria-expanded", "true");
-    drawer.setAttribute("aria-hidden", "false");
-    setOverlayHidden(false);
     body.style.overflow = "hidden";
   }
+}
 
-  function closeMenu(){
-    body.dataset.menuOpen = "false";
-    openBtn.setAttribute("aria-expanded", "false");
-    drawer.setAttribute("aria-hidden", "true");
-    body.style.overflow = "";
-    window.setTimeout(() => setOverlayHidden(true), 180);
-  }
+document.getElementById('navOverlay').addEventListener('click', function(e) {
+  if (e.target === this) toggleMenu();
+});
 
-  if (openBtn) openBtn.addEventListener("click", openMenu);
-  if (overlay) overlay.addEventListener("click", closeMenu);
-
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && body.dataset.menuOpen === "true") closeMenu();
-  });
-
-  body.dataset.menuOpen = "false";
-  setOverlayHidden(true);
-})();
-
-/* Fade slider */
+/* Fade slider logic preserved */
 (function(){
   const sliders = document.querySelectorAll(".work-slider");
-
   sliders.forEach(slider=>{
     const imgs = Array.from(slider.querySelectorAll(".work-thumb"));
     const box = slider.querySelector(".ratio-box");
     if (imgs.length <= 1) return;
-
     let i = 0;
     imgs[i].classList.add("is-active");
-
-    imgs[0].addEventListener("load", ()=>{
-      if (!imgs[0].naturalWidth) return;
-      box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
-    }, { once:true });
-
-    if (imgs[0].complete && imgs[0].naturalWidth){
-      box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
-    }
-
-    const interval = Number(slider.dataset.interval) || 3600;
-
+    const setRatio = () => { if(imgs[0].naturalWidth) box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%"; };
+    imgs[0].addEventListener("load", setRatio);
+    if (imgs[0].complete) setRatio();
     setInterval(()=>{
       imgs[i].classList.remove("is-active");
       i = (i + 1) % imgs.length;
       imgs[i].classList.add("is-active");
-    }, interval);
+    }, Number(slider.dataset.interval) || 3600);
   });
 })();
 </script>
