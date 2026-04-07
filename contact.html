@@ -21,7 +21,6 @@
       --max:1060px;
       --pad:18px;
       --shadow: 0 18px 50px rgba(0,0,0,.12);
-      /* 봉금 스타일 베지어 곡선 */
       --menu-ease: cubic-bezier(0.77, 0, 0.175, 1);
     }
 
@@ -52,29 +51,29 @@
       width:100%;
     }
 
-    /* [Header] 봉금 스타일: 메뉴보다 높은 z-index */
+    /* [Header] 고정 레이어 */
     header{
       background:#ffffff;
       position: fixed;
       top: 0;
       width: 100%;
-      padding: 30px 20px;
+      padding: 16px 20px; /* 패딩 조정 */
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 2000; /* 메뉴 오버레이(1500)보다 높게 설정 */
+      z-index: 2000;
     }
 
+    /* ✅ 브랜드 폰트 및 크기 원복 */
     .brand{
       font-family:"Montserrat", sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      font-size: 22.5px;
+      font-weight: 700;
+      letter-spacing: 0.35px;
       display:inline-flex;
       align-items:center;
       gap:10px;
-      line-height: 1;
+      line-height: 1.1;
     }
 
     .brand-mark{
@@ -83,7 +82,7 @@
       display:block;
       object-fit:contain;
       flex:0 0 auto;
-      transform: translateY(-0.05em);
+      transform: translateY(0.02em);
     }
 
     nav.desktop{
@@ -103,7 +102,6 @@
     }
     nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
-    /* [Menu Trigger] 봉금 스타일 햄버거 버튼 */
     .menu-btn{
       cursor: pointer;
       width: 24px;
@@ -124,20 +122,20 @@
       transition: 0.3s var(--menu-ease);
     }
 
-    /* [Nav Overlay] 봉금 스타일 동작 방식 */
+    /* [Nav Overlay] 높이 상향 조정 */
     .nav-overlay {
       position: fixed;
-      top: -100%; /* 평상시 화면 위로 숨김 */
+      top: -100%;
       left: 0;
       width: 100%;
-      height: 50dvh; /* 봉금 모바일 높이 반영 */
+      height: 58dvh; /* ✅ 50dvh에서 잘림 방지를 위해 확장 */
       background-color: #fff;
       z-index: 1500;
       transition: top 0.5s var(--menu-ease);
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 100px; /* 헤더를 가리지 않는 여백 */
+      padding-top: 100px;
       box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
@@ -145,7 +143,6 @@
       top: 0;
     }
 
-    /* 햄버거 -> X 변형 */
     body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
     body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
     body[data-menu-open="true"] .menu-btn span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
@@ -157,19 +154,16 @@
       text-align:center;
     }
 
-    /* 봉금 스타일 메뉴 폰트 및 간격 */
     .drawer-nav a{
       font-family:"Montserrat", sans-serif;
       font-weight: 300;
       font-size: 1.1rem;
       letter-spacing: 0.1em;
-      text-transform: uppercase;
       padding: 15px 0;
       color: rgba(0,0,0,.86);
       width: 100%;
     }
 
-    /* [Main Content] */
     main{
       padding: 140px 20px 90px;
       flex:1;
@@ -180,12 +174,10 @@
 
     .page-title{
       font-family:"Montserrat", sans-serif;
-      font-size: 1.2rem;
+      font-size: 28px;
       font-weight: 700;
       text-align:center;
       margin-bottom: 40px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
     }
 
     .contact-area{ width: 100%; }
@@ -226,14 +218,11 @@
       color:rgba(0,0,0,.56);
     }
 
-    /* [Responsive] PC 환경 */
     @media (min-width:1024px){
       header { padding: 60px 80px; position: absolute; }
-      .brand { font-size: 1.3rem; }
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
       
-      /* PC 전용 우측 슬라이드 오버레이 (봉금 스타일) */
       .nav-overlay {
         top: 0; 
         left: 100%; 
@@ -270,7 +259,7 @@
     <nav class="desktop">
       <a href="cv.html">CV</a>
       <a href="works.html">Works</a>
-      <a href="contact.html">Contact</a>
+      <a href="contact.html" aria-current="page">Contact</a>
       <a href="shop.html">Shop</a>
     </nav>
 
@@ -329,7 +318,6 @@
     function toggleMenu() {
       const body = document.body;
       const isMenuOpen = body.dataset.menuOpen === "true";
-      
       if (isMenuOpen) {
         body.dataset.menuOpen = "false";
         body.style.overflow = "";
@@ -338,8 +326,6 @@
         body.style.overflow = "hidden";
       }
     }
-
-    // 화면 바깥(오버레이 빈 공간) 클릭 시 닫기
     document.getElementById('navOverlay').addEventListener('click', function(e) {
       if (e.target === this) toggleMenu();
     });
