@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 
   <style>
     :root{
@@ -51,21 +51,21 @@
       width: 100%;
     }
 
-    /* [Header] 고정 레이어 및 정렬 수정 */
+    /* [Header] */
     header{
       background:#ffffff;
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%; /* 전체 너비 확보 */
-      padding: 16px 0; /* 내부 wrap에서 좌우 패딩을 잡으므로 0 */
+      width: 100%;
+      padding: 16px 0;
       z-index: 2000;
     }
 
     .topbar{
       display:flex;
       align-items:center;
-      justify-content:space-between; /* 양끝 정렬 유지 */
+      justify-content:space-between;
       gap:14px;
       width: 100%;
     }
@@ -173,7 +173,7 @@
       flex:1;
       display:flex;
       flex-direction:column;
-      padding: 140px 0 60px; /* 헤더 고정에 따른 상단 여백 추가 */
+      padding: 140px 0 60px;
     }
 
     .hero{
@@ -300,8 +300,17 @@
       }
     }
 
-    document.getElementById('navOverlay').addEventListener('click', function(e) {
-      if (e.target === this) toggleMenu();
+    // [핵심 수정] 외부 클릭 시 닫기 기능 추가
+    document.addEventListener('mousedown', function(e) {
+      const body = document.body;
+      const nav = document.getElementById('navOverlay');
+      const btn = document.getElementById('menuOpenBtn');
+      
+      if (body.dataset.menuOpen === "true") {
+        if (!nav.contains(e.target) && !btn.contains(e.target)) {
+          toggleMenu();
+        }
+      }
     });
 
     (function () {
