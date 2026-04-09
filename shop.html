@@ -52,7 +52,7 @@
       width: 100%;
     }
 
-    /* [Header] 봉금 스타일: 메뉴보다 높은 z-index */
+    /* [Header] */
     header{
       background:#ffffff;
       position: fixed;
@@ -102,7 +102,7 @@
     }
     nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
-    /* [Menu Trigger] 봉금 스타일 햄버거 버튼 */
+    /* [Menu Trigger] */
     .menu-btn{
       cursor: pointer;
       width: 24px;
@@ -124,7 +124,7 @@
       transition: 0.3s var(--menu-ease);
     }
 
-    /* [Nav Overlay] 봉금 스타일 동작 방식 */
+    /* [Nav Overlay] */
     .nav-overlay {
       position: fixed;
       top: -100%;
@@ -145,7 +145,6 @@
       top: 0;
     }
 
-    /* 햄버거 -> X 변형 */
     body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
     body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
     body[data-menu-open="true"] .menu-btn span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
@@ -321,8 +320,17 @@
       }
     }
 
-    document.getElementById('navOverlay').addEventListener('click', function(e) {
-      if (e.target === this) toggleMenu();
+    // [핵심 추가] 외부 클릭 시 닫기 기능
+    document.addEventListener('mousedown', function(e) {
+      const body = document.body;
+      const nav = document.getElementById('navOverlay');
+      const btn = document.getElementById('menuOpenBtn');
+      
+      if (body.dataset.menuOpen === "true") {
+        if (!nav.contains(e.target) && !btn.contains(e.target)) {
+          toggleMenu();
+        }
+      }
     });
 
     (function () {
