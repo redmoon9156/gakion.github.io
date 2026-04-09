@@ -175,7 +175,7 @@
 
     /* [Main Content] */
     main{
-      padding: 140px 0 80px; /* 헤더 높이만큼 상단 여백 추가 */
+      padding: 140px 0 80px; 
       flex:1;
     }
 
@@ -360,6 +360,19 @@ function toggleMenu() {
     body.style.overflow = "hidden";
   }
 }
+
+// [핵심 수정] 외부 클릭 시 닫기 기능 추가
+document.addEventListener('mousedown', function(e) {
+  const body = document.body;
+  const nav = document.getElementById('navOverlay');
+  const btn = document.getElementById('menuOpenBtn');
+  
+  if (body.dataset.menuOpen === "true") {
+    if (!nav.contains(e.target) && !btn.contains(e.target)) {
+      toggleMenu();
+    }
+  }
+});
 
 document.getElementById('navOverlay').addEventListener('click', function(e) {
   if (e.target === this) toggleMenu();
