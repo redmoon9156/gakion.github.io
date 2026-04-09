@@ -323,8 +323,19 @@
         body.style.overflow = "hidden";
       }
     }
-    document.getElementById('navOverlay').addEventListener('click', function(e) {
-      if (e.target === this) toggleMenu();
+
+    // [핵심 수정] 외부 클릭 시 닫기 기능
+    document.addEventListener('mousedown', function(e) {
+      const body = document.body;
+      const nav = document.getElementById('navOverlay');
+      const btn = document.getElementById('menuOpenBtn');
+      
+      if (body.dataset.menuOpen === "true") {
+        // 클릭한 지점이 메뉴 내부도 아니고, 햄버거 버튼도 아닐 때만 실행
+        if (!nav.contains(e.target) && !btn.contains(e.target)) {
+          toggleMenu();
+        }
+      }
     });
   </script>
 </body>
