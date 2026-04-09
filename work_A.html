@@ -275,7 +275,7 @@
       inset: 0;
       display:none;
       align-items:center;
-      justify-content:center;
+      justify(content):center;
       z-index: 2000;
     }
     .lightbox.open{ display:flex; }
@@ -399,8 +399,8 @@
     <div class="drawer-nav">
       <a href="cv.html" onclick="toggleMenu()">CV</a>
       <a href="works.html" onclick="toggleMenu()">Works</a>
-      <a href="contact.html" onclick="toggleMenu()">Contact</a>
-      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="contact.html">Contact</a>
+      <a href="shop.html">Shop</a>
     </div>
   </nav>
 
@@ -452,8 +452,17 @@
       }
     }
 
-    document.getElementById('navOverlay').addEventListener('click', function(e) {
-      if (e.target === this) toggleMenu();
+    // [핵심 수정] 외부 클릭 시 닫기 기능 추가
+    document.addEventListener('mousedown', function(e) {
+      const body = document.body;
+      const nav = document.getElementById('navOverlay');
+      const btn = document.getElementById('menuOpenBtn');
+      
+      if (body.dataset.menuOpen === "true") {
+        if (!nav.contains(e.target) && !btn.contains(e.target)) {
+          toggleMenu();
+        }
+      }
     });
 
     (function () {
