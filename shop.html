@@ -216,8 +216,9 @@
 
     .overlay-link{ display:inline-block; color:#fff; }
 
-    .shop-card:hover .thumb img, .shop-card.is-active .thumb img{ filter: blur(2.2px) brightness(.92); transform: scale(1.01); }
-    .shop-card:hover .overlay, .shop-card.is-active .overlay{ opacity: 1; pointer-events: auto; }
+    /* 활성화 시 스타일 */
+    .shop-card.is-active .thumb img{ filter: blur(2.2px) brightness(.92); transform: scale(1.01); }
+    .shop-card.is-active .overlay{ opacity: 1; pointer-events: auto; }
 
     @media (max-width: 520px){
       .shop-grid{ grid-template-columns: min(320px, 92vw); }
@@ -229,26 +230,15 @@
       header { padding: 60px 80px; position: absolute; }
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
-      
       .nav-overlay {
-        top: 0; 
-        left: 100%; 
-        width: 450px; 
-        height: 100vh;
-        transition: left 0.5s var(--menu-ease);
-        border-left: 1px solid #eee;
-        justify-content: flex-start;
-        padding: 180px 0 0 80px;
-        box-shadow: none;
+        top: 0; left: 100%; width: 450px; height: 100vh;
+        transition: left 0.5s var(--menu-ease); border-left: 1px solid #eee;
+        justify-content: flex-start; padding: 180px 0 0 80px; box-shadow: none;
       }
-      body[data-menu-open="true"] .nav-overlay {
-        left: calc(100% - 450px);
-      }
+      body[data-menu-open="true"] .nav-overlay { left: calc(100% - 450px); }
       body[data-menu-open="true"] .overlay-dimmer { width: calc(100% - 450px); }
-
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
-
       main { padding: 220px 0 90px; }
       .page-title { font-size: 32px; }
     }
@@ -268,9 +258,7 @@
       <a href="shop.html">Shop</a>
     </nav>
     <button class="menu-btn" type="button" id="menuOpenBtn" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
   </header>
 
@@ -278,10 +266,10 @@
 
   <nav class="nav-overlay" id="navOverlay">
     <div class="drawer-nav">
-      <a href="cv.html" onclick="toggleMenu()">CV</a>
-      <a href="works.html" onclick="toggleMenu()">Works</a>
-      <a href="contact.html" onclick="toggleMenu()">Contact</a>
-      <a href="shop.html" onclick="toggleMenu()">Shop</a>
+      <a href="cv.html">CV</a>
+      <a href="works.html">Works</a>
+      <a href="contact.html">Contact</a>
+      <a href="shop.html">Shop</a>
     </div>
   </nav>
 
@@ -329,18 +317,23 @@
     (function () {
       const card = document.getElementById("shopCardA");
 
-      if(card) {
+      if (card) {
         card.addEventListener("click", function(e) {
-          // [이벤트 전파 차단] 카드를 눌렀을 때 document 클릭 이벤트가 발생하지 않게 함
-          e.stopPropagation(); 
-          
-          if(!e.target.closest(".ov-text")) {
+          // 1. 가운데 링크 글자(.overlay-link)를 클릭했는지 확인
+          const isLinkClick = e.target.closest(".overlay-link");
+
+          if (!isLinkClick) {
+            // 2. 링크 글자가 아닌 이미지/여백 영역을 클릭했다면 회색 필터 토글
             this.classList.toggle("is-active");
+            
+            // 전역 document 클릭 이벤트와 충돌하지 않도록 차단
+            e.stopPropagation();
           }
+          // 3. 링크 글자를 클릭했다면 아무것도 하지 않음 (브라우저가 자동으로 href 페이지로 이동)
         });
       }
 
-      // [카드 밖 클릭 처리] 카드 외부(이미지 주변 여백 등) 클릭 시 회색 필터 제거
+      // 카드 외부(완전 바깥 빈 공간)를 클릭하면 회색 상태 해제
       document.addEventListener("click", function() {
         if(card) card.classList.remove("is-active");
       });
