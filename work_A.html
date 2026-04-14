@@ -146,6 +146,15 @@
       box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
+    /* [추가] 외부 클릭 보호용 투명 방어막 */
+    .overlay-dimmer {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0); 
+      z-index: 1400; 
+      display: none;
+    }
+    body[data-menu-open="true"] .overlay-dimmer { display: block; }
+
     body[data-menu-open="true"] .nav-overlay {
       top: 0;
     }
@@ -275,8 +284,8 @@
       inset: 0;
       display:none;
       align-items:center;
-      justify(content):center;
-      z-index: 2000;
+      justify-content:center;
+      z-index: 3000; /* 네비게이션보다 높게 설정 */
     }
     .lightbox.open{ display:flex; }
 
@@ -358,6 +367,10 @@
       body[data-menu-open="true"] .nav-overlay {
         left: calc(100% - 450px);
       }
+
+      /* PC 디머 너비 조정 */
+      body[data-menu-open="true"] .overlay-dimmer { width: calc(100% - 450px); }
+
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
 
@@ -395,10 +408,12 @@
     </div>
   </header>
 
+  <div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
+
   <nav class="nav-overlay" id="navOverlay">
     <div class="drawer-nav">
       <a href="cv.html" onclick="toggleMenu()">CV</a>
-      <a href="works.html" onclick="toggleMenu()">Works</a>
+      <a href="works.html">Works</a>
       <a href="contact.html">Contact</a>
       <a href="shop.html">Shop</a>
     </div>
@@ -451,19 +466,7 @@
         body.style.overflow = "hidden";
       }
     }
-
-    // [핵심 수정] 외부 클릭 시 닫기 기능 추가
-    document.addEventListener('mousedown', function(e) {
-      const body = document.body;
-      const nav = document.getElementById('navOverlay');
-      const btn = document.getElementById('menuOpenBtn');
-      
-      if (body.dataset.menuOpen === "true") {
-        if (!nav.contains(e.target) && !btn.contains(e.target)) {
-          toggleMenu();
-        }
-      }
-    });
+    // 기존 mousedown 대신 dimmer onclick 제어 방식으로 일원화했습니다.
 
     (function () {
       const images = [
