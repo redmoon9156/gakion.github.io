@@ -170,7 +170,12 @@
     }
 
     main{ padding: 140px 0 80px; flex: 1; }
-    .page-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin-bottom: 22px; text-align: center; }
+    
+    /* ✅ Shop 메인 타이틀 */
+    .page-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin-bottom: 8px; text-align: center; }
+    
+    /* ✅ 섹션 서브 타이틀 (Available Books 등) */
+    .section-title{ font-family:"Montserrat", sans-serif; font-size: 16px; font-weight: 500; color: var(--muted); letter-spacing: .1px; text-align: center; margin-bottom: 30px; }
 
     .shop-grid{
       display:grid;
@@ -241,6 +246,7 @@
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
       main { padding: 220px 0 90px; }
       .page-title { font-size: 32px; }
+      .section-title { font-size: 18px; margin-bottom: 40px; }
     }
   </style>
 </head>
@@ -275,7 +281,10 @@
 
   <main>
     <div class="wrap">
-      <div class="page-title">Available Books</div>
+      <h1 class="page-title">Shop</h1>
+      
+      <p class="section-title">Available Books</p>
+
       <section class="shop-grid">
         <div class="shop-card" id="shopCardA">
           <div class="thumb">
@@ -292,7 +301,8 @@
           </div>
         </div>
       </section>
-    </div>
+      
+      </div>
   </main>
 
   <footer>
@@ -319,21 +329,15 @@
 
       if (card) {
         card.addEventListener("click", function(e) {
-          // 1. 가운데 링크 글자(.overlay-link)를 클릭했는지 확인
           const isLinkClick = e.target.closest(".overlay-link");
 
           if (!isLinkClick) {
-            // 2. 링크 글자가 아닌 이미지/여백 영역을 클릭했다면 회색 필터 토글
             this.classList.toggle("is-active");
-            
-            // 전역 document 클릭 이벤트와 충돌하지 않도록 차단
             e.stopPropagation();
           }
-          // 3. 링크 글자를 클릭했다면 아무것도 하지 않음 (브라우저가 자동으로 href 페이지로 이동)
         });
       }
 
-      // 카드 외부(완전 바깥 빈 공간)를 클릭하면 회색 상태 해제
       document.addEventListener("click", function() {
         if(card) card.classList.remove("is-active");
       });
