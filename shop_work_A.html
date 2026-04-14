@@ -161,17 +161,17 @@
     .drawer-nav{ display:flex; flex-direction:column; align-items:center; text-align:center; }
     .drawer-nav a{ font-family:"Montserrat", sans-serif; font-weight: 300; font-size: 1.1rem; letter-spacing: 0.1em; padding: 15px 0; color: rgba(0,0,0,.86); width: 100%; }
 
-    /* [Breadcrumb - 추가된 스타일] */
+    /* [Breadcrumb - 검정색 수정] */
     .breadcrumb {
       font-family: "Montserrat", sans-serif;
       font-size: 12px;
-      color: #999;
+      color: #000; /* 완전 검정으로 변경 */
       margin-bottom: 20px;
       letter-spacing: 0.05em;
-      font-weight: 300;
+      font-weight: 400; /* 시인성을 위해 굵기를 약간 조정 */
     }
-    .breadcrumb a { transition: color 0.2s; }
-    .breadcrumb a:hover { color: #111; }
+    .breadcrumb a { transition: opacity 0.2s; }
+    .breadcrumb a:hover { opacity: 0.6; }
     .breadcrumb span { margin: 0 6px; font-size: 10px; vertical-align: middle; }
 
     /* Main Content */
@@ -222,8 +222,7 @@
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
       main { padding: 220px 0 80px; }
-      
-      .breadcrumb { margin-bottom: 30px; } /* PC에서 간격 살짝 넓게 */
+      .breadcrumb { margin-bottom: 30px; }
     }
 
     footer {
