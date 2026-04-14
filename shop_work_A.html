@@ -108,7 +108,6 @@
     }
     nav.desktop a:hover{ color: rgba(0,0,0,1); }
 
-    /* [Menu Trigger] */
     .menu-btn{
       cursor: pointer;
       width: 24px;
@@ -129,7 +128,6 @@
       transition: 0.3s var(--menu-ease);
     }
 
-    /* [Nav Overlay] */
     .nav-overlay {
       position: fixed;
       top: -100%;
@@ -146,7 +144,6 @@
       box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
-    /* [추가] 외부 클릭 보호용 투명 방어막 */
     .overlay-dimmer {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(255, 255, 255, 0); 
@@ -155,35 +152,18 @@
     }
     body[data-menu-open="true"] .overlay-dimmer { display: block; }
 
-    body[data-menu-open="true"] .nav-overlay {
-      top: 0;
-    }
+    body[data-menu-open="true"] .nav-overlay { top: 0; }
 
     body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
     body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
     body[data-menu-open="true"] .menu-btn span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
-    .drawer-nav{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
-    }
-
-    .drawer-nav a{
-      font-family:"Montserrat", sans-serif;
-      font-weight: 300;
-      font-size: 1.1rem;
-      letter-spacing: 0.1em;
-      padding: 15px 0;
-      color: rgba(0,0,0,.86);
-      width: 100%;
-    }
+    .drawer-nav{ display:flex; flex-direction:column; align-items:center; text-align:center; }
+    .drawer-nav a{ font-family:"Montserrat", sans-serif; font-weight: 300; font-size: 1.1rem; letter-spacing: 0.1em; padding: 15px 0; color: rgba(0,0,0,.86); width: 100%; }
 
     /* Main Content */
     main{ padding: 140px 0 60px; flex: 1; }
 
-    /* Gallery Style */
     .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
     @media (min-width: 900px){ .shop-grid{ grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; } }
 
@@ -195,61 +175,12 @@
     .thumb-img { width: calc(25% - 7.5px); cursor: pointer; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0 !important; border: 1px solid transparent; }
 
     /* Lightbox */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 3000;
-    }
+    .lightbox { position: fixed; inset: 0; display:none; align-items:center; justify-content:center; z-index: 3000; }
     .lightbox.open { display: flex; }
-
-    .lb-backdrop {
-      position:absolute;
-      inset:0;
-      background: rgba(0,0,0,.65);
-      backdrop-filter: blur(8px);
-      cursor: pointer;
-    }
-
-    .lb-frame {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow: hidden;
-      pointer-events: none;
-    }
-
-    .lb-img {
-      max-width: 100%;
-      max-height: 92vh;
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      user-select:none;
-      pointer-events: auto;
-      transition: opacity 0.15s ease-in-out;
-    }
-
-    .lb-arrow {
-      position:absolute;
-      top: 0; bottom: 0;
-      width: 60px;
-      border: 0;
-      background: transparent;
-      color: rgba(255,255,255,.8);
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      z-index: 10;
-      pointer-events: auto;
-    }
+    .lb-backdrop { position:absolute; inset:0; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); cursor: pointer; }
+    .lb-frame { position: relative; width: 100vw; height: 100vh; z-index: 1; display:flex; align-items:center; justify-content:center; overflow: hidden; pointer-events: none; }
+    .lb-img { max-width: 100%; max-height: 92vh; width: auto; height: auto; object-fit: contain; user-select:none; pointer-events: auto; transition: opacity 0.15s ease-in-out; }
+    .lb-arrow { position:absolute; top: 0; bottom: 0; width: 60px; border: 0; background: transparent; color: rgba(255,255,255,.8); cursor:pointer; display:flex; align-items:center; justify-content:center; z-index: 10; pointer-events: auto; }
     .lb-prev { left: 0; }
     .lb-next { right: 0; }
     .lb-arrow svg { width: 34px; height: 34px; filter: drop-shadow(0 0 4px rgba(0,0,0,0.5)); }
@@ -272,28 +203,25 @@
       header { padding: 60px 0; position: absolute; }
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
-      
-      .nav-overlay {
-        top: 0; 
-        left: 100%; 
-        width: 450px; 
-        height: 100vh;
-        transition: left 0.5s var(--menu-ease);
-        border-left: 1px solid #eee;
-        justify-content: flex-start;
-        padding: 180px 0 0 80px;
-        box-shadow: none;
-      }
-      body[data-menu-open="true"] .nav-overlay {
-        left: calc(100% - 450px);
-      }
-
-      /* PC 디머 너비 조정 */
+      .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s var(--menu-ease); border-left: 1px solid #eee; justify-content: flex-start; padding: 180px 0 0 80px; box-shadow: none; }
+      body[data-menu-open="true"] .nav-overlay { left: calc(100% - 450px); }
       body[data-menu-open="true"] .overlay-dimmer { width: calc(100% - 450px); }
-
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
       main { padding: 220px 0 80px; }
+    }
+
+    /* [Footer - 가운데 정렬 및 하단 고정 수정] */
+    footer {
+      width: 100%;
+      padding: 24px 0 34px;
+      margin-top: auto; /* flex 구조에서 푸터를 맨 아래로 밀어냄 */
+      text-align: center; /* 텍스트 중앙 정렬 */
+    }
+    footer .wrap {
+      text-align: center; /* 내부 요소 중앙 정렬 보장 */
+      color: rgba(0,0,0,.56);
+      font-size: 12.5px;
     }
 
     img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
@@ -315,9 +243,7 @@
           <a href="shop.html">Shop</a>
         </nav>
         <button class="menu-btn" type="button" id="menuOpenBtn" onclick="toggleMenu()">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
     </div>
@@ -328,9 +254,9 @@
   <nav class="nav-overlay" id="navOverlay">
     <div class="drawer-nav">
       <a href="cv.html" onclick="toggleMenu()">CV</a>
-      <a href="works.html">Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="shop.html">Shop</a>
+      <a href="works.html" onclick="toggleMenu()">Works</a>
+      <a href="contact.html" onclick="toggleMenu()">Contact</a>
+      <a href="shop.html" onclick="toggleMenu()">Shop</a>
     </div>
   </nav>
 
@@ -388,7 +314,6 @@
         body.style.overflow = "hidden";
       }
     }
-    // 기존 mousedown 대신 dimmer onclick 제어 방식으로 일원화했습니다.
 
     (function () {
       const images = [
