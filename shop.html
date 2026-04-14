@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
+        href="https://cdn.jsdelivr.gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 
   <style>
     :root{
@@ -176,17 +176,19 @@
     }
 
     main{ padding: 140px 0 80px; flex: 1; }
-    .page-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin-bottom: 8px; text-align: center; }
     
+    .page-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin-bottom: 0; text-align: center; }
+    
+    /* ✅ 서브 제목 스타일 업그레이드 */
     .section-title{ 
       font-family:"Montserrat", sans-serif; 
-      font-size: 16px; 
-      font-weight: 500; 
-      color: var(--muted); 
+      font-size: 20px; 
+      font-weight: 600; 
+      color: #000; 
       letter-spacing: .1px; 
       text-align: center; 
-      margin-bottom: 30px;
-      /* 고정 헤더 높이를 고려한 스크롤 위치 보정 */
+      margin-top: 50px;    /* Shop 제목과 충분한 간격 */
+      margin-bottom: 18px; /* 이미지 그리드와 밀착 */
       scroll-margin-top: 120px; 
     }
 
@@ -258,7 +260,7 @@
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
       main { padding: 140px 0 90px; }
       .page-title { font-size: 32px; }
-      .section-title { font-size: 18px; margin-bottom: 40px; }
+      .section-title { font-size: 24px; margin-top: 70px; margin-bottom: 24px; }
     }
   </style>
 </head>
