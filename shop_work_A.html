@@ -161,6 +161,19 @@
     .drawer-nav{ display:flex; flex-direction:column; align-items:center; text-align:center; }
     .drawer-nav a{ font-family:"Montserrat", sans-serif; font-weight: 300; font-size: 1.1rem; letter-spacing: 0.1em; padding: 15px 0; color: rgba(0,0,0,.86); width: 100%; }
 
+    /* [Breadcrumb - 추가된 스타일] */
+    .breadcrumb {
+      font-family: "Montserrat", sans-serif;
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 20px;
+      letter-spacing: 0.05em;
+      font-weight: 300;
+    }
+    .breadcrumb a { transition: color 0.2s; }
+    .breadcrumb a:hover { color: #111; }
+    .breadcrumb span { margin: 0 6px; font-size: 10px; vertical-align: middle; }
+
     /* Main Content */
     main{ padding: 140px 0 60px; flex: 1; }
 
@@ -209,17 +222,18 @@
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
       main { padding: 220px 0 80px; }
+      
+      .breadcrumb { margin-bottom: 30px; } /* PC에서 간격 살짝 넓게 */
     }
 
-    /* [Footer - 가운데 정렬 및 하단 고정 수정] */
     footer {
       width: 100%;
       padding: 24px 0 34px;
-      margin-top: auto; /* flex 구조에서 푸터를 맨 아래로 밀어냄 */
-      text-align: center; /* 텍스트 중앙 정렬 */
+      margin-top: auto; 
+      text-align: center;
     }
     footer .wrap {
-      text-align: center; /* 내부 요소 중앙 정렬 보장 */
+      text-align: center;
       color: rgba(0,0,0,.56);
       font-size: 12.5px;
     }
@@ -262,6 +276,12 @@
 
   <main>
     <div class="wrap">
+      <nav class="breadcrumb">
+        <a href="shop.html">Shop</a> <span>></span> 
+        <a href="shop.html">Available Books</a> <span>></span> 
+        <a href="shop_work_A.html">Fox Dream</a>
+      </nav>
+
       <section class="shop-grid">
         <div class="shop-media">
           <div class="main-viewer" id="mainViewer">
