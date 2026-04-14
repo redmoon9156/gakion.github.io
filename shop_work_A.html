@@ -52,7 +52,6 @@
       width:100%;
     }
 
-    /* [Header] */
     header{
       background:#ffffff;
       position: fixed;
@@ -161,20 +160,18 @@
     .drawer-nav{ display:flex; flex-direction:column; align-items:center; text-align:center; }
     .drawer-nav a{ font-family:"Montserrat", sans-serif; font-weight: 300; font-size: 1.1rem; letter-spacing: 0.1em; padding: 15px 0; color: rgba(0,0,0,.86); width: 100%; }
 
-    /* [Breadcrumb - 검정색 수정] */
     .breadcrumb {
       font-family: "Montserrat", sans-serif;
       font-size: 12px;
-      color: #000; /* 완전 검정으로 변경 */
+      color: #000;
       margin-bottom: 20px;
       letter-spacing: 0.05em;
-      font-weight: 400; /* 시인성을 위해 굵기를 약간 조정 */
+      font-weight: 400;
     }
     .breadcrumb a { transition: opacity 0.2s; }
     .breadcrumb a:hover { opacity: 0.6; }
     .breadcrumb span { margin: 0 6px; font-size: 10px; vertical-align: middle; }
 
-    /* Main Content */
     main{ padding: 140px 0 60px; flex: 1; }
 
     .shop-grid{ display: grid; grid-template-columns: 1fr; gap: 24px; }
@@ -187,7 +184,6 @@
     .thumb-list { display: flex; gap: 10px; }
     .thumb-img { width: calc(25% - 7.5px); cursor: pointer; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 0 !important; border: 1px solid transparent; }
 
-    /* Lightbox */
     .lightbox { position: fixed; inset: 0; display:none; align-items:center; justify-content:center; z-index: 3000; }
     .lightbox.open { display: flex; }
     .lb-backdrop { position:absolute; inset:0; background: rgba(0,0,0,.65); backdrop-filter: blur(8px); cursor: pointer; }
@@ -204,7 +200,6 @@
       .lb-img { max-width: 100vw; }
     }
 
-    /* Info */
     .shop-info{ padding: 0; }
     .shop-title{ margin: 0 0 10px; font-weight: 700; font-size: 18px; }
     .shop-desc{ margin: 0; white-space: pre-line; color: rgba(0,0,0,.86); font-size: 14px; line-height: 1.55; }
@@ -225,17 +220,8 @@
       .breadcrumb { margin-bottom: 30px; }
     }
 
-    footer {
-      width: 100%;
-      padding: 24px 0 34px;
-      margin-top: auto; 
-      text-align: center;
-    }
-    footer .wrap {
-      text-align: center;
-      color: rgba(0,0,0,.56);
-      font-size: 12.5px;
-    }
+    footer { width: 100%; padding: 24px 0 34px; margin-top: auto; text-align: center; }
+    footer .wrap { text-align: center; color: rgba(0,0,0,.56); font-size: 12.5px; }
 
     img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
   </style>
@@ -277,7 +263,7 @@
     <div class="wrap">
       <nav class="breadcrumb">
         <a href="shop.html">Shop</a> <span>></span> 
-        <a href="shop.html">Available Books</a> <span>></span> 
+        <a href="shop.html#Available Books">Available Books</a> <span>></span> 
         <a href="shop_work_A.html">Fox Dream</a>
       </nav>
 
@@ -333,6 +319,10 @@
         body.style.overflow = "hidden";
       }
     }
+
+    document.getElementById('navOverlay').addEventListener('click', function(e) {
+      if (e.target === this) toggleMenu();
+    });
 
     (function () {
       const images = [
