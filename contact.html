@@ -55,12 +55,20 @@
       background:#ffffff;
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      padding: 16px 20px;
+      padding: 16px 0; /* 내부 wrap에서 좌우 패딩을 잡으므로 0 */
+      z-index: 2000;
+    }
+
+    /* 헤더 내부 정렬 */
+    .top-container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 var(--pad);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 2000;
     }
 
     .brand{
@@ -136,7 +144,6 @@
       box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
-    /* [추가] 외부 클릭 보호용 투명 방어막 */
     .overlay-dimmer {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(255, 255, 255, 0); 
@@ -144,10 +151,7 @@
       display: none;
     }
     body[data-menu-open="true"] .overlay-dimmer { display: block; }
-
-    body[data-menu-open="true"] .nav-overlay {
-      top: 0;
-    }
+    body[data-menu-open="true"] .nav-overlay { top: 0; }
 
     body[data-menu-open="true"] .menu-btn span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
     body[data-menu-open="true"] .menu-btn span:nth-child(2) { opacity: 0; }
@@ -170,12 +174,13 @@
       width: 100%;
     }
 
+    /* ✅ 중앙 정렬 수정 */
     main{
-      padding: 140px 20px 90px;
+      padding: 140px 0 90px;
       flex:1;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center; /* 세로 기준 중앙 (필요 시 flex-start로 조정 가능) */
     }
 
     .page-title{
@@ -186,7 +191,7 @@
       margin-bottom: 40px;
     }
 
-    .contact-area{ width: 100%; }
+    .contact-area{ width: 100%; text-align: center; }
 
     .contact-stack{
       display:flex;
@@ -225,7 +230,7 @@
     }
 
     @media (min-width:1024px){
-      header { padding: 60px 80px; position: absolute; }
+      header { padding: 60px 0; position: fixed; } /* 고정 유지 */
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
       
@@ -244,40 +249,42 @@
         left: calc(100% - 450px);
       }
 
-      /* PC 디머 너비 조정 */
       body[data-menu-open="true"] .overlay-dimmer { width: calc(100% - 450px); }
 
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
 
-      main { align-items: flex-start; padding: 220px 80px 0; }
-      .page-title { font-size: 2.0rem; text-align: left; margin-bottom: 60px; }
+      /* ✅ PC 버전 왼쪽 쏠림 현상 해결: center로 수정 */
+      main { align-items: center; padding: 220px 0 0; }
+      .page-title { font-size: 2.0rem; text-align: center; margin-bottom: 60px; }
       .contact-area { display: block; }
-      .contact-stack { align-items: flex-start; }
-      .contact-item { align-items: flex-start; }
+      .contact-stack { align-items: center; }
+      .contact-item { align-items: center; }
     }
   </style>
 </head>
 
 <body>
   <header>
-    <a class="brand" href="index.html" aria-label="Go to Index">
-      <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" />
-      <span>Gakion</span>
-    </a>
+    <div class="top-container">
+      <a class="brand" href="index.html" aria-label="Go to Index">
+        <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" />
+        <span>Gakion</span>
+      </a>
 
-    <nav class="desktop">
-      <a href="cv.html">CV</a>
-      <a href="works.html">Works</a>
-      <a href="contact.html" aria-current="page">Contact</a>
-      <a href="shop.html">Shop</a>
-    </nav>
+      <nav class="desktop">
+        <a href="cv.html">CV</a>
+        <a href="works.html">Works</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+        <a href="shop.html">Shop</a>
+      </nav>
 
-    <button class="menu-btn" id="menuOpenBtn" aria-label="Toggle menu" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+      <button class="menu-btn" id="menuOpenBtn" aria-label="Toggle menu" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </header>
 
   <div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
@@ -338,7 +345,6 @@
         body.style.overflow = "hidden";
       }
     }
-    // 기존의 mousedown 이벤트를 이용한 방식은 제거하고 dimmer의 onclick으로 일원화하여 우선순위를 제어합니다.
   </script>
 </body>
 </html>
