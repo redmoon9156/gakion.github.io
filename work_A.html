@@ -285,7 +285,7 @@
       display:none;
       align-items:center;
       justify-content:center;
-      z-index: 3000; /* 네비게이션보다 높게 설정 */
+      z-index: 3000;
     }
     .lightbox.open{ display:flex; }
 
@@ -431,12 +431,13 @@
           only to face the rabbit again. A quiet story of how desire changes us, and how some obsessions remain even after release.
         </p>
         <div class="awards">
+          <!-- ✅ 수상 내역 이탤릭체 지정 완료 -->
           <div class="award-year">2026</div>
-          <div class="award-text">Illustrofesto, International Festival of Illustration Winner of Best Illustration in Books</div>
+          <div class="award-text"><i>Illustrofesto, International Festival of Illustration Winner of Best Illustration in Books</i></div>
           <div class="award-year">2026</div>
-          <div class="award-text">Bologna Children’s Book Fair Finalist</div>
+          <div class="award-text"><i>Bologna Children’s Book Fair Finalist</i></div>
           <div class="award-year">2025</div>
-          <div class="award-text">The Golden Pinwheel Young Illustrators Competition Finalist</div>
+          <div class="award-text"><i>The Golden Pinwheel Young Illustrators Competition Finalist</i></div>
         </div>
       </div>
       <section class="img-stack" id="imgStack"></section>
@@ -468,7 +469,6 @@
         body.style.overflow = "hidden";
       }
     }
-    // 기존 mousedown 대신 dimmer onclick 제어 방식으로 일원화했습니다.
 
     (function () {
       const images = [
