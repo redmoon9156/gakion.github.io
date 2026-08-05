@@ -204,10 +204,9 @@
 
     .ratio-box {
       width: 100%;
-      transition: padding-top var(--fade-dur) ease-in-out; /* 높이 변경 애니메이션 */
     }
 
-    /* ✅ object-fit: contain 으로 원본 축소/확대 유지 */
+    /* 원본 페이드 효과 고정 */
     .home-thumb {
       position: absolute;
       top: 0;
@@ -344,6 +343,7 @@
         if (e.target.tagName === "IMG") e.preventDefault();
       });
 
+      /* 원본 페이드 전환 로직 */
       const slider = document.getElementById("homeSlider");
       if (!slider) return;
 
@@ -354,19 +354,14 @@
       let currentIdx = 0;
       imgs[0].classList.add("is-active");
 
-      // 이미지 인덱스에 맞춰 비율(높이)을 업데이트하는 함수
-      const updateRatio = (idx) => {
-        const targetImg = imgs[idx];
-        if (targetImg.naturalWidth) {
-          box.style.paddingTop = (targetImg.naturalHeight / targetImg.naturalWidth * 100) + "%";
+      const setRatio = () => {
+        if (imgs[0].naturalWidth) {
+          box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
         }
       };
+      imgs[0].addEventListener("load", setRatio);
+      if (imgs[0].complete) setRatio();
 
-      // 첫 번째 이미지 로드 시 비율 설정
-      imgs[0].addEventListener("load", () => updateRatio(0));
-      if (imgs[0].complete) updateRatio(0);
-
-      // 슬라이드 전환 시 이미지 비율도 함께 변경
       function showNextSlide() {
         let nextIdx = (currentIdx + 1) % imgs.length;
 
@@ -380,8 +375,6 @@
             img.style.zIndex = "2";
           }
         });
-
-        updateRatio(nextIdx); // 다음 이미지의 종횡비로 높이 조절
         currentIdx = nextIdx;
       }
 
