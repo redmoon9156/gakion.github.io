@@ -52,17 +52,23 @@
       width:100%;
     }
 
-    /* [Header] */
+    /* [Header - Index 구조 및 배치와 동일하게 통일] */
     header{
       background:#ffffff;
       position: fixed;
       top: 0;
+      left: 0;
       width: 100%;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      padding: 16px 0;
       z-index: 2000;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      width: 100%;
     }
 
     .brand{
@@ -140,7 +146,6 @@
       box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
-    /* [추가] 외부 클릭 보호용 투명 방어막 */
     .overlay-dimmer {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(255, 255, 255, 0); 
@@ -176,7 +181,7 @@
 
     /* [Main Content] */
     main{
-      padding: 140px 20px 80px;
+      padding: 140px 0 80px;
       flex:1;
     }
 
@@ -229,7 +234,7 @@
     }
 
     @media (min-width:1024px){
-      header { padding: 60px 80px; position: absolute; }
+      header { padding: 60px 0; position: absolute; }
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
       
@@ -254,7 +259,7 @@
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
 
-      main { padding: 220px 80px 80px; }
+      main { padding: 220px 0 80px; }
       .page-title { font-size:32px; text-align: left; margin-bottom: 30px; }
       .cv-grid{ grid-template-columns:1fr 1.15fr; gap:56px; }
       .cv-text{ font-size:16px; }
@@ -271,23 +276,27 @@
 
 <body>
   <header>
-    <a class="brand" href="index.html" aria-label="Go to Index">
-      <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" />
-      <span>Gakion</span>
-    </a>
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="index.html" aria-label="Go to Index">
+          <img class="brand-mark" src="images/home/late_autumn.png" alt="" aria-hidden="true" />
+          <span>Gakion</span>
+        </a>
 
-    <nav class="desktop">
-      <a href="cv.html" aria-current="page">CV</a>
-      <a href="works.html">Works</a>
-      <a href="contact.html">Contact</a>
-      <a href="shop.html">Shop</a>
-    </nav>
+        <nav class="desktop">
+          <a href="cv.html" aria-current="page">CV</a>
+          <a href="works.html">Works</a>
+          <a href="contact.html">Contact</a>
+          <a href="shop.html">Shop</a>
+        </nav>
 
-    <button class="menu-btn" id="menuOpenBtn" aria-label="Toggle menu" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+        <button class="menu-btn" id="menuOpenBtn" aria-label="Toggle menu" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
@@ -344,7 +353,9 @@ Born and raised in Seoul, Gakion studied motion graphics, and later explored pic
     </div>
   </main>
 
-  <footer>© Gakion. All rights reserved.</footer>
+  <footer>
+    <div class="wrap">© Gakion. All rights reserved.</div>
+  </footer>
 
   <script>
     function toggleMenu() {
@@ -358,7 +369,6 @@ Born and raised in Seoul, Gakion studied motion graphics, and later explored pic
         body.style.overflow = "hidden";
       }
     }
-    // 기존 mousedown 대신 dimmer onclick 제어 방식으로 일원화했습니다.
   </script>
 </body>
 </html>
