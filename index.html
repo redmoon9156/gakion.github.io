@@ -354,13 +354,25 @@
       let currentIdx = 0;
       imgs[0].classList.add("is-active");
 
-      const setRatio = () => {
-        if (imgs[0].naturalWidth) {
-          box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
+      /* 슬라이더 내의 모든 이미지를 검사하여 세로가 잘리지 않으면서
+         가장 큰 비율(높이)을 가진 이미지에 기준을 맞춰 프레임을 고정합니다. */
+      const setMaxRatio = () => {
+        let maxRatio = 0;
+        imgs.forEach(img => {
+          if (img.naturalWidth && img.naturalHeight) {
+            const ratio = (img.naturalHeight / img.naturalWidth) * 100;
+            if (ratio > maxRatio) maxRatio = ratio;
+          }
+        });
+        if (maxRatio > 0) {
+          box.style.paddingTop = maxRatio + "%";
         }
       };
-      imgs[0].addEventListener("load", setRatio);
-      if (imgs[0].complete) setRatio();
+
+      imgs.forEach(img => {
+        img.addEventListener("load", setMaxRatio);
+        if (img.complete) setMaxRatio();
+      });
 
       function showNextSlide() {
         let nextIdx = (currentIdx + 1) % imgs.length;
