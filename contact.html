@@ -174,13 +174,12 @@
       width: 100%;
     }
 
-    /* ✅ 중앙 정렬 수정 */
     main{
       padding: 140px 0 90px;
       flex:1;
       display: flex;
       justify-content: center;
-      align-items: center; /* 세로 기준 중앙 (필요 시 flex-start로 조정 가능) */
+      align-items: center;
     }
 
     .page-title{
@@ -230,7 +229,7 @@
     }
 
     @media (min-width:1024px){
-      header { padding: 60px 0; position: fixed; } /* 고정 유지 */
+      header { padding: 60px 0; position: fixed; }
       nav.desktop { display:flex; }
       .menu-btn { display:none; }
       
@@ -254,9 +253,9 @@
       .drawer-nav { text-align: left; align-items: flex-start; }
       .drawer-nav a { font-size: 1rem; padding: 18px 0; }
 
-      /* ✅ PC 버전 왼쪽 쏠림 현상 해결: center로 수정 */
-      main { align-items: center; padding: 220px 0 0; }
-      .page-title { font-size: 2.0rem; text-align: center; margin-bottom: 60px; }
+      /* ✅ PC 전용: 상단 패딩을 줄이고 align-items를 flex-start로 변경하여 위치를 위로 이동 */
+      main { align-items: flex-start; padding: 150px 0 60px; }
+      .page-title { font-size: 2.0rem; text-align: center; margin-bottom: 40px; }
       .contact-area { display: block; }
       .contact-stack { align-items: center; }
       .contact-item { align-items: center; }
