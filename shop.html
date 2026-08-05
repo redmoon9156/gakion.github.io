@@ -179,7 +179,6 @@
     
     .page-title{ font-family:"Montserrat", sans-serif; font-size: 28px; font-weight: 700; letter-spacing: .2px; margin-bottom: 0; text-align: center; }
     
-    /* ✅ 서브 제목 스타일 업그레이드 */
     .section-title{ 
       font-family:"Montserrat", sans-serif; 
       font-size: 20px; 
@@ -187,8 +186,8 @@
       color: #000; 
       letter-spacing: .1px; 
       text-align: center; 
-      margin-top: 50px;    /* Shop 제목과 충분한 간격 */
-      margin-bottom: 18px; /* 이미지 그리드와 밀착 */
+      margin-top: 50px;
+      margin-bottom: 18px;
       scroll-margin-top: 120px; 
     }
 
@@ -247,7 +246,10 @@
 
     @media (min-width:1024px){
       header { padding: 60px 0; position: absolute; }
-      nav.desktop { display:flex; }
+      nav.desktop { 
+        display: flex; 
+        gap: 32px; /* ✅ PC 화면에서 메뉴 간격을 넓혀 Shop 글자가 낑기지 않도록 여유 확보 */
+      }
       .menu-btn { display:none; }
       .nav-overlay {
         top: 0; left: 100%; width: 450px; height: 100vh;
@@ -277,7 +279,7 @@
           <a href="cv.html">CV</a>
           <a href="works.html">Works</a>
           <a href="contact.html">Contact</a>
-          <a href="shop.html">Shop</a>
+          <a href="shop.html" aria-current="page">Shop</a>
         </nav>
         <button class="menu-btn" type="button" id="menuOpenBtn" onclick="toggleMenu()">
           <span></span><span></span><span></span>
