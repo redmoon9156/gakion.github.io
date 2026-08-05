@@ -144,7 +144,6 @@
       box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
     }
 
-    /* [추가] 외부 클릭 보호용 투명 방어막 */
     .overlay-dimmer {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(255, 255, 255, 0); 
@@ -205,16 +204,17 @@
 
     .ratio-box {
       width: 100%;
+      transition: padding-top var(--fade-dur) ease-in-out; /* 높이 변경 애니메이션 */
     }
 
-    /* ✅ 모든 이미지의 가로 너비/영역을 100%로 고정 및 cover 설정 */
+    /* ✅ object-fit: contain 으로 원본 축소/확대 유지 */
     .home-thumb {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover; /* 영역에 맞춰 가로폭을 채우도록 고정 */
+      object-fit: contain;
       opacity: 0;
       z-index: 1;
       transition: opacity var(--fade-dur) ease-in-out;
@@ -254,7 +254,6 @@
         left: calc(100% - 450px);
       }
 
-      /* PC 디머 너비 조정 */
       body[data-menu-open="true"] .overlay-dimmer { width: calc(100% - 450px); }
 
       .drawer-nav { text-align: left; align-items: flex-start; }
@@ -345,7 +344,6 @@
         if (e.target.tagName === "IMG") e.preventDefault();
       });
 
-      /* 메인 홈 페이드 슬라이더 로직 */
       const slider = document.getElementById("homeSlider");
       if (!slider) return;
 
@@ -356,16 +354,19 @@
       let currentIdx = 0;
       imgs[0].classList.add("is-active");
 
-      /* 첫 번째 이미지 기준 종횡비 산출 및 영역 고정 */
-      const setRatio = () => {
-        if (imgs[0].naturalWidth) {
-          box.style.paddingTop = (imgs[0].naturalHeight / imgs[0].naturalWidth * 100) + "%";
+      // 이미지 인덱스에 맞춰 비율(높이)을 업데이트하는 함수
+      const updateRatio = (idx) => {
+        const targetImg = imgs[idx];
+        if (targetImg.naturalWidth) {
+          box.style.paddingTop = (targetImg.naturalHeight / targetImg.naturalWidth * 100) + "%";
         }
       };
-      imgs[0].addEventListener("load", setRatio);
-      if (imgs[0].complete) setRatio();
 
-      /* 5초 간격 1.5초 부드러운 교체 */
+      // 첫 번째 이미지 로드 시 비율 설정
+      imgs[0].addEventListener("load", () => updateRatio(0));
+      if (imgs[0].complete) updateRatio(0);
+
+      // 슬라이드 전환 시 이미지 비율도 함께 변경
       function showNextSlide() {
         let nextIdx = (currentIdx + 1) % imgs.length;
 
@@ -379,6 +380,8 @@
             img.style.zIndex = "2";
           }
         });
+
+        updateRatio(nextIdx); // 다음 이미지의 종횡비로 높이 조절
         currentIdx = nextIdx;
       }
 
